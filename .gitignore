@@ -1,4 +1,5 @@
 .idea/
+.kotlin/
 cmake-build-*/
 *.iws
 out/
