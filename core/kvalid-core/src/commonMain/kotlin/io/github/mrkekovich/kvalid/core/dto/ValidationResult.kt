@@ -58,6 +58,22 @@ sealed class ValidationResult {
          * @return an invalid validation result
          */
         fun invalid(vararg errors: String): ValidationResult = invalid(errors.toList())
+
+        /**
+         * Combines multiple validation results into a single validation result.
+         *
+         * @param results the validation results to combine
+         * @return a combined validation result
+         */
+        fun combine(vararg results: ValidationResult): ValidationResult {
+            val errors = results.flatMap {
+                when (it) {
+                    is Invalid -> it.errors
+                    is Valid -> emptyList()
+                }
+            }
+            return if (errors.isEmpty()) Valid else Invalid(errors)
+        }
     }
 }
 
