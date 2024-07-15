@@ -3,7 +3,6 @@ package io.github.mrkekovich.kvalid.core.strategy
 import io.github.mrkekovich.kvalid.core.annotation.KValidDslMarker
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
 import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
@@ -13,8 +12,8 @@ class CollectAllContext : KValidContext {
     val violations: List<ValidationException>
         get() = _violations
 
-    override fun <T> NamedValue<T>.validate(message: String, predicate: ValidationPredicate<T>): NamedValue<T> {
-        if (!predicate(value)) _violations.add(
+    override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
+        if (!predicate(this)) _violations.add(
             ValidationException(message)
         )
         return this

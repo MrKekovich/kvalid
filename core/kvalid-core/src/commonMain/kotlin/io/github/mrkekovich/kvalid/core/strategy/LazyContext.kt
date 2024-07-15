@@ -2,7 +2,6 @@ package io.github.mrkekovich.kvalid.core.strategy
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
 import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
@@ -12,8 +11,8 @@ class LazyContext : KValidContext {
     val rules: List<ValidationRule<*>>
         get() = _rules
 
-    override fun <T> NamedValue<T>.validate(message: String, predicate: ValidationPredicate<T>): NamedValue<T> {
-        _rules.add(ValidationRule(value, message, predicate))
+    override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
+        _rules.add(ValidationRule(this, message, predicate))
         return this
     }
 

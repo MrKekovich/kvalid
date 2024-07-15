@@ -20,10 +20,10 @@ interface ValidationContext {
      * @param message the failure message if validation fails
      * @param predicate the predicate to validate the value
      */
-    fun <T> NamedValue<T>.validate(
+    fun <T> T.validate(
         message: String,
         predicate: ValidationPredicate<T>,
-    ): NamedValue<T>
+    ): T
 
     /**
      * Validates the named value against the specified predicate, using a function to generate the failure message.
@@ -42,5 +42,8 @@ interface ValidationContext {
     fun <T> NamedValue<T>.validate(
         message: (NamedValue<T>) -> String,
         predicate: ValidationPredicate<T>,
-    ): NamedValue<T> = validate(message(this), predicate)
+    ): NamedValue<T> {
+        value.validate(message(this), predicate)
+        return this
+    }
 }

@@ -7,7 +7,7 @@ typealias NamedComparable<T> = NamedValue<Comparable<T>>
 /**
  * Validation context interface for validating named comparable values.
  */
-interface ComparableValidationContext : ValidationContext {
+interface NamedComparableValidationContext : ValidationContext {
 
     /**
      * Validates that the comparable value is equal to the specified value.
@@ -19,8 +19,13 @@ interface ComparableValidationContext : ValidationContext {
      * @param T the type of the value
      * @param value the value to compare against
      */
-    fun <T> NamedComparable<T>.equalTo(value: T): NamedComparable<T> =
-        validate("must be equal to $value") { it == value }
+    fun <T> NamedComparable<T>.equalTo(
+        value: T,
+        message: String = "$name must be equal to $value",
+    ): NamedComparable<T> {
+        value.validate("must be equal to $value") { it == value }
+        return this
+    }
 
     /**
      * Validates that the comparable value is not equal to the specified value.
@@ -32,8 +37,13 @@ interface ComparableValidationContext : ValidationContext {
      * @param T the type of the value
      * @param value the value to compare against
      */
-    fun <T> NamedComparable<T>.notEqualTo(value: T): NamedComparable<T> =
-        validate("must not be equal to $value") { it != value }
+    fun <T> NamedComparable<T>.notEqualTo(
+        value: T,
+        message: String = "$name must not be equal to $value",
+    ): NamedComparable<T> {
+        value.validate("must not be equal to $value") { it != value }
+        return this
+    }
 
     /**
      * Validates that the comparable value is greater than the specified minimum.
@@ -45,8 +55,13 @@ interface ComparableValidationContext : ValidationContext {
      * @param T the type of the value
      * @param min the minimum value
      */
-    fun <T> NamedComparable<T>.greaterThan(min: T): NamedComparable<T> =
-        validate("must be greater than $min") { it > min }
+    fun <T> NamedComparable<T>.greaterThan(
+        min: T,
+        message: String = "$name must be greater than $min",
+    ): NamedComparable<T> {
+        value.validate("must be greater than $min") { it > min }
+        return this
+    }
 
     /**
      * Validates that the comparable value is greater than or equal to the specified minimum.
@@ -58,8 +73,13 @@ interface ComparableValidationContext : ValidationContext {
      * @param T the type of the value
      * @param min the minimum value
      */
-    fun <T> NamedComparable<T>.greaterThanOrEqualTo(min: T): NamedComparable<T> =
-        validate("must be greater than or equal to $min") { it >= min }
+    fun <T> NamedComparable<T>.greaterThanOrEqualTo(
+        min: T,
+        message: String = "$name must be greater than or equal to $min",
+    ): NamedComparable<T> {
+        value.validate("must be greater than or equal to $min") { it >= min }
+        return this
+    }
 
     /**
      * Validates that the comparable value is less than the specified maximum.
@@ -71,8 +91,13 @@ interface ComparableValidationContext : ValidationContext {
      * @param T the type of the value
      * @param max the maximum value
      */
-    fun <T> NamedComparable<T>.lessThan(max: T): NamedComparable<T> =
-        validate("must be less than $max") { it < max }
+    fun <T> NamedComparable<T>.lessThan(
+        max: T,
+        message: String = "$name must be less than $max",
+    ): NamedComparable<T> {
+        value.validate("must be less than $max") { it < max }
+        return this
+    }
 
     /**
      * Validates that the comparable value is less than or equal to the specified maximum.
@@ -84,6 +109,11 @@ interface ComparableValidationContext : ValidationContext {
      * @param T the type of the value
      * @param max the maximum value
      */
-    fun <T> NamedComparable<T>.lessThanOrEqualTo(max: T): NamedComparable<T> =
-        validate("must be less than or equal to $max") { it <= max }
+    fun <T> NamedComparable<T>.lessThanOrEqualTo(
+        max: T,
+        message: String = "$name must be less than or equal to $max",
+    ): NamedComparable<T> {
+        value.validate("must be less than or equal to $max") { it <= max }
+        return this
+    }
 }

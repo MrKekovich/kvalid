@@ -7,7 +7,7 @@ typealias NamedString = NamedValue<String>
 /**
  * String validation context
  */
-interface StringValidationContext : ValidationContext {
+interface NamedStringValidationContext : ValidationContext {
     /**
      * Validates that the string is not blank.
      *
@@ -19,8 +19,10 @@ interface StringValidationContext : ValidationContext {
      */
     fun NamedString.notBlank(
         message: String = "$name must not be blank",
-    ): NamedString =
-        validate(message) { it.isNotBlank() }
+    ): NamedString {
+        value.validate(message) { it.isNotBlank() }
+        return this
+    }
 
     /**
      * Validates that the string has the specified length.
@@ -35,8 +37,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.ofLength(
         length: Int,
         message: String = "$name length must be $length",
-    ): NamedString =
-        validate(message) { it.length == length }
+    ): NamedString {
+        value.validate(message) { it.length == length }
+        return this
+    }
 
     /**
      * Validates that the string length is within the specified range.
@@ -51,8 +55,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.ofLength(
         range: IntRange,
         message: String = "$name length must be in range $range",
-    ): NamedString =
-        validate(message) { it.length in range }
+    ): NamedString {
+        value.validate(message) { it.length in range }
+        return this
+    }
 
     /**
      * Validates that the string does not have the specified length.
@@ -67,8 +73,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.notOfLength(
         length: Int,
         message: String = "$name length must not be $length",
-    ): NamedString =
-        validate(message) { it.length != length }
+    ): NamedString {
+        value.validate(message) { it.length != length }
+        return this
+    }
 
     /**
      * Validates that the string length is not within the specified range.
@@ -83,8 +91,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.notOfLength(
         range: IntRange,
         message: String = "$name length must not be in range $range",
-    ): NamedString =
-        validate(message) { it.length !in range }
+    ): NamedString {
+        value.validate(message) { it.length !in range }
+        return this
+    }
 
     /**
      * Validates that the string has at least the specified minimum length.
@@ -99,8 +109,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.minLength(
         min: Int,
         message: String = "$name length must be at least $min",
-    ): NamedString =
-        validate(message) { it.length >= min }
+    ): NamedString {
+        value.validate(message) { it.length >= min }
+        return this
+    }
 
     /**
      * Validates that the string has at most the specified maximum length.
@@ -115,8 +127,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.maxLength(
         max: Int,
         message: String = "$name length must be at most $max",
-    ): NamedString =
-        validate(message) { it.length <= max }
+    ): NamedString {
+        value.validate(message) { it.length <= max }
+        return this
+    }
 
     /**
      * Validates that the string matches the specified regular expression pattern.
@@ -131,8 +145,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.matches(
         pattern: Regex,
         message: String = "$name must match $pattern",
-    ): NamedString =
-        validate(message) { pattern.matches(it) }
+    ): NamedString {
+        value.validate(message) { pattern.matches(it) }
+        return this
+    }
 
     /**
      * Validates that the string matches the specified regular expression pattern.
@@ -163,8 +179,10 @@ interface StringValidationContext : ValidationContext {
     fun NamedString.notMatches(
         pattern: Regex,
         message: String = "$name must not match $pattern",
-    ): NamedString =
-        validate(message) { !pattern.matches(it) }
+    ): NamedString {
+        value.validate(message) { !pattern.matches(it) }
+        return this
+    }
 
     /**
      * Validates that the string does not match the specified regular expression pattern.

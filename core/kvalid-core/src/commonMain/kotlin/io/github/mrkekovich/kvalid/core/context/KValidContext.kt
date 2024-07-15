@@ -4,9 +4,9 @@ import io.github.mrkekovich.kvalid.core.annotation.KValidDslMarker
 import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 
 interface KValidContext :
-    CollectionValidationContext,
-    ComparableValidationContext,
-    StringValidationContext,
+    NamedCollectionValidationContext,
+    NamedComparableValidationContext,
+    NamedStringValidationContext,
     ValidationContext {
     @KValidDslMarker
     fun rule(

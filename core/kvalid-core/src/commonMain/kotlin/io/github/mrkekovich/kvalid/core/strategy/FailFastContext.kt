@@ -7,8 +7,8 @@ import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
 class FailFastContext : KValidContext {
-    override fun <T> NamedValue<T>.validate(message: String, predicate: ValidationPredicate<T>): NamedValue<T> {
-        if (!predicate(value)) throw ValidationException(message)
+    override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
+        if (!predicate(this)) throw ValidationException(message)
         return this
     }
 
