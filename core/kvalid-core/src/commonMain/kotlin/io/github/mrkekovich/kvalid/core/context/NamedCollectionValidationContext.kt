@@ -2,7 +2,7 @@ package io.github.mrkekovich.kvalid.core.context
 
 import io.github.mrkekovich.kvalid.core.dto.NamedValue
 
-typealias NamedCollection<T> = NamedValue<Collection<T>>
+typealias NamedCollection<T> = NamedValue<out Collection<T>>
 
 /**
  * Collection validation context.
