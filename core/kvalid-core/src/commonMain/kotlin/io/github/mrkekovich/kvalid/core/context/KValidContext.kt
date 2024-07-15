@@ -8,9 +8,12 @@ interface KValidContext :
     NamedComparableValidationContext,
     NamedStringValidationContext,
     ValidationContext {
+
     @KValidDslMarker
     fun rule(
         message: String,
         predicate: () -> Boolean,
     ): ValidationRule<Unit>
+
+    fun violation(message: String)
 }

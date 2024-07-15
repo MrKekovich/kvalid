@@ -6,7 +6,7 @@ import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
 import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
-class CollectAllContext : KValidContext {
+open class CollectAllContext : KValidContext {
     private val _violations: MutableList<ValidationException> = mutableListOf()
 
     val violations: List<ValidationException>
@@ -19,7 +19,6 @@ class CollectAllContext : KValidContext {
         return this
     }
 
-    @KValidDslMarker
     override fun rule(message: String, predicate: () -> Boolean): ValidationRule<Unit> =
         ValidationRule(Unit, message) { predicate() }.also {
             if (!predicate()) _violations.add(
@@ -27,8 +26,7 @@ class CollectAllContext : KValidContext {
             )
         }
 
-    @KValidDslMarker
-    fun violation(message: () -> String) {
-        _violations.add(ValidationException(message()))
+    override fun violation(message: String) {
+        _violations.add(ValidationException(message))
     }
 }

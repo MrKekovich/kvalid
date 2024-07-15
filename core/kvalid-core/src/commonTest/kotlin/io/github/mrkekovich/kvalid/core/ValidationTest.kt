@@ -7,6 +7,7 @@ import io.github.mrkekovich.kvalid.dsl.named
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 internal class ValidationTest {
     private val successContext = object : KValidContext {
@@ -15,23 +16,15 @@ internal class ValidationTest {
                 assertTrue(it.validate())
             }
 
+        override fun violation(message: String) {
+            fail(message)
+        }
+
         override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
             assertTrue(predicate(this))
             return this
         }
 
-    }
-
-    private val failContext = object : KValidContext {
-        override fun rule(message: String, predicate: () -> Boolean): ValidationRule<Unit> =
-            ValidationRule(Unit, message) { predicate() }.also {
-                assertFalse(it.validate())
-            }
-
-        override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
-            assertFalse(predicate(this))
-            return this
-        }
     }
 
     @Test
