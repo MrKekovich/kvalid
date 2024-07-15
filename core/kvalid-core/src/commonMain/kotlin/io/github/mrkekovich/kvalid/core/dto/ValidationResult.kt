@@ -44,20 +44,15 @@ sealed class ValidationResult {
         fun invalid(vararg errors: ValidationException): ValidationResult = invalid(errors.toList())
 
         /**
-         * Returns an invalid validation result with the given list of error messages.
-         *
-         * @param errors the list of error messages
-         * @return an invalid validation result
-         */
-        fun invalid(errors: List<String>): ValidationResult = invalid(errors.map { ValidationException(it) })
-
-        /**
          * Returns an invalid validation result with the given error messages.
          *
          * @param errors the error messages
          * @return an invalid validation result
          */
-        fun invalid(vararg errors: String): ValidationResult = invalid(errors.toList())
+        fun invalid(vararg errors: String): ValidationResult {
+            val validationExceptions = errors.map { ValidationException(it) }
+            return Invalid(validationExceptions)
+        }
 
         /**
          * Combines multiple validation results into a single validation result.
