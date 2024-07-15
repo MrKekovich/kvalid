@@ -1,8 +1,12 @@
 [versions]
 kotlin = "2.0.0"
+kotest = "5.9.1"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotest = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
 
 [plugins]
+kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

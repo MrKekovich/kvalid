@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotest)
 }
 
 kotlin {
@@ -33,6 +34,7 @@ kotlin {
         commonMain.dependencies {
         }
         commonTest.dependencies {
+            implementation(libs.kotest)
             implementation(libs.kotlin.test)
         }
     }
