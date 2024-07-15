@@ -197,4 +197,62 @@ interface NamedCollectionValidationContext : ValidationContext {
         value.validate(message) { !it.containsAll(elements) }
         return this
     }
+
+    /**
+     * Validates that all elements in the collection satisfy the given predicate.
+     *
+     * ```
+     * collection.named("myCollection").allMatch { it > 0 }
+     * ```
+     *
+     * @param T the type of elements in the collection
+     * @param message the failure message if validation fails
+     * @param predicate the predicate to test each element
+     */
+    fun <T> NamedCollection<T>.allMatch(
+        message: String = "All elements in $name must satisfy the predicate",
+        predicate: (T) -> Boolean,
+    ): NamedCollection<T> {
+        value.validate(message) { it.all(predicate) }
+        return this
+    }
+
+    /**
+     * Validates that at least one element in the collection satisfies the given predicate.
+     *
+     * ```
+     * collection.named("myCollection").anyMatch { it > 0 }
+     * ```
+     *
+     * @param T the type of elements in the collection
+     * @param message the failure message if validation fails
+     * @param predicate the predicate to test each element
+     */
+    fun <T> NamedCollection<T>.anyMatch(
+        message: String = "At least one element in $name must satisfy the predicate",
+        predicate: (T) -> Boolean,
+    ): NamedCollection<T> {
+        value.validate(message) { it.any(predicate) }
+        return this
+    }
+
+    /**
+     * Validates that none of the elements in the collection satisfy the given predicate.
+     *
+     * ```
+     * collection.named("myCollection").noneMatch { it > 0 }
+     * ```
+     *
+     * @param T the type of elements in the collection
+     * @param message the failure message if validation fails
+     * @param predicate the predicate to test each element
+     */
+    fun <T> NamedCollection<T>.noneMatch(
+        message: String = "None of the elements in $name must satisfy the predicate",
+        predicate: (T) -> Boolean,
+    ): NamedCollection<T> {
+        value.validate(message) { it.none(predicate) }
+        return this
+    }
+
 }
