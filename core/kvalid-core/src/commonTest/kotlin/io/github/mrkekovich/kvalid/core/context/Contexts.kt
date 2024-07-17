@@ -1,16 +1,14 @@
 package io.github.mrkekovich.kvalid.core.context
 
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
 import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.test.fail
 
 internal object Contexts {
     val successContext = object : KValidContext {
-        override fun rule(message: String, predicate: () -> Boolean): ValidationRule<Unit> =
-            ValidationRule(Unit, message) { predicate() }.also {
+        override fun rule(message: String, predicate: () -> Boolean): ValidationRule =
+            ValidationRule(message, predicate).also {
                 assertTrue(it.validate(), "Rule failed: $message")
             }
 
@@ -25,8 +23,8 @@ internal object Contexts {
     }
 
     val failContext = object : KValidContext {
-        override fun rule(message: String, predicate: () -> Boolean): ValidationRule<Unit> =
-            ValidationRule(Unit, message) { predicate() }.also {
+        override fun rule(message: String, predicate: () -> Boolean): ValidationRule =
+            ValidationRule(message, predicate).also {
                 assertFalse(it.validate(), "Rule unexpectedly passed: $message")
             }
 

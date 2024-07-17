@@ -1,26 +1,21 @@
 package io.github.mrkekovich.kvalid.dsl
 
-import io.github.mrkekovich.kvalid.core.annotation.KValidDslMarker
 import io.github.mrkekovich.kvalid.core.context.KValidContext
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
 import io.github.mrkekovich.kvalid.core.dto.ValidationResult
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.github.mrkekovich.kvalid.core.strategy.AggregateValidationContext
-import io.github.mrkekovich.kvalid.core.strategy.ImmediateValidationContext
-import io.github.mrkekovich.kvalid.core.strategy.ValidationStrategy
+import io.github.mrkekovich.kvalid.core.strategy.LazyValidationContext
 
-@KValidDslMarker
-inline fun validate(
-    strategy: ValidationStrategy = ValidationStrategy.Aggregate,
-    block: KValidContext.() -> Unit,
-): ValidationResult =
-    when (strategy) {
-        ValidationStrategy.Aggregate -> aggregateValidate(block)
-        ValidationStrategy.Immediate -> immediateValidate(block)
-    }
-
-@KValidDslMarker
-inline fun aggregateValidate(block: AggregateValidationContext.() -> Unit): ValidationResult {
+/**
+ * Executes validation rules within an aggregate context and returns the result.
+ *
+ * This function collects all validation violations and returns a [ValidationResult]
+ * indicating whether the validation was successful or not.
+ *
+ * @param block The block of validation rules to execute.
+ * @return A [ValidationResult] indicating the outcome of the validation.
+ */
+inline fun validateAll(block: AggregateValidationContext.() -> Unit): ValidationResult {
     val violations = AggregateValidationContext().apply(block).violations
 
     return when {
@@ -29,12 +24,42 @@ inline fun aggregateValidate(block: AggregateValidationContext.() -> Unit): Vali
     }
 }
 
-@KValidDslMarker
-inline fun immediateValidate(block: ImmediateValidationContext.() -> Unit): ValidationResult = try {
-    ImmediateValidationContext().apply(block)
+/**
+ * Executes validation rules and stops on the first failure, returning the result.
+ *
+ * This function stops execution on the first validation failure and returns a [ValidationResult]
+ * indicating whether the validation was successful or not.
+ *
+ * @param block The block of validation rules to execute.
+ * @return A [ValidationResult] indicating the outcome of the validation.
+ */
+inline fun validateWithFailFast(block: KValidContext.() -> Unit): ValidationResult = try {
+    KValidContext(block)
     ValidationResult.valid()
 } catch (e: ValidationException) {
     ValidationResult.invalid(e)
 }
 
-infix fun <T> T.withName(name: String): NamedValue<T> = NamedValue(name, this)
+/**
+ * Executes validation rules and throws an exception on the first failure.
+ *
+ * This function stops execution on the first validation failure and throws a [ValidationException].
+ *
+ * @param block The block of validation rules to execute.
+ * @throws ValidationException if validation fails.
+ */
+inline fun validateOrThrow(block: KValidContext.() -> Unit) {
+    KValidContext(block)
+}
+
+/**
+ * Executes validation rules sequentially and returns a sequence of validation exceptions.
+ *
+ * This function evaluates validation rules lazily, returning a sequence of [ValidationException]s
+ * encountered during validation.
+ *
+ * @param block The block of validation rules to execute.
+ * @return A sequence of [ValidationException]s.
+ */
+inline fun validateLazily(block: KValidContext.() -> Unit): Sequence<ValidationException> =
+    LazyValidationContext().apply(block).result

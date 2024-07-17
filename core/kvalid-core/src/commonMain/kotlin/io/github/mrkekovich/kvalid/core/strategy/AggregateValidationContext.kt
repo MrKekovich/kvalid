@@ -15,11 +15,12 @@ open class AggregateValidationContext : KValidContext {
         if (!predicate(this)) _violations.add(
             ValidationException(message)
         )
+
         return this
     }
 
-    override fun rule(message: String, predicate: () -> Boolean): ValidationRule<Unit> =
-        ValidationRule(Unit, message) { predicate() }.also {
+    override fun rule(message: String, predicate: () -> Boolean): ValidationRule =
+        ValidationRule(message) { predicate() }.also {
             if (!predicate()) _violations.add(
                 ValidationException(message)
             )
