@@ -1,12 +1,11 @@
 package io.github.mrkekovich.kvalid.core.strategy
 
-import io.github.mrkekovich.kvalid.core.annotation.KValidDslMarker
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
 import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
-open class CollectAllContext : KValidContext {
+open class AggregateValidationContext : KValidContext {
     private val _violations: MutableList<ValidationException> = mutableListOf()
 
     val violations: List<ValidationException>

@@ -5,7 +5,7 @@ import io.github.mrkekovich.kvalid.core.dto.NamedValue
 typealias NamedComparable<T> = NamedValue<out Comparable<T>>
 
 /**
- * Validation context interface for validating named comparable values.
+ * Named comparable validation context.
  */
 interface NamedComparableValidationContext : ValidationContext {
 
@@ -13,17 +13,17 @@ interface NamedComparableValidationContext : ValidationContext {
      * Validates that the comparable value is equal to the specified value.
      *
      * ```
-     * age.named("age").equalTo(30)
+     * age.withName("age").equalTo(30)
      * ```
      *
      * @param T the type of the value
-     * @param value the value to compare against
+     * @param other the value to compare against
      */
     fun <T> NamedComparable<T>.equalTo(
-        value: T,
+        other: T,
         message: String = "$name must be equal to $value",
     ): NamedComparable<T> {
-        value.validate("must be equal to $value") { it == value }
+        value.validate("must be equal to $value") { it == other }
         return this
     }
 
@@ -31,17 +31,17 @@ interface NamedComparableValidationContext : ValidationContext {
      * Validates that the comparable value is not equal to the specified value.
      *
      * ```
-     * age.named("age").notEqualTo(30)
+     * age.withName("age").notEqualTo(30)
      * ```
      *
      * @param T the type of the value
-     * @param value the value to compare against
+     * @param other the value to compare against
      */
     fun <T> NamedComparable<T>.notEqualTo(
-        value: T,
+        other: T,
         message: String = "$name must not be equal to $value",
     ): NamedComparable<T> {
-        value.validate("must not be equal to $value") { it != value }
+        value.validate("must not be equal to $value") { it != other }
         return this
     }
 
@@ -49,7 +49,7 @@ interface NamedComparableValidationContext : ValidationContext {
      * Validates that the comparable value is greater than the specified minimum.
      *
      * ```
-     * age.named("age").greaterThan(18)
+     * age.withName("age").greaterThan(18)
      * ```
      *
      * @param T the type of the value
@@ -67,7 +67,7 @@ interface NamedComparableValidationContext : ValidationContext {
      * Validates that the comparable value is greater than or equal to the specified minimum.
      *
      * ```
-     * age.named("age").greaterThanOrEqualTo(18)
+     * age.withName("age").greaterThanOrEqualTo(18)
      * ```
      *
      * @param T the type of the value
@@ -85,7 +85,7 @@ interface NamedComparableValidationContext : ValidationContext {
      * Validates that the comparable value is less than the specified maximum.
      *
      * ```
-     * age.named("age").lessThan(65)
+     * age.withName("age").lessThan(65)
      * ```
      *
      * @param T the type of the value
@@ -103,7 +103,7 @@ interface NamedComparableValidationContext : ValidationContext {
      * Validates that the comparable value is less than or equal to the specified maximum.
      *
      * ```
-     * age.named("age").lessThanOrEqualTo(65)
+     * age.withName("age").lessThanOrEqualTo(65)
      * ```
      *
      * @param T the type of the value

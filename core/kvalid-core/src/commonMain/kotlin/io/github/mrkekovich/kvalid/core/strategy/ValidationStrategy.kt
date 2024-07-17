@@ -3,11 +3,11 @@ package io.github.mrkekovich.kvalid.core.strategy
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 
 enum class ValidationStrategy {
-    FailFast,
-    CollectAll;
+    Aggregate,
+    Immediate;
 
     fun getContext(): KValidContext = when (this) {
-        FailFast -> FailFastContext()
-        CollectAll -> CollectAllContext()
+        Aggregate -> AggregateValidationContext()
+        Immediate -> ImmediateValidationContext()
     }
 }

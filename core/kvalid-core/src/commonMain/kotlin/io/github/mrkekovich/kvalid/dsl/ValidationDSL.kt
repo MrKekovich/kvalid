@@ -1,15 +1,27 @@
 package io.github.mrkekovich.kvalid.dsl
 
 import io.github.mrkekovich.kvalid.core.annotation.KValidDslMarker
+import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.dto.NamedValue
 import io.github.mrkekovich.kvalid.core.dto.ValidationResult
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
-import io.github.mrkekovich.kvalid.core.strategy.CollectAllContext
-import io.github.mrkekovich.kvalid.core.strategy.FailFastContext
+import io.github.mrkekovich.kvalid.core.strategy.AggregateValidationContext
+import io.github.mrkekovich.kvalid.core.strategy.ImmediateValidationContext
+import io.github.mrkekovich.kvalid.core.strategy.ValidationStrategy
 
 @KValidDslMarker
-inline fun collectViolations(block: CollectAllContext.() -> Unit): ValidationResult {
-    val violations = CollectAllContext().apply(block).violations
+inline fun validate(
+    strategy: ValidationStrategy = ValidationStrategy.Aggregate,
+    block: KValidContext.() -> Unit,
+): ValidationResult =
+    when (strategy) {
+        ValidationStrategy.Aggregate -> aggregateValidate(block)
+        ValidationStrategy.Immediate -> immediateValidate(block)
+    }
+
+@KValidDslMarker
+inline fun aggregateValidate(block: AggregateValidationContext.() -> Unit): ValidationResult {
+    val violations = AggregateValidationContext().apply(block).violations
 
     return when {
         violations.isEmpty() -> ValidationResult.valid()
@@ -18,12 +30,11 @@ inline fun collectViolations(block: CollectAllContext.() -> Unit): ValidationRes
 }
 
 @KValidDslMarker
-inline fun failFast(block: FailFastContext.() -> Unit): ValidationResult = try {
-    FailFastContext().apply(block)
+inline fun immediateValidate(block: ImmediateValidationContext.() -> Unit): ValidationResult = try {
+    ImmediateValidationContext().apply(block)
     ValidationResult.valid()
 } catch (e: ValidationException) {
     ValidationResult.invalid(e)
 }
 
-@KValidDslMarker
-infix fun <T> T.named(name: String): NamedValue<T> = NamedValue(name, this)
+infix fun <T> T.withName(name: String): NamedValue<T> = NamedValue(name, this)

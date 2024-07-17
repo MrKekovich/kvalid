@@ -5,12 +5,12 @@ import io.github.mrkekovich.kvalid.core.dto.NamedValue
 typealias ValidationPredicate<T> = (T) -> Boolean
 
 /**
- * Validation context interface for validating named values.
+ * Validation context. The core of all validation contexts.
  */
 interface ValidationContext {
 
     /**
-     * Validates the named value against the specified predicate.
+     * Validates the value against the specified predicate.
      *
      * ```
      * age.validate("Age must be at least 18") { it >= 18 }

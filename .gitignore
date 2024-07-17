@@ -1,4 +1,5 @@
 .idea/
+kotlin-js-store/
 .kotlin/
 cmake-build-*/
 *.iws

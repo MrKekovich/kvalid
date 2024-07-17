@@ -5,7 +5,7 @@ import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
 import io.github.mrkekovich.kvalid.core.dto.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
-open class FailFastContext : KValidContext {
+open class ImmediateValidationContext : KValidContext {
     override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
         if (!predicate(this)) throw ValidationException(message)
         return this

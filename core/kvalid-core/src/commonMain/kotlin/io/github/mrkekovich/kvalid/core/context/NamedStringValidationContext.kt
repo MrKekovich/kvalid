@@ -5,14 +5,14 @@ import io.github.mrkekovich.kvalid.core.dto.NamedValue
 typealias NamedString = NamedValue<String>
 
 /**
- * String validation context
+ * Named string validation context.
  */
 interface NamedStringValidationContext : ValidationContext {
     /**
      * Validates that the string is not blank.
      *
      * ```
-     * name.named("name").notBlank()
+     * name.withName("name").notBlank()
      * ```
      *
      * @param message the failure message if validation fails
@@ -28,7 +28,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string has the specified length.
      *
      * ```
-     * name.named("name").ofLength(5)
+     * name.withName("name").ofLength(5)
      * ```
      *
      * @param length the required length of the string
@@ -46,7 +46,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string length is within the specified range.
      *
      * ```
-     * name.named("name").ofLength(5..10)
+     * name.withName("name").ofLength(5..10)
      * ```
      *
      * @param range the allowed length range of the string
@@ -64,7 +64,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string does not have the specified length.
      *
      * ```
-     * name.named("name").notOfLength(5)
+     * name.withName("name").notOfLength(5)
      * ```
      *
      * @param length the prohibited length of the string
@@ -82,7 +82,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string length is not within the specified range.
      *
      * ```
-     * name.named("name").notOfLength(5..10)
+     * name.withName("name").notOfLength(5..10)
      * ```
      *
      * @param range the prohibited length range of the string
@@ -100,7 +100,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string has at least the specified minimum length.
      *
      * ```
-     * name.named("name").minLength(5)
+     * name.withName("name").minLength(5)
      * ```
      *
      * @param min the minimum length of the string
@@ -118,7 +118,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string has at most the specified maximum length.
      *
      * ```
-     * name.named("name").maxLength(10)
+     * name.withName("name").maxLength(10)
      * ```
      *
      * @param max the maximum length of the string
@@ -136,7 +136,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string matches the specified regular expression pattern.
      *
      * ```
-     * name.named("name").matches(Regex("^[a-zA-Z]+\$"))
+     * name.withName("name").matches(Regex("^[a-zA-Z]+\$"))
      * ```
      *
      * @param pattern the regular expression pattern to match
@@ -154,7 +154,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string matches the specified regular expression pattern.
      *
      * ```
-     * name.named("name").matches("^[a-zA-Z]+\$")
+     * name.withName("name").matches("^[a-zA-Z]+\$")
      * ```
      *
      * @param pattern the regular expression pattern to match
@@ -170,7 +170,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string does not match the specified regular expression pattern.
      *
      * ```
-     * name.named("name").notMatches(Regex("^[0-9]+\$"))
+     * name.withName("name").notMatches(Regex("^[0-9]+\$"))
      * ```
      *
      * @param pattern the regular expression pattern to not match
@@ -188,7 +188,7 @@ interface NamedStringValidationContext : ValidationContext {
      * Validates that the string does not match the specified regular expression pattern.
      *
      * ```
-     * name.named("name").notMatches("^[0-9]+\$")
+     * name.withName("name").notMatches("^[0-9]+\$")
      * ```
      *
      * @param pattern the regular expression pattern to not match

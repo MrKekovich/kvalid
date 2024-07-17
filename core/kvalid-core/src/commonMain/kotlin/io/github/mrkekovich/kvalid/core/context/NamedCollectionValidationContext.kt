@@ -5,14 +5,14 @@ import io.github.mrkekovich.kvalid.core.dto.NamedValue
 typealias NamedCollection<T> = NamedValue<out Collection<T>>
 
 /**
- * Collection validation context.
+ * Named collection validation context.
  */
 interface NamedCollectionValidationContext : ValidationContext {
     /**
      * Validates that the collection has the specified size.
      *
      * ```
-     * collection.named("myCollection").ofSize(5)
+     * collection.withName("myCollection").ofSize(5)
      * ```
      *
      * @param T the type of elements in the collection
@@ -31,7 +31,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection size is within the specified range.
      *
      * ```
-     * collection.named("myCollection").ofSize(5..10)
+     * collection.withName("myCollection").ofSize(5..10)
      * ```
      *
      * @param T the type of elements in the collection
@@ -50,7 +50,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection does not have the specified size.
      *
      * ```
-     * collection.named("myCollection").notOfSize(5)
+     * collection.withName("myCollection").notOfSize(5)
      * ```
      *
      * @param T the type of elements in the collection
@@ -69,7 +69,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection size is not within the specified range.
      *
      * ```
-     * collection.named("myCollection").notOfSize(5..10)
+     * collection.withName("myCollection").notOfSize(5..10)
      * ```
      *
      * @param T the type of elements in the collection
@@ -88,7 +88,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection has at least the specified number of elements.
      *
      * ```
-     * collection.named("myCollection").minSize(5)
+     * collection.withName("myCollection").minSize(5)
      * ```
      *
      * @param T the type of elements in the collection
@@ -107,7 +107,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection has at most the specified number of elements.
      *
      * ```
-     * collection.named("myCollection").maxSize(5)
+     * collection.withName("myCollection").maxSize(5)
      * ```
      *
      * @param T the type of elements in the collection
@@ -126,7 +126,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection contains the specified element.
      *
      * ```
-     * collection.named("myCollection").contains("foo")
+     * collection.withName("myCollection").contains("foo")
      * ```
      *
      * @param T the type of elements in the collection
@@ -145,7 +145,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection does not contain the specified element.
      *
      * ```
-     * collection.named("myCollection").notContains("foo")
+     * collection.withName("myCollection").notContains("foo")
      * ```
      *
      * @param T the type of elements in the collection
@@ -164,7 +164,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that the collection contains all the specified elements.
      *
      * ```
-     * collection.named("myCollection").containsAllOf(listOf("foo", "bar"))
+     * collection.withName("myCollection").containsAllOf(listOf("foo", "bar"))
      * ```
      *
      * @param T the type of elements in the collection
@@ -180,17 +180,17 @@ interface NamedCollectionValidationContext : ValidationContext {
     }
 
     /**
-     * Validates that the collection does not contain any of the specified elements.
+     * Validates that the collection does not contain all the specified elements.
      *
      * ```
-     * collection.named("myCollection").containsNoneOf(listOf("foo", "bar"))
+     * collection.withName("myCollection").notContainsAllOf(listOf("foo", "bar"))
      * ```
      *
      * @param T the type of elements in the collection
      * @param elements the elements to check for
      * @param message the failure message if validation fails
      */
-    fun <T> NamedCollection<T>.containsNoneOf(
+    fun <T> NamedCollection<T>.notContainsAllOf(
         elements: Collection<T>,
         message: String = "$name must not contain all of the following: [${elements.joinToString()}]",
     ): NamedCollection<T> {
@@ -199,10 +199,27 @@ interface NamedCollectionValidationContext : ValidationContext {
     }
 
     /**
+     * Validates that the collection does not contain any of the specified elements.
+     *
+     * @param T the type of elements in the collection
+     * @param elements the elements to check for
+     * @param message the failure message if validation fails
+     */
+    fun <T> NamedCollection<T>.containsNoneOf(
+        elements: Collection<T>,
+        message: String = "$name must not contain any of the following: [${elements.joinToString()}]",
+    ): NamedCollection<T> {
+        value.validate(message) { collection ->
+             elements.none { it in collection }
+        }
+        return this
+    }
+
+    /**
      * Validates that all elements in the collection satisfy the given predicate.
      *
      * ```
-     * collection.named("myCollection").allMatch { it > 0 }
+     * collection.withName("myCollection").allMatch { it > 0 }
      * ```
      *
      * @param T the type of elements in the collection
@@ -221,7 +238,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that at least one element in the collection satisfies the given predicate.
      *
      * ```
-     * collection.named("myCollection").anyMatch { it > 0 }
+     * collection.withName("myCollection").anyMatch { it > 0 }
      * ```
      *
      * @param T the type of elements in the collection
@@ -240,7 +257,7 @@ interface NamedCollectionValidationContext : ValidationContext {
      * Validates that none of the elements in the collection satisfy the given predicate.
      *
      * ```
-     * collection.named("myCollection").noneMatch { it > 0 }
+     * collection.withName("myCollection").noneMatch { it > 0 }
      * ```
      *
      * @param T the type of elements in the collection
