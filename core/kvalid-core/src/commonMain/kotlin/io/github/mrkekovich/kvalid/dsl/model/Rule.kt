@@ -2,6 +2,7 @@ package io.github.mrkekovich.kvalid.dsl.model
 
 import io.github.mrkekovich.kvalid.core.context.MessageCallback
 import io.github.mrkekovich.kvalid.core.context.NamedValueRuleCallback
+import io.github.mrkekovich.kvalid.core.context.Predicate
 import io.github.mrkekovich.kvalid.core.context.RuleCallback
 import io.github.mrkekovich.kvalid.core.context.ValuePredicate
 import io.github.mrkekovich.kvalid.core.model.Rule
@@ -13,7 +14,7 @@ import io.github.mrkekovich.kvalid.core.model.Rule
  * @param predicate The predicate function to validate against.
  * @return The created Rule instance.
  */
-fun createRule(message: String, predicate: () -> Boolean): Rule = Rule(message, predicate)
+fun createRule(message: String, predicate: Predicate): Rule = Rule(message, predicate)
 
 /**
  * Creates a new validation rule callback with the given message and predicate.

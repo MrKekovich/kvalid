@@ -4,22 +4,31 @@ import io.github.mrkekovich.kvalid.core.model.NamedValue
 import io.github.mrkekovich.kvalid.core.model.Rule
 
 /**
- * Predicate function used for validation checks.
+ * Callback function that returns a [Boolean].
+ */
+typealias Predicate = () -> Boolean
+
+/**
+ * Callback function that takes a value of type `T` and returns a [Boolean].
+ * @param T the type of the value
  */
 typealias ValuePredicate<T> = (T) -> Boolean
 
 /**
- * Callback function that generates a message based on a value of type T.
+ * Callback function that takes a [NamedValue] of type `T` and returns a [String].
+ * @param T the type of the value
  */
 typealias MessageCallback<T> = (NamedValue<T>) -> String
 
 /**
- * Callback function that generates a validation rule based on a value of type T.
+ * Callback function that takes a value of type `T` and returns a [Rule].
+ * @param T the type of the value
  */
 typealias RuleCallback<T> = (T) -> Rule
 
 /**
- * Callback function that generates a validation rule based on a value of type T.
+ * Callback function that takes a [NamedValue] of type `T` and returns a [Rule].
+ * @param T the type of the value
  */
 typealias NamedValueRuleCallback<T> = (NamedValue<T>) -> Rule
 

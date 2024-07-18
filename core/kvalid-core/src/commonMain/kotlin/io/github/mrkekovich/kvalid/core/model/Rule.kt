@@ -1,5 +1,7 @@
 package io.github.mrkekovich.kvalid.core.model
 
+import io.github.mrkekovich.kvalid.core.context.Predicate
+
 /**
  * Represents a validation rule with a failure message and a validation function.
  */
@@ -24,7 +26,7 @@ interface Rule {
          * @param predicate The validation function.
          * @return A new Rule instance.
          */
-        operator fun invoke(message: String, predicate: () -> Boolean): Rule = object : Rule {
+        operator fun invoke(message: String, predicate: Predicate): Rule = object : Rule {
             override val failMessage: String = message
             override fun validate(): Boolean = predicate()
         }

@@ -16,7 +16,7 @@ interface KValidContext :
      */
     fun rule(
         message: String,
-        predicate: () -> Boolean,
+        predicate: Predicate,
     ): Rule
 
     /**
