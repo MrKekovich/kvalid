@@ -1,7 +1,7 @@
 package io.github.mrkekovich.kvalid.core.context
 
 import io.github.mrkekovich.kvalid.core.context.Contexts.successContext
-import io.github.mrkekovich.kvalid.dsl.extension.withName
+import io.github.mrkekovich.kvalid.dsl.model.withName
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe

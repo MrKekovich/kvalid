@@ -1,9 +1,16 @@
 package io.github.mrkekovich.kvalid.dsl.validator
 
-import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.validator.LazyValidator
+
+typealias ViolationSequence = Sequence<ValidationException>
+
+fun LazyValidator.asViolationSequence(): Sequence<ValidationException> = sequence {
+    for (rule in rules) {
+        if (!rule.validate()) yield(ValidationException(rule.failMessage))
+    }
+}
 
 /**
  * Executes validation rules sequentially and returns a sequence of validation exceptions.
@@ -15,7 +22,7 @@ import io.github.mrkekovich.kvalid.core.validator.LazyValidator
  * @return A sequence of [ValidationException]s.
  */
 inline fun validateLazily(block: LazyValidator.() -> Unit): Sequence<ValidationException> =
-    LazyValidator().apply(block).result
+    LazyValidator().apply(block).asViolationSequence()
 
 /**
  * Converts a sequence of [ValidationException] instances to a [ValidationResult].

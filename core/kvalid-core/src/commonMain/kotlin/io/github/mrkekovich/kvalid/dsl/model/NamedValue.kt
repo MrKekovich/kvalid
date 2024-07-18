@@ -1,4 +1,4 @@
-package io.github.mrkekovich.kvalid.dsl.extension
+package io.github.mrkekovich.kvalid.dsl.model
 
 import io.github.mrkekovich.kvalid.core.model.NamedValue
 
