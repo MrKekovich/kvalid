@@ -5,7 +5,7 @@ import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
 import io.github.mrkekovich.kvalid.core.model.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
-open class AggregateValidationContext : KValidContext {
+open class AggregatingValidator : KValidContext {
     private val _violations: MutableList<ValidationException> = mutableListOf()
 
     val violations: List<ValidationException>

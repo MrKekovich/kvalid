@@ -3,7 +3,7 @@ package io.github.mrkekovich.kvalid.dsl
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
-import io.github.mrkekovich.kvalid.core.validator.AggregateValidationContext
+import io.github.mrkekovich.kvalid.core.validator.AggregatingValidator
 import io.github.mrkekovich.kvalid.core.validator.LazyValidationContext
 
 /**
@@ -15,8 +15,8 @@ import io.github.mrkekovich.kvalid.core.validator.LazyValidationContext
  * @param block The block of validation rules to execute.
  * @return A [ValidationResult] indicating the outcome of the validation.
  */
-inline fun validateAll(block: AggregateValidationContext.() -> Unit): ValidationResult {
-    val violations = AggregateValidationContext().apply(block).violations
+inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult {
+    val violations = AggregatingValidator().apply(block).violations
 
     return when {
         violations.isEmpty() -> ValidationResult.valid()
