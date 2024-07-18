@@ -1,9 +1,6 @@
-package io.github.mrkekovich.kvalid.dsl
+package io.github.mrkekovich.kvalid.dsl.extension
 
 import io.github.mrkekovich.kvalid.core.model.NamedValue
-import io.github.mrkekovich.kvalid.core.model.ValidationResult
-import io.github.mrkekovich.kvalid.core.exception.ValidationException
-import kotlin.reflect.KProperty
 
 /**
  * Associates this value with a given name and returns it as a [NamedValue].
@@ -35,28 +32,4 @@ infix fun <T> String.withValue(value: T): NamedValue<T> = NamedValue(this, value
 inline fun <T> NamedValue<T>.nested(block: T.() -> Unit): NamedValue<T> {
     value.block()
     return this
-}
-
-/**
- * Creates a [NamedValue] from a KProperty and a provided value.
- *
- * This function takes a property and a value, and returns a [NamedValue] containing the property's name and the provided value.
- *
- * @param T The type of the property's value.
- * @param value The value to associate with the property.
- * @return A [NamedValue] containing the property's name and the provided value.
- */
-fun <T> KProperty<T>.toNamed(value: T): NamedValue<T> = NamedValue(name, value)
-
-/**
- * Converts a sequence of [ValidationException] instances to a [ValidationResult].
- *
- * If the sequence is empty, the result is valid. Otherwise, the result is invalid and contains the list of violations.
- *
- * @return A [ValidationResult] representing the outcome of the validation.
- */
-fun Sequence<ValidationException>.toValidationResult(): ValidationResult {
-    val violations = this.toList()
-
-    return ValidationResult(violations)
 }
