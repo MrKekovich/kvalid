@@ -4,8 +4,18 @@ import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.validator.LazyValidator
 
+/**
+ * Represents a sequence of [ValidationException]s.
+ */
 typealias ViolationSequence = Sequence<ValidationException>
 
+/**
+ * Converts a [LazyValidator] to a [Sequence] of [ValidationException] instances.
+ *
+ * The [ViolationSequence] is generated lazily, yielding elements only when accessed.
+ *
+ * @return A [Sequence] of [ValidationException] representing the outcome of the validation.
+ */
 fun LazyValidator.asViolationSequence(): Sequence<ValidationException> = sequence {
     for (rule in rules) {
         if (!rule.validate()) yield(ValidationException(rule.failMessage))
