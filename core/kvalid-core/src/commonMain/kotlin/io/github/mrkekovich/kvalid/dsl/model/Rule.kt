@@ -3,7 +3,7 @@ package io.github.mrkekovich.kvalid.dsl.model
 import io.github.mrkekovich.kvalid.core.context.MessageCallback
 import io.github.mrkekovich.kvalid.core.context.NamedValueRuleCallback
 import io.github.mrkekovich.kvalid.core.context.RuleCallback
-import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
+import io.github.mrkekovich.kvalid.core.context.ValuePredicate
 import io.github.mrkekovich.kvalid.core.model.Rule
 
 /**
@@ -22,7 +22,7 @@ fun createRule(message: String, predicate: () -> Boolean): Rule = Rule(message, 
  * @param predicate The validation predicate function to validate against.
  * @return A callback function that creates a Rule instance based on the provided value.
  */
-fun <T> createRule(message: String, predicate: ValidationPredicate<T>): RuleCallback<T> = {
+fun <T> createRule(message: String, predicate: ValuePredicate<T>): RuleCallback<T> = {
     Rule(message) { predicate(it) }
 }
 
@@ -33,6 +33,6 @@ fun <T> createRule(message: String, predicate: ValidationPredicate<T>): RuleCall
  * @param predicate The predicate function to validate against the value within NamedValue.
  * @return A function that takes a NamedValue and returns a Rule instance based on the provided message and predicate.
  */
-fun <T> createRule(message: MessageCallback<T>, predicate: ValidationPredicate<T>): NamedValueRuleCallback<T> = {
+fun <T> createRule(message: MessageCallback<T>, predicate: ValuePredicate<T>): NamedValueRuleCallback<T> = {
     Rule(message(it)) { predicate(it.value) }
 }

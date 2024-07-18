@@ -20,7 +20,7 @@ internal object Contexts {
             throw AssertionError("Unexpected violation: $message")
         }
 
-        override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
+        override fun <T> T.validate(message: String, predicate: ValuePredicate<T>): T {
             assertTrue(predicate(this), "Validation failed: $message")
             return this
         }
@@ -40,7 +40,7 @@ internal object Contexts {
             throw ValidationException(message)
         }
 
-        override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
+        override fun <T> T.validate(message: String, predicate: ValuePredicate<T>): T {
             assertFalse(predicate(this), "Validation unexpectedly passed: $message")
             return this
         }

@@ -6,7 +6,7 @@ import io.github.mrkekovich.kvalid.core.model.Rule
 /**
  * Predicate function used for validation checks.
  */
-typealias ValidationPredicate<T> = (T) -> Boolean
+typealias ValuePredicate<T> = (T) -> Boolean
 
 /**
  * Callback function that generates a message based on a value of type T.
@@ -42,7 +42,7 @@ interface ValidationContext {
      */
     fun <T> T.validate(
         message: String,
-        predicate: ValidationPredicate<T>,
+        predicate: ValuePredicate<T>,
     ): T
 
     /**
@@ -61,7 +61,7 @@ interface ValidationContext {
      */
     fun <T> NamedValue<T>.validate(
         message: MessageCallback<T>,
-        predicate: ValidationPredicate<T>,
+        predicate: ValuePredicate<T>,
     ): NamedValue<T> {
         value.validate(message(this), predicate)
         return this

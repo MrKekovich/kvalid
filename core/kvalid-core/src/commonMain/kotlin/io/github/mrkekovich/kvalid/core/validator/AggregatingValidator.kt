@@ -1,7 +1,7 @@
 package io.github.mrkekovich.kvalid.core.validator
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
-import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
+import io.github.mrkekovich.kvalid.core.context.ValuePredicate
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.github.mrkekovich.kvalid.core.model.Rule
 
@@ -11,7 +11,7 @@ open class AggregatingValidator : KValidContext {
     val violations: List<ValidationException>
         get() = _violations
 
-    override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
+    override fun <T> T.validate(message: String, predicate: ValuePredicate<T>): T {
         if (!predicate(this)) _violations.add(
             ValidationException(message)
         )

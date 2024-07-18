@@ -1,7 +1,7 @@
 package io.github.mrkekovich.kvalid.core.validator
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
-import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
+import io.github.mrkekovich.kvalid.core.context.ValuePredicate
 import io.github.mrkekovich.kvalid.core.model.Rule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
@@ -32,13 +32,13 @@ open class LazyValidator : KValidContext {
         _rules.add(rule)
     }
 
-    fun <T> lazyRule(message: String, value: T, predicate: ValidationPredicate<T>): Rule = rule(message) { predicate(value) }
+    fun <T> lazyRule(message: String, value: T, predicate: ValuePredicate<T>): Rule = rule(message) { predicate(value) }
 
     override fun violation(message: String) {
         rule(message) { false }
     }
 
-    override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {
+    override fun <T> T.validate(message: String, predicate: ValuePredicate<T>): T {
         lazyRule(message, this, predicate)
         return this
     }
