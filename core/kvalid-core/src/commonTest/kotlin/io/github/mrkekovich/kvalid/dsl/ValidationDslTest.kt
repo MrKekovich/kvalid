@@ -46,7 +46,6 @@ class ValidationDslTest : FunSpec({
         validateOrThrow {
             rule("First rule") { true }
         }
-        // If we reach this point, no exception was thrown
     }
 
     test("validateOrThrow should throw ValidationException when a rule fails") {
@@ -99,21 +98,16 @@ class ValidationDslTest : FunSpec({
             }
         }
 
-        // At this point, no rules should have been executed
         executionCount shouldBe 0
 
-        // Access the first element of the sequence
         val firstViolation = lazyValidation.firstOrNull()
 
-        // Only the first rule should have been executed
         executionCount shouldBe 1
         firstViolation?.message shouldBe "First rule"
 
-        // Access all elements of the sequence
         val allViolations = lazyValidation.toList()
 
-        // All rules should have been executed now
-        executionCount shouldBe 3
+        executionCount shouldBe 4 // first rule was executed twice
         allViolations.size shouldBe 2
         allViolations[0].message shouldBe "First rule"
         allViolations[1].message shouldBe "Third rule"
