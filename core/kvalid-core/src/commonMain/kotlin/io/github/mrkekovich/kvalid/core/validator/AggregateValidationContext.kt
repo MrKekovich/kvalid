@@ -1,4 +1,4 @@
-package io.github.mrkekovich.kvalid.core.strategy
+package io.github.mrkekovich.kvalid.core.validator
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.ValidationPredicate

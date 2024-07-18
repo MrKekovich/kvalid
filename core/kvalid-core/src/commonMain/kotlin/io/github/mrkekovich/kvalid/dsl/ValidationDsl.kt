@@ -3,8 +3,8 @@ package io.github.mrkekovich.kvalid.dsl
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
-import io.github.mrkekovich.kvalid.core.strategy.AggregateValidationContext
-import io.github.mrkekovich.kvalid.core.strategy.LazyValidationContext
+import io.github.mrkekovich.kvalid.core.validator.AggregateValidationContext
+import io.github.mrkekovich.kvalid.core.validator.LazyValidationContext
 
 /**
  * Executes validation rules within an aggregate context and returns the result.
