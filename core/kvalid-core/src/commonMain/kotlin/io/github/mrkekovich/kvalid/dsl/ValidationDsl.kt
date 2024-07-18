@@ -18,10 +18,7 @@ import io.github.mrkekovich.kvalid.core.validator.LazyValidator
 inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult {
     val violations = AggregatingValidator().apply(block).violations
 
-    return when {
-        violations.isEmpty() -> ValidationResult.valid()
-        else -> ValidationResult.invalid(violations)
-    }
+    return ValidationResult(violations)
 }
 
 /**

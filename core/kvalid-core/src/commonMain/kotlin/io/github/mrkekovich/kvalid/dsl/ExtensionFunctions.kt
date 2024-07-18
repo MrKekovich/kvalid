@@ -58,8 +58,5 @@ fun <T> KProperty<T>.toNamed(value: T): NamedValue<T> = NamedValue(name, value)
 fun Sequence<ValidationException>.toValidationResult(): ValidationResult {
     val violations = this.toList()
 
-    return when {
-        violations.isEmpty() -> ValidationResult.valid()
-        else -> ValidationResult.invalid(violations)
-    }
+    return ValidationResult(violations)
 }

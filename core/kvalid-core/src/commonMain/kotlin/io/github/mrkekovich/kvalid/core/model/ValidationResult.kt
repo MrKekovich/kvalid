@@ -1,141 +1,51 @@
 package io.github.mrkekovich.kvalid.core.model
 
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
+import kotlin.jvm.JvmInline
 
-/**
- * Represents the result of a validation process.
- */
-sealed class ValidationResult {
+@JvmInline
+value class ValidationResult(
+    val violations: List<ValidationException>
+) {
+    val isValid: Boolean get() = violations.isEmpty()
 
-    /**
-     * Represents a valid result with no validation errors.
-     */
-    data object Valid : ValidationResult()
+    val isInvalid: Boolean get() = violations.isNotEmpty()
 
-    /**
-     * Represents an invalid result with a list of validation errors.
-     *
-     * @property errors the list of validation exceptions
-     */
-    data class Invalid(val errors: List<ValidationException>) : ValidationResult()
+    val type: Type get() = if (isValid) Type.VALID else Type.INVALID
+
+    fun errorsOrNull(): List<ValidationException>? = violations.takeIf { it.isNotEmpty() }
 
     companion object {
-        /**
-         * Returns a valid validation result.
-         *
-         * @return a valid validation result
-         */
-        fun valid(): ValidationResult = Valid
+        fun valid(): ValidationResult = ValidationResult(emptyList())
 
-        /**
-         * Returns an invalid validation result with the given list of validation exceptions.
-         *
-         * @param errors the list of validation exceptions
-         * @return an invalid validation result
-         */
-        fun invalid(errors: List<ValidationException>): ValidationResult = Invalid(errors)
+        fun invalid(errors: List<ValidationException>): ValidationResult = ValidationResult(errors)
 
-        /**
-         * Returns an invalid validation result with the given validation exceptions.
-         *
-         * @param errors the validation exceptions
-         * @return an invalid validation result
-         */
-        fun invalid(vararg errors: ValidationException): ValidationResult = invalid(errors.toList())
+        fun invalid(vararg errors: ValidationException): ValidationResult = ValidationResult(errors.toList())
 
-        /**
-         * Returns an invalid validation result with the given error messages.
-         *
-         * @param errors the error messages
-         * @return an invalid validation result
-         */
-        fun invalid(vararg errors: String): ValidationResult {
-            val validationExceptions = errors.map { ValidationException(it) }
-            return Invalid(validationExceptions)
-        }
+        fun invalid(vararg errors: String): ValidationResult = ValidationResult(errors.map { ValidationException(it) })
 
-        /**
-         * Combines multiple validation results into a single validation result.
-         *
-         * @param results the validation results to combine
-         * @return a combined validation result
-         */
-        fun combine(vararg results: ValidationResult): ValidationResult {
-            val errors = results.flatMap {
-                when (it) {
-                    is Invalid -> it.errors
-                    is Valid -> emptyList()
-                }
-            }
-            return if (errors.isEmpty()) Valid else Invalid(errors)
+        fun combine(results: List<ValidationResult>): ValidationResult {
+            val combinedErrors = results.flatMap { it.violations }
+            return ValidationResult(combinedErrors)
         }
     }
-}
 
-/**
- * Extension property to check if the validation result is valid.
- *
- * @return true if the validation result is valid, false otherwise
- */
-val ValidationResult.isValid
-    get() = this is ValidationResult.Valid
+    inline fun onInvalid(block: (List<ValidationException>) -> Unit): ValidationResult {
+        if (isInvalid) block(violations)
+        return this
+    }
 
-/**
- * Extension property to check if the validation result is invalid.
- *
- * @return true if the validation result is invalid, false otherwise
- */
-val ValidationResult.isInvalid
-    get() = this is ValidationResult.Invalid
+    inline fun onValid(block: () -> Unit): ValidationResult {
+        if (isValid) block()
+        return this
+    }
 
-/**
- * Returns the list of validation errors if the validation result is invalid, or null if it is valid.
- *
- * @return the list of validation errors or null
- */
-fun ValidationResult.errorsOrNull(): List<ValidationException>? = when (this) {
-    is ValidationResult.Invalid -> errors
-    is ValidationResult.Valid -> null
-}
+    inline fun <T> fold(
+        onValid: () -> T,
+        onInvalid: (List<ValidationException>) -> T
+    ): T = if (isValid) onValid() else onInvalid(violations)
 
-/**
- * Returns the list of validation errors if the validation result is invalid, or an empty list if it is valid.
- *
- * @return the list of validation errors
- */
-fun ValidationResult.errorsOrEmpty(): List<ValidationException> = errorsOrNull() ?: emptyList()
-
-/**
- * Executes the given [block] if the validation result is invalid.
- *
- * @param block the block to execute with the list of validation errors
- * @return the original `ValidationResult` unchanged
- */
-inline fun ValidationResult.onInvalid(block: (List<ValidationException>) -> Unit): ValidationResult = apply {
-    if (this is ValidationResult.Invalid) block(errors)
-}
-
-/**
- * Executes the given [block] if the validation result is valid.
- *
- * @param block the block to execute
- * @return the original `ValidationResult` unchanged
- */
-inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult = apply {
-    if (this is ValidationResult.Valid) block()
-}
-
-/**
- * Applies the given [onValid] function if the validation result is valid, or the [onInvalid] function if it is invalid.
- *
- * @param onValid the function to apply if the validation result is valid
- * @param onInvalid the function to apply if the validation result is invalid
- * @return the result of applying the function
- */
-inline fun <T> ValidationResult.fold(
-    onValid: () -> T,
-    onInvalid: (List<ValidationException>) -> T
-): T = when (this) {
-    is ValidationResult.Valid -> onValid()
-    is ValidationResult.Invalid -> onInvalid(errors)
+    enum class Type {
+        VALID, INVALID
+    }
 }

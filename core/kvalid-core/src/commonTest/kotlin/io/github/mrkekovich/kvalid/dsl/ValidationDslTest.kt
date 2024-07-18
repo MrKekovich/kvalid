@@ -1,7 +1,6 @@
 package io.github.mrkekovich.kvalid.dsl
 
 import io.github.mrkekovich.kvalid.core.model.ValidationResult
-import io.github.mrkekovich.kvalid.core.model.errorsOrEmpty
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
@@ -17,7 +16,7 @@ class ValidationDslTest : FunSpec({
             rule("First rule") { false }
             rule("Second rule") { false }
         }
-        result.errorsOrEmpty().size shouldBe 2
+        result.violations.size shouldBe 2
     }
 
     test("validateWithFailFast should return only the first violation") {
@@ -25,7 +24,7 @@ class ValidationDslTest : FunSpec({
             rule("First rule") { false }
             rule("Second rule") { false }
         }
-        result.errorsOrEmpty().size shouldBe 1
+        result.violations.size shouldBe 1
     }
 
     test("validateAll should return valid result when all rules pass") {

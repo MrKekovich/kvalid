@@ -2,8 +2,6 @@ package io.github.mrkekovich.kvalid.dsl
 
 import io.github.mrkekovich.kvalid.core.model.NamedValue
 import io.github.mrkekovich.kvalid.core.model.ValidationResult
-import io.github.mrkekovich.kvalid.core.model.errorsOrEmpty
-import io.github.mrkekovich.kvalid.core.model.isValid
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -61,8 +59,8 @@ class ExtensionFunctionsTest : FunSpec({
         )
         val result = nonEmptySequence.toValidationResult()
         result.isValid shouldBe false
-        result.errorsOrEmpty().size shouldBe 2
-        result.errorsOrEmpty()[0].message shouldBe "Error 1"
-        result.errorsOrEmpty()[1].message shouldBe "Error 2"
+        result.violations.size shouldBe 2
+        result.violations[0].message shouldBe "Error 1"
+        result.violations[1].message shouldBe "Error 2"
     }
 })
