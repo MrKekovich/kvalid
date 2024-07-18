@@ -1,14 +1,13 @@
 package io.github.mrkekovich.kvalid.dsl.validator
 
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 
-class LazyTest : FunSpec({
-    test("validateLazily") {
+internal class LazyTest : FunSpec({
+    test("validateLazy") {
         var executionCount = 0
 
-        val result = validateLazily {
+        val result = validateLazy {
             rule("fail") {
                 executionCount++
                 false

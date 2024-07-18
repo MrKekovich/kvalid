@@ -4,7 +4,7 @@ import io.github.mrkekovich.kvalid.core.model.NamedValue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
-class RuleTest : FunSpec({
+internal class RuleTest : FunSpec({
     test("createRule") {
         val rule = createRule("test") { true }
 

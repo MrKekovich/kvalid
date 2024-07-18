@@ -5,28 +5,25 @@ import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.validator.ThrowingValidator
 
 /**
- * Executes validation rules and throws an exception on the first failure.
+ * Executes the validation block using a [ThrowingValidator]. Throws a [ValidationException]
+ * immediately upon the first validation failure.
  *
- * This function stops execution on the first validation failure and throws a [ValidationException].
- *
- * @param block The block of validation rules to execute.
- * @throws ValidationException if validation fails.
+ * @param block The block of validation logic to execute.
+ * @return [Unit] if the validation succeeds.
+ * @throws ValidationException if the validation fails.
  */
-inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
+inline fun throwOnFailure(block: ThrowingValidator.() -> Unit): Unit =
     ThrowingValidator(block)
-}
 
 /**
- * Executes validation rules and stops on the first failure, returning the result.
+ * Validates using `fail fast` functionality with a [ThrowingValidator].
+ * Stops validation upon the first failure and returns a [ValidationResult].
  *
- * This function stops execution on the first validation failure and returns a [ValidationResult]
- * indicating whether the validation was successful or not.
- *
- * @param block The block of validation rules to execute.
- * @return A [ValidationResult] indicating the outcome of the validation.
+ * @param block The block of validation conditions to execute.
+ * @return [ValidationResult] indicating success or failure of the validation.
  */
-inline fun validateWithFailFast(block: ThrowingValidator.() -> Unit): ValidationResult = try {
-    validateOrThrow(block)
+inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult = try {
+    throwOnFailure(block)
     ValidationResult.valid()
 } catch (violation: ValidationException) {
     ValidationResult.invalid(violation)

@@ -17,6 +17,6 @@ internal class ValidationContextTest : FunSpec({
             }
         }
 
-        error.message shouldBe "Validation failed: test must not be blank"
+        error.message shouldBe "Rule failed: test must not be blank"
     }
 })

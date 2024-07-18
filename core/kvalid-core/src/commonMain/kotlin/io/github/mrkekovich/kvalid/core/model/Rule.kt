@@ -31,11 +31,24 @@ interface Rule {
             override fun validate(): Boolean = predicate()
         }
 
+        /**
+         * Creates a new Rule instance with the given message and condition.
+         *
+         * @param message The failure message for the rule.
+         * @param condition This value will be returned on [Rule.validate].
+         * @return A new [Rule] instance with specified [message] and [condition].
+         */
         operator fun invoke(message: String, condition: Boolean): Rule = object : Rule {
             override val failMessage: String = message
             override fun validate(): Boolean = condition
         }
 
+        /**
+         * Creates a new [Rule] instance with the given failure message, that always fails.
+         *
+         * @param message the failure message
+         * @return A new [Rule] instance that always fails.
+         */
         fun failure(message: String): Rule = object : Rule {
             override val failMessage: String = message
             override fun validate(): Boolean = false

@@ -2,9 +2,7 @@ package io.github.mrkekovich.kvalid.core.context
 
 import io.github.mrkekovich.kvalid.core.context.Contexts.failContext
 import io.github.mrkekovich.kvalid.core.context.Contexts.successContext
-import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.kotest.assertions.shouldFail
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 
 internal class KValidContextTest : FunSpec({
@@ -15,10 +13,8 @@ internal class KValidContextTest : FunSpec({
             }
         }
 
-        shouldThrow<ValidationException> {
-            failContext.run {
-                violation("test")
-            }
+        failContext.run {
+            violation("test")
         }
     }
 

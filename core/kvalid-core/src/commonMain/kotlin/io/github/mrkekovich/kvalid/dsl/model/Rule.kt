@@ -23,7 +23,7 @@ fun createRule(message: String, predicate: Predicate): Rule = Rule(message, pred
  * **Example**:
  * ```
  * val rule = createRule<Int>("Value must be positive") { it > 0 }
- * validateOrThrow {
+ * throwOnFailure {
  *     1.validate(rule) // (1 > 0) == true // passes
  *     0.validate(rule) // (0 > 0) == false // fails
  * }
@@ -49,7 +49,7 @@ fun <T> createRule(message: String, predicate: ValuePredicate<T>): RuleCallback<
  *     message = { "'${it.name}' must not be equal to 'test'. Value: '${it.value}'" },
  *     predicate = { it.value != "test" }
  * )
- * validateOrThrow {
+ * throwOnFailure {
  *     NamedValue("example", "notTest").validate(rule) // passes: "notTest" != "test"
  *     NamedValue("example", "test").validate(rule) // fails: "test" == "test"
  *     // message generated: "'example' must not be equal to 'test'. Value: 'notTest'"

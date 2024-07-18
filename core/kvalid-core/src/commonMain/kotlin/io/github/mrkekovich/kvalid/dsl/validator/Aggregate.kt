@@ -4,13 +4,11 @@ import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.validator.AggregatingValidator
 
 /**
- * Executes validation rules within an aggregate context and returns the result.
+ * Validates all conditions defined within the given block using an AggregatingValidator.
+ * Collects all violations and returns a ValidationResult.
  *
- * This function collects all validation violations and returns a [ValidationResult]
- * indicating whether the validation was successful or not.
- *
- * @param block The block of validation rules to execute.
- * @return A [ValidationResult] indicating the outcome of the validation.
+ * @param block The block of validation conditions to execute.
+ * @return [ValidationResult] containing all violations found during validation.
  */
 inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult {
     val violations = AggregatingValidator().apply(block).violations

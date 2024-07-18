@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import kotlin.test.fail
 
-class AggregateTest : FunSpec({
+internal class AggregateTest : FunSpec({
     test("validateAll") {
         val result = validateAll {
             "".validate("fail") { it.isNotBlank() }

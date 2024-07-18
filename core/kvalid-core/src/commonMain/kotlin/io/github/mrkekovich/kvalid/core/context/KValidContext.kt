@@ -19,7 +19,11 @@ interface KValidContext :
     }
 
     /**
+     * Uses [validate] with [Rule], that has specified [message] and always returns `false` on [Rule.validate].
+     *
      * @param message the failure message.
+     * @see Rule.failure
+     * @see validate
      */
     fun violation(message: String) {
         validate(Rule.failure(message))

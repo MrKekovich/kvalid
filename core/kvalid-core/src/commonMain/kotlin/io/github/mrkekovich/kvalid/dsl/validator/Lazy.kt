@@ -13,21 +13,38 @@ fun LazyValidator.asViolationSequence(): Sequence<ValidationException> = sequenc
 }
 
 /**
- * Executes validation rules sequentially and returns a sequence of validation exceptions.
+ * Lazily validates conditions defined within the given block using a [LazyValidator].
+ * Returns a lazy sequence of [ValidationException] that occurs during validation.
+ * The validation is evaluated only upon accessing the elements of the sequence.
+ * This allows deferred evaluation and efficient handling of validation rules.
  *
- * This function evaluates validation rules lazily, returning a sequence of [ValidationException]s
- * encountered during validation.
+ * **Note**: The sequence remains unevaluated until elements are accessed. For example:
+ * ```
+ * var count = 0
+ * val result = validateLazy {
+ *     rule("something") {
+ *         count++
+ *         true
+ *     }
+ * }
+ * println(count) // 0
+ * result.firstOrNull() // Forces evaluation; count becomes 1
+ * result.toList() // Further evaluation; count becomes 2
+ * println(count) // 2
+ * ```
  *
- * @param block The block of validation rules to execute.
- * @return A sequence of [ValidationException]s.
+ * @param block The block of validation conditions to lazily execute.
+ * @return Lazy sequence of [ValidationException] representing violations found during lazy validation.
+ *
+ * @see LazyValidator
+ * @see ValidationException
+ * @see Sequence
  */
-inline fun validateLazily(block: LazyValidator.() -> Unit): Sequence<ValidationException> =
+inline fun validateLazy(block: LazyValidator.() -> Unit): Sequence<ValidationException> =
     LazyValidator().apply(block).asViolationSequence()
 
 /**
  * Converts a sequence of [ValidationException] instances to a [ValidationResult].
- *
- * If the sequence is empty, the result is valid. Otherwise, the result is invalid and contains the list of violations.
  *
  * @return A [ValidationResult] representing the outcome of the validation.
  */

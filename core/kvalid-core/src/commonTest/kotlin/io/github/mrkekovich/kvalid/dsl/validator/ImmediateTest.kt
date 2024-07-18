@@ -6,10 +6,10 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import kotlin.test.fail
 
-class ImmediateTest : FunSpec({
-    test("validateOrThrow") {
+internal class ImmediateTest : FunSpec({
+    test("throwOnFailure") {
         val exception = shouldThrow<ValidationException> {
-            validateOrThrow {
+            throwOnFailure {
                 violation("fail")
             }
         }
@@ -17,8 +17,8 @@ class ImmediateTest : FunSpec({
         exception.message shouldBe "fail"
     }
 
-    test("validateWithFailFast") {
-        val result = validateWithFailFast {
+    test("validateFirst") {
+        val result = validateFirst {
             rule("fail") { false }
             rule("should not be executed") { false }
         }
