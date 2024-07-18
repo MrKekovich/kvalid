@@ -7,10 +7,14 @@ import kotlin.test.assertTrue
 
 internal object Contexts {
     val successContext = object : KValidContext {
-        override fun rule(message: String, predicate: () -> Boolean): Rule =
+        override fun rule(message: String, predicate: Predicate): Rule =
             Rule(message, predicate).also {
                 assertTrue(it.validate(), "Rule failed: $message")
             }
+
+        override fun rule(rule: Rule) {
+            assertTrue(rule.validate(), "Rule failed: ${rule.failMessage}")
+        }
 
         override fun violation(message: String) {
             throw AssertionError("Unexpected violation: $message")
@@ -23,10 +27,14 @@ internal object Contexts {
     }
 
     val failContext = object : KValidContext {
-        override fun rule(message: String, predicate: () -> Boolean): Rule =
+        override fun rule(message: String, predicate: Predicate): Rule =
             Rule(message, predicate).also {
                 assertFalse(it.validate(), "Rule unexpectedly passed: $message")
             }
+
+        override fun rule(rule: Rule) {
+            assertFalse(rule.validate(), "Rule unexpectedly passed: ${rule.failMessage}")
+        }
 
         override fun violation(message: String) {
             throw ValidationException(message)

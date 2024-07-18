@@ -1,8 +1,28 @@
 package io.github.mrkekovich.kvalid.core.context
 
 import io.github.mrkekovich.kvalid.core.model.NamedValue
+import io.github.mrkekovich.kvalid.core.model.Rule
 
+/**
+ * Predicate function used for validation checks.
+ */
 typealias ValidationPredicate<T> = (T) -> Boolean
+
+/**
+ * Callback function that generates a message based on a value of type T.
+ */
+typealias MessageCallback<T> = (NamedValue<T>) -> String
+
+/**
+ * Callback function that generates a validation rule based on a value of type T.
+ */
+typealias RuleCallback<T> = (T) -> Rule
+
+/**
+ * Callback function that generates a validation rule based on a value of type T.
+ */
+typealias NamedValueRuleCallback<T> = (NamedValue<T>) -> Rule
+
 
 /**
  * Validation context. The core of all validation contexts.
@@ -40,10 +60,50 @@ interface ValidationContext {
      * @param predicate the predicate to validate the value
      */
     fun <T> NamedValue<T>.validate(
-        message: (NamedValue<T>) -> String,
+        message: MessageCallback<T>,
         predicate: ValidationPredicate<T>,
     ): NamedValue<T> {
         value.validate(message(this), predicate)
         return this
     }
+
+    /**
+     * Validates the value using a pre-defined validation rule.
+     *
+     * @param rule The pre-defined validation rule to apply.
+     */
+    fun <T> T.validate(
+        rule: Rule,
+    ): T = validate(rule.failMessage) { rule.validate() }
+
+    /**
+     * Validates the value using a rule callback function to generate a rule dynamically.
+     *
+     * @param ruleCallback The callback function that returns a rule based on the value.
+     */
+    fun <T> T.validate(
+        ruleCallback: RuleCallback<T>,
+    ): T = validate(ruleCallback(this))
+
+    /**
+     * Validates the underlying value of this NamedValue using the provided rule callback.
+     *
+     * @param ruleCallback The callback function that generates a validation rule based on the value.
+     * @return This NamedValue instance after validation.
+     */
+    fun <T> NamedValue<T>.validateValue(
+        ruleCallback: RuleCallback<T>,
+    ): NamedValue<T> {
+        value.validate(ruleCallback(value))
+        return this
+    }
+
+    /**
+     * Validates the value using a rule callback function to generate a rule dynamically with a message.
+     *
+     * @param ruleCallbackWithMessage The callback function that returns a rule based on the value.
+     */
+    fun <T> NamedValue<T>.validate(
+        ruleCallbackWithMessage: NamedValueRuleCallback<T>,
+    ): NamedValue<T> = validate(ruleCallbackWithMessage(this))
 }
