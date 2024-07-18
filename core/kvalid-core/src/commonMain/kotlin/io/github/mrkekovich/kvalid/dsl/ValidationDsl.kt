@@ -4,7 +4,7 @@ import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.github.mrkekovich.kvalid.core.validator.AggregatingValidator
-import io.github.mrkekovich.kvalid.core.validator.LazyValidationContext
+import io.github.mrkekovich.kvalid.core.validator.LazyValidator
 
 /**
  * Executes validation rules within an aggregate context and returns the result.
@@ -62,4 +62,4 @@ inline fun validateOrThrow(block: KValidContext.() -> Unit) {
  * @return A sequence of [ValidationException]s.
  */
 inline fun validateLazily(block: KValidContext.() -> Unit): Sequence<ValidationException> =
-    LazyValidationContext().apply(block).result
+    LazyValidator().apply(block).result

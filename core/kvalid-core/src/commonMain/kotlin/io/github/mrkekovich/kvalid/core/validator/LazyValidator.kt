@@ -10,7 +10,7 @@ import io.github.mrkekovich.kvalid.core.exception.ValidationException
 /**
  * Stores validation rules and executes them on [validate].
  */
-open class LazyValidationContext : KValidContext {
+open class LazyValidator : KValidContext {
     val result = sequence {
         for (rule in _rules) {
             if (!rule.validate()) yield(ValidationException(rule.failMessage))
