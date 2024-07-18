@@ -2,8 +2,8 @@ package io.github.mrkekovich.kvalid.core.validator
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
-import io.github.mrkekovich.kvalid.core.model.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
+import io.github.mrkekovich.kvalid.core.model.Rule
 
 open class AggregatingValidator : KValidContext {
     private val _violations: MutableList<ValidationException> = mutableListOf()
@@ -19,12 +19,11 @@ open class AggregatingValidator : KValidContext {
         return this
     }
 
-    override fun rule(message: String, predicate: () -> Boolean): ValidationRule =
-        ValidationRule(message) { predicate() }.also {
-            if (!predicate()) _violations.add(
-                ValidationException(message)
-            )
-        }
+    override fun rule(message: String, predicate: () -> Boolean): Rule = Rule(message) { predicate() }.also {
+        if (!predicate()) _violations.add(
+            ValidationException(message)
+        )
+    }
 
     override fun violation(message: String) {
         _violations.add(ValidationException(message))

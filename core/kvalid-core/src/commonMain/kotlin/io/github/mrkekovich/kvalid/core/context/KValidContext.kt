@@ -1,7 +1,7 @@
 package io.github.mrkekovich.kvalid.core.context
 
-import io.github.mrkekovich.kvalid.core.model.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
+import io.github.mrkekovich.kvalid.core.model.Rule
 
 interface KValidContext :
     NamedCollectionValidationContext,
@@ -13,12 +13,12 @@ interface KValidContext :
      *
      * @param message the failure message
      * @param predicate the validation predicate
-     * @return [ValidationRule] with specified message and predicate
+     * @return [Rule] with specified message and predicate
      */
     fun rule(
         message: String,
         predicate: () -> Boolean,
-    ): ValidationRule
+    ): Rule
 
     /**
      * @param message the failure message
@@ -36,8 +36,8 @@ interface KValidContext :
          * @return [ValidationRule] with specified message and predicate
          * @throws ValidationException if predicate returns false
          */
-        override fun rule(message: String, predicate: () -> Boolean): ValidationRule =
-            ValidationRule(message) { predicate() }.also {
+        override fun rule(message: String, predicate: () -> Boolean): Rule =
+            Rule(message) { predicate() }.also {
                 if (!predicate()) throw ValidationException(message)
             }
 

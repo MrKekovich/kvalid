@@ -1,23 +1,32 @@
 package io.github.mrkekovich.kvalid.core.model
 
-import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
-
-sealed interface Rule {
+/**
+ * Represents a validation rule with a failure message and a validation function.
+ */
+interface Rule {
+    /**
+     * The message to be used if the validation fails.
+     */
     val failMessage: String
+
+    /**
+     * Executes the validation rule.
+     *
+     * @return true if the validation passes, false otherwise.
+     */
     fun validate(): Boolean
-}
 
-data class ValidationRule(
-    override val failMessage: String,
-    val predicate: () -> Boolean
-) : Rule {
-    override fun validate(): Boolean = predicate()
-}
-
-data class LazyValidationRule<T>(
-    override val failMessage: String,
-    val value: T,
-    val predicate: ValidationPredicate<T>
-) : Rule {
-    override fun validate(): Boolean = predicate(value)
+    companion object {
+        /**
+         * Creates a new Rule instance with the given message and predicate.
+         *
+         * @param message The failure message for the rule.
+         * @param predicate The validation function.
+         * @return A new Rule instance.
+         */
+        operator fun invoke(message: String, predicate: () -> Boolean): Rule = object : Rule {
+            override val failMessage: String = message
+            override fun validate(): Boolean = predicate()
+        }
+    }
 }
