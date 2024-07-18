@@ -8,26 +8,20 @@ interface KValidContext :
     NamedStringValidationContext,
     ValidationContext {
     /**
-     * Add validation rule
+     * Create a new [Rule] instance with the given [message] and [predicate] and validate it.
      *
-     * @param message the failure message
-     * @param predicate the validation predicate
-     * @return [Rule] with specified message and predicate
+     * @param message
+     * @param predicate
+     * @return Created [Rule]
      */
-    fun rule(
-        message: String,
-        predicate: Predicate,
-    ): Rule
+    fun rule(message: String, predicate: Predicate): Rule = Rule(message, predicate).also {
+        validate(it)
+    }
 
     /**
-     * Interact with the given [Rule]
-     *
-     * @param rule The validation rule to be added.
+     * @param message the failure message.
      */
-    fun rule(rule: Rule)
-
-    /**
-     * @param message the failure message
-     */
-    fun violation(message: String)
+    fun violation(message: String) {
+        validate(Rule.failure(message))
+    }
 }

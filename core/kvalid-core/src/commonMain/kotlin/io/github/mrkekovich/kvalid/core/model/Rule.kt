@@ -30,5 +30,15 @@ interface Rule {
             override val failMessage: String = message
             override fun validate(): Boolean = predicate()
         }
+
+        operator fun invoke(message: String, condition: Boolean): Rule = object : Rule {
+            override val failMessage: String = message
+            override fun validate(): Boolean = condition
+        }
+
+        fun failure(message: String): Rule = object : Rule {
+            override val failMessage: String = message
+            override fun validate(): Boolean = false
+        }
     }
 }

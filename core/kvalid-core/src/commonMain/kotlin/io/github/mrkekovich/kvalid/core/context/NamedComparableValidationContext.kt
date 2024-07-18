@@ -16,8 +16,8 @@ interface NamedComparableValidationContext : ValidationContext {
      * age.withName("age").equalTo(30)
      * ```
      *
-     * @param T the type of the value
-     * @param other the value to compare against
+     * @param T the type of the value.
+     * @param other the value to compare against.
      */
     fun <T> NamedComparable<T>.equalTo(
         other: T,
@@ -34,8 +34,8 @@ interface NamedComparableValidationContext : ValidationContext {
      * age.withName("age").notEqualTo(30)
      * ```
      *
-     * @param T the type of the value
-     * @param other the value to compare against
+     * @param T the type of the value.
+     * @param other the value to compare against.
      */
     fun <T> NamedComparable<T>.notEqualTo(
         other: T,
@@ -52,8 +52,8 @@ interface NamedComparableValidationContext : ValidationContext {
      * age.withName("age").greaterThan(18)
      * ```
      *
-     * @param T the type of the value
-     * @param min the minimum value
+     * @param T the type of the value.
+     * @param min the minimum value.
      */
     fun <T> NamedComparable<T>.greaterThan(
         min: T,
@@ -70,8 +70,8 @@ interface NamedComparableValidationContext : ValidationContext {
      * age.withName("age").greaterThanOrEqualTo(18)
      * ```
      *
-     * @param T the type of the value
-     * @param min the minimum value
+     * @param T the type of the value.
+     * @param min the minimum value.
      */
     fun <T> NamedComparable<T>.greaterThanOrEqualTo(
         min: T,
@@ -88,8 +88,8 @@ interface NamedComparableValidationContext : ValidationContext {
      * age.withName("age").lessThan(65)
      * ```
      *
-     * @param T the type of the value
-     * @param max the maximum value
+     * @param T the type of the value.
+     * @param max the maximum value.
      */
     fun <T> NamedComparable<T>.lessThan(
         max: T,
@@ -106,8 +106,8 @@ interface NamedComparableValidationContext : ValidationContext {
      * age.withName("age").lessThanOrEqualTo(65)
      * ```
      *
-     * @param T the type of the value
-     * @param max the maximum value
+     * @param T the type of the value.
+     * @param max the maximum value.
      */
     fun <T> NamedComparable<T>.lessThanOrEqualTo(
         max: T,

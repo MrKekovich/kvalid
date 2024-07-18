@@ -15,7 +15,7 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").notBlank()
      * ```
      *
-     * @param message the failure message if validation fails
+     * @param message the failure message.
      */
     fun NamedString.notBlank(
         message: String = "$name must not be blank",
@@ -31,8 +31,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").ofLength(5)
      * ```
      *
-     * @param length the required length of the string
-     * @param message the failure message if validation fails
+     * @param length the required length of the string.
+     * @param message the failure message.
      */
     fun NamedString.ofLength(
         length: Int,
@@ -49,8 +49,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").ofLength(5..10)
      * ```
      *
-     * @param range the allowed length range of the string
-     * @param message the failure message if validation fails
+     * @param range the allowed length range of the string.
+     * @param message the failure message.
      */
     fun NamedString.ofLength(
         range: IntRange,
@@ -67,8 +67,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").notOfLength(5)
      * ```
      *
-     * @param length the prohibited length of the string
-     * @param message the failure message if validation fails
+     * @param length the prohibited length of the string.
+     * @param message the failure message.
      */
     fun NamedString.notOfLength(
         length: Int,
@@ -85,8 +85,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").notOfLength(5..10)
      * ```
      *
-     * @param range the prohibited length range of the string
-     * @param message the failure message if validation fails
+     * @param range the prohibited length range of the string.
+     * @param message the failure message.
      */
     fun NamedString.notOfLength(
         range: IntRange,
@@ -103,8 +103,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").minLength(5)
      * ```
      *
-     * @param min the minimum length of the string
-     * @param message the failure message if validation fails
+     * @param min the minimum length of the string.
+     * @param message the failure message.
      */
     fun NamedString.minLength(
         min: Int,
@@ -121,8 +121,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").maxLength(10)
      * ```
      *
-     * @param max the maximum length of the string
-     * @param message the failure message if validation fails
+     * @param max the maximum length of the string.
+     * @param message the failure message.
      */
     fun NamedString.maxLength(
         max: Int,
@@ -139,8 +139,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").matches(Regex("^[a-zA-Z]+\$"))
      * ```
      *
-     * @param pattern the regular expression pattern to match
-     * @param message the failure message if validation fails
+     * @param pattern the regular expression pattern to match.
+     * @param message the failure message.
      */
     fun NamedString.matches(
         pattern: Regex,
@@ -157,8 +157,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").matches("^[a-zA-Z]+\$")
      * ```
      *
-     * @param pattern the regular expression pattern to match
-     * @param message the failure message if validation fails
+     * @param pattern the regular expression pattern to match.
+     * @param message the failure message.
      */
     fun NamedString.matches(
         pattern: String,
@@ -173,8 +173,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").notMatches(Regex("^[0-9]+\$"))
      * ```
      *
-     * @param pattern the regular expression pattern to not match
-     * @param message the failure message if validation fails
+     * @param pattern the regular expression pattern to not match.
+     * @param message the failure message.
      */
     fun NamedString.notMatches(
         pattern: Regex,
@@ -191,8 +191,8 @@ interface NamedStringValidationContext : ValidationContext {
      * name.withName("name").notMatches("^[0-9]+\$")
      * ```
      *
-     * @param pattern the regular expression pattern to not match
-     * @param message the failure message if validation fails
+     * @param pattern the regular expression pattern to not match.
+     * @param message the failure message.
      */
     fun NamedString.notMatches(
         pattern: String,

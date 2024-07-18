@@ -188,8 +188,8 @@ internal class NamedStringContextTest : FunSpec({
  * Blank string will contain random characters from [whitespaceChars].
  *
  *
- * @param minLength min length
- * @param maxLength max length
+ * @param minLength min length.
+ * @param maxLength max length.
  */
 private fun Arb.Companion.blankString(minLength: Int = 0, maxLength: Int = 100): Arb<String> {
     val size = maxLength - minLength
