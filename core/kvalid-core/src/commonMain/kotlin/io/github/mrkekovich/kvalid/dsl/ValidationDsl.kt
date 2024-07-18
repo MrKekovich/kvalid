@@ -5,6 +5,7 @@ import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.github.mrkekovich.kvalid.core.validator.AggregatingValidator
 import io.github.mrkekovich.kvalid.core.validator.LazyValidator
+import io.github.mrkekovich.kvalid.core.validator.ThrowingValidator
 
 /**
  * Executes validation rules within an aggregate context and returns the result.
@@ -31,7 +32,7 @@ inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult
  * @return A [ValidationResult] indicating the outcome of the validation.
  */
 inline fun validateWithFailFast(block: KValidContext.() -> Unit): ValidationResult = try {
-    KValidContext(block)
+    ThrowingValidator(block)
     ValidationResult.valid()
 } catch (e: ValidationException) {
     ValidationResult.invalid(e)
@@ -46,7 +47,7 @@ inline fun validateWithFailFast(block: KValidContext.() -> Unit): ValidationResu
  * @throws ValidationException if validation fails.
  */
 inline fun validateOrThrow(block: KValidContext.() -> Unit) {
-    KValidContext(block)
+    ThrowingValidator(block)
 }
 
 /**
