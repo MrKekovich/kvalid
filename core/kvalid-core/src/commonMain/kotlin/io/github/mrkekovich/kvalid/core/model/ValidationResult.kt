@@ -1,4 +1,4 @@
-package io.github.mrkekovich.kvalid.core.dto
+package io.github.mrkekovich.kvalid.core.model
 
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 

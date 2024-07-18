@@ -1,9 +1,9 @@
 package io.github.mrkekovich.kvalid.dsl
 
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
-import io.github.mrkekovich.kvalid.core.dto.ValidationResult
-import io.github.mrkekovich.kvalid.core.dto.errorsOrEmpty
-import io.github.mrkekovich.kvalid.core.dto.isValid
+import io.github.mrkekovich.kvalid.core.model.NamedValue
+import io.github.mrkekovich.kvalid.core.model.ValidationResult
+import io.github.mrkekovich.kvalid.core.model.errorsOrEmpty
+import io.github.mrkekovich.kvalid.core.model.isValid
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe

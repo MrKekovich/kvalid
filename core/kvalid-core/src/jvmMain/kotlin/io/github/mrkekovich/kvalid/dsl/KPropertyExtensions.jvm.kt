@@ -1,6 +1,6 @@
 package io.github.mrkekovich.kvalid.dsl
 
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
+import io.github.mrkekovich.kvalid.core.model.NamedValue
 import io.github.mrkekovich.kvalid.dsl.exceptions.PropertyAccessException
 import kotlin.reflect.KProperty
 

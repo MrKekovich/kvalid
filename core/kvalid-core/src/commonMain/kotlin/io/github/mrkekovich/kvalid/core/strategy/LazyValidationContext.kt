@@ -2,9 +2,9 @@ package io.github.mrkekovich.kvalid.core.strategy
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
-import io.github.mrkekovich.kvalid.core.dto.LazyValidationRule
-import io.github.mrkekovich.kvalid.core.dto.Rule
-import io.github.mrkekovich.kvalid.core.dto.ValidationRule
+import io.github.mrkekovich.kvalid.core.model.LazyValidationRule
+import io.github.mrkekovich.kvalid.core.model.Rule
+import io.github.mrkekovich.kvalid.core.model.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
 /**

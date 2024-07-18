@@ -1,6 +1,6 @@
 package io.github.mrkekovich.kvalid.core.context
 
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
+import io.github.mrkekovich.kvalid.core.model.NamedValue
 
 typealias NamedComparable<T> = NamedValue<out Comparable<T>>
 

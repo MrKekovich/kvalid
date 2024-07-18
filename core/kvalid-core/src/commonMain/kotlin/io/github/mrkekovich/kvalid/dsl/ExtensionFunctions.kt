@@ -1,7 +1,7 @@
 package io.github.mrkekovich.kvalid.dsl
 
-import io.github.mrkekovich.kvalid.core.dto.NamedValue
-import io.github.mrkekovich.kvalid.core.dto.ValidationResult
+import io.github.mrkekovich.kvalid.core.model.NamedValue
+import io.github.mrkekovich.kvalid.core.model.ValidationResult
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 import kotlin.reflect.KProperty
 

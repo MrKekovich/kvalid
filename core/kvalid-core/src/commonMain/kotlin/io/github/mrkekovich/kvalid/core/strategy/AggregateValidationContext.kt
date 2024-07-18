@@ -2,7 +2,7 @@ package io.github.mrkekovich.kvalid.core.strategy
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.ValidationPredicate
-import io.github.mrkekovich.kvalid.core.dto.ValidationRule
+import io.github.mrkekovich.kvalid.core.model.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
 open class AggregateValidationContext : KValidContext {

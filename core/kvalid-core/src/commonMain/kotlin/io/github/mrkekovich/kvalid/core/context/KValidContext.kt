@@ -1,6 +1,6 @@
 package io.github.mrkekovich.kvalid.core.context
 
-import io.github.mrkekovich.kvalid.core.dto.ValidationRule
+import io.github.mrkekovich.kvalid.core.model.ValidationRule
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
 
 interface KValidContext :
