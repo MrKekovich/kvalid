@@ -12,6 +12,16 @@ object ThrowingValidator : KValidContext {
         if (!it.validate()) throw ValidationException(message)
     }
 
+    /**
+     * Adds a validation rule and immediately checks it, throwing an exception if it fails.
+     *
+     * @param rule The Rule to add.
+     * @throws ValidationException if the validation fails.
+     */
+    override fun rule(rule: Rule) {
+        if (!rule.validate()) throw ValidationException(rule.failMessage)
+    }
+
     override fun violation(message: String): Nothing = throw ValidationException(message)
 
     override fun <T> T.validate(message: String, predicate: ValidationPredicate<T>): T {

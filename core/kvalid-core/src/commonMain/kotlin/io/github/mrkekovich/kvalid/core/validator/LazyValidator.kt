@@ -23,6 +23,15 @@ open class LazyValidator : KValidContext {
         _rules.add(it)
     }
 
+    /**
+     * Adds a validation rule to be evaluated later.
+     *
+     * @param rule The Rule to add.
+     */
+    override fun rule(rule: Rule) {
+        _rules.add(rule)
+    }
+
     fun <T> lazyRule(message: String, value: T, predicate: ValidationPredicate<T>): Rule = rule(message) { predicate(value) }
 
     override fun violation(message: String) {

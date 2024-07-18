@@ -20,6 +20,13 @@ interface KValidContext :
     ): Rule
 
     /**
+     * Interact with the given [Rule]
+     *
+     * @param rule The validation rule to be added.
+     */
+    fun rule(rule: Rule)
+
+    /**
      * @param message the failure message
      */
     fun violation(message: String)

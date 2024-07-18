@@ -25,6 +25,15 @@ open class AggregatingValidator : KValidContext {
         )
     }
 
+    /**
+     * Adds a validation rule and immediately checks it, adding a violation if it fails.
+     *
+     * @param rule The validation rule.
+     */
+    override fun rule(rule: Rule) {
+        if (!rule.validate()) _violations.add(ValidationException(rule.failMessage))
+    }
+
     override fun violation(message: String) {
         _violations.add(ValidationException(message))
     }
