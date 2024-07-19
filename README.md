@@ -27,7 +27,7 @@ KValid is a Kotlin Multiplatform library that provides a concise and powerful DS
 
 - 🌟 Concise and intuitive DSL
 - 🔧 Flexible rule creation
-- 📦 Standard validation use cases included.
+- 📦 [Standard validation use cases included](readme/standard-use-cases.md).
 - 🌍 Kotlin Multiplatform support
 - 🧩 Extensible architecture
 
@@ -138,7 +138,7 @@ fun main() {
 
 Comprehensive documentation and tutorials are coming soon! We'll provide a detailed guide on how to use KValid effectively in your projects.
 
-For more examples and use cases, check out our [documentation](readme/documentation).
+For more examples and use cases, check out our [documentation](readme/documentation.md).
 
 ## 🤝 Contributing
 
