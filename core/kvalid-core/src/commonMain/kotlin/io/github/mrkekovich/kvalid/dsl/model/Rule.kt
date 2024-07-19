@@ -65,3 +65,10 @@ fun <T> createRule(message: String, predicate: ValuePredicate<T>): RuleCallback<
 fun <T> createRule(message: MessageCallback<T>, predicate: ValuePredicate<T>): NamedValueRuleCallback<T> = {
     Rule(message(it)) { predicate(it.value) }
 }
+
+/**
+ * Creates new [Rule] instance with negated [Rule.validate] and existing [Rule.failMessage].
+ *
+ * @return new [Rule] instance.
+ */
+operator fun Rule.not(): Rule = Rule(failMessage) { !validate() }
