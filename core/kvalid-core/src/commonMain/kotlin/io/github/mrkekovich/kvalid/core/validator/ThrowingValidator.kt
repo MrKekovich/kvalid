@@ -3,7 +3,6 @@ package io.github.mrkekovich.kvalid.core.validator
 import io.github.mrkekovich.kvalid.core.context.KValidContext
 import io.github.mrkekovich.kvalid.core.context.Predicate
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
-import io.github.mrkekovich.kvalid.core.model.Rule
 
 /**
  * An implementation of KValidContext that immediately throws exceptions for validation failures.
