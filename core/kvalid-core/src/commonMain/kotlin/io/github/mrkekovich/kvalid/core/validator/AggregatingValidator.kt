@@ -1,8 +1,8 @@
 package io.github.mrkekovich.kvalid.core.validator
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
+import io.github.mrkekovich.kvalid.core.context.Predicate
 import io.github.mrkekovich.kvalid.core.exception.ValidationException
-import io.github.mrkekovich.kvalid.core.model.Rule
 
 /**
  * An implementation of KValidContext that aggregates (collects) validation violations.
@@ -20,13 +20,14 @@ open class AggregatingValidator : KValidContext {
         get() = _violations.toList()
 
     /**
-     * Validates a value with the given [rule] and adds a violation if the validation fails.
+     * Adds a [ValidationException] to [violations] with the specified [message] if the [predicate] evaluates to `false`.
      *
-     * @param rule The rule to validate.
+     * @param message The failure message.
+     * @param predicate The predicate to validate the value.
      */
-    override fun validate(rule: Rule) {
-        if (!rule.validate()) {
-            _violations.add(ValidationException(rule.failMessage))
+    override fun validate(message: String, predicate: Predicate) {
+        if (!predicate()) {
+            _violations.add(ValidationException(message))
         }
     }
 }

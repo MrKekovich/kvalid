@@ -1,6 +1,7 @@
 package io.github.mrkekovich.kvalid.core.validator
 
 import io.github.mrkekovich.kvalid.core.context.KValidContext
+import io.github.mrkekovich.kvalid.core.context.Predicate
 import io.github.mrkekovich.kvalid.core.model.Rule
 
 /**
@@ -16,6 +17,16 @@ open class LazyValidator : KValidContext {
      * A read-only view of the validation rules.
      */
     val rules: List<Rule> get() = _rules.toList()
+
+    /**
+     * Adds a new [Rule] with the given [message] and [predicate] to the [rules].
+     *
+     * @param message The failure message that will be used in the [Rule] creation.
+     * @param predicate The predicate that will be used in the [Rule] creation.
+     */
+    override fun validate(message: String, predicate: Predicate) {
+        validate(Rule(message, predicate))
+    }
 
     /**
      * Adds a [rule] to the list of validation [rules].

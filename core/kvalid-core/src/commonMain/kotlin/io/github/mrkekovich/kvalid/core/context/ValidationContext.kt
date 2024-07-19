@@ -46,9 +46,7 @@ interface ValidationContext {
     fun validate(
         message: String,
         predicate: Predicate,
-    ) {
-        validate(Rule(message, predicate))
-    }
+    )
 
     /**
      * Validates using a rule.
@@ -57,7 +55,9 @@ interface ValidationContext {
      */
     fun validate(
         rule: Rule,
-    )
+    ) {
+        validate(rule.failMessage) { rule.validate() }
+    }
 
     /**
      * Validates the value against the specified [predicate].
