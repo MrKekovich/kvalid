@@ -10,6 +10,6 @@ allprojects {
 
     val kvalidVersion: String by project
 
-    group = "io.github.mrkekovich"
+    group = "org.kvalid"
     version = kvalidVersion
 }
