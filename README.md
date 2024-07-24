@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="readme/kvalid-logo.svg" alt="KValid Logo">
+  <img src="readme/images/kvalid-logo.svg" alt="KValid Logo">
 </p>
 
 <h1 align="center">KValid</h1>
@@ -27,7 +27,7 @@ KValid is a Kotlin Multiplatform library that provides a concise and powerful DS
 
 - 🌟 Concise and intuitive DSL
 - 🔧 Flexible rule creation
-- 📦 [Standard validation use cases included](readme/standard-use-cases.md).
+- 📦 [Standard validation use cases included](readme/documentation/standard-use-cases.md).
 - 🌍 Kotlin Multiplatform support
 - 🧩 Extensible architecture
 
@@ -56,7 +56,7 @@ val mustStartWithCapitalLetter = createRule<String>("Given value must start with
 
 // Custom rule with message generation, depending on the name and value
 val nameIsInDatabaseRule = createRule<String>(
-    message = { "${it.value} must be in database. Name '${it.value}' was not found." },
+    message = { "${it.name} must be in database. Name '${it.value}' was not found." },
     predicate = { name: String ->
         database.any { it.name == name }
     }
@@ -138,7 +138,7 @@ fun main() {
 
 Comprehensive documentation and tutorials are coming soon! We'll provide a detailed guide on how to use KValid effectively in your projects.
 
-For more examples and use cases, check out our [documentation](readme/documentation.md).
+For more examples and use cases, check out our [documentation](readme/documentation/README).
 
 ## 🤝 Contributing
 
