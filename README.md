@@ -2,8 +2,6 @@
   <img src="readme/images/kvalid-logo.svg" alt="KValid Logo">
 </p>
 
-<h1 align="center">KValid</h1>
-
 <p align="center">
   <strong>A powerful, flexible Kotlin Multiplatform validation library</strong>
 </p>
