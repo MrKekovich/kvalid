@@ -5,7 +5,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import org.kvalid.dsl.model.createRule
 
-internal class RuleTest : FunSpec({
+class RuleTest : FunSpec({
     test("createRule") {
         val rule = createRule("test") { true }
 

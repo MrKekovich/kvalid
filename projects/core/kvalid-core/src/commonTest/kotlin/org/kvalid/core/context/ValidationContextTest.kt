@@ -7,7 +7,7 @@ import org.kvalid.core.context.Contexts.successContext
 import org.kvalid.core.model.NamedValue
 import org.kvalid.dsl.model.withName
 
-internal class ValidationContextTest : FunSpec({
+class ValidationContextTest : FunSpec({
     test("validation with message as lambda") {
         val fieldName = "test"
         val namedValue = "".withName(fieldName)

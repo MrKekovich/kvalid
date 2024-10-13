@@ -10,7 +10,7 @@ import io.kotest.property.Arb
 import io.kotest.property.checkAll
 import io.kotest.property.arbitrary.string
 
-internal class NamedValueExtensionTest : FunSpec({
+class NamedValueExtensionTest : FunSpec({
     test("withName") {
         checkAll(Arb.string(), Arb.string()) { name, value ->
            value withName name shouldBe NamedValue(name, value)

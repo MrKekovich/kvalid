@@ -10,7 +10,7 @@ import org.kvalid.core.context.Contexts.failContext
 import org.kvalid.core.context.Contexts.successContext
 import org.kvalid.dsl.model.withName
 
-internal class NamedStringContextTest : FunSpec({
+class NamedStringContextTest : FunSpec({
     test("notBlank") {
         checkAll(Arb.string().filter { it.isNotBlank() }) { value ->
             successContext.run {

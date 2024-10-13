@@ -10,7 +10,7 @@ import org.kvalid.core.context.Contexts.failContext
 import org.kvalid.core.context.Contexts.successContext
 import org.kvalid.dsl.model.withName
 
-internal class NamedComparableContextTest : FunSpec({
+class NamedComparableContextTest : FunSpec({
     test("equalTo") {
         val string = "test"
 

@@ -3,7 +3,7 @@ package org.kvalid.dsl.validator
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
-internal class LazyTest : FunSpec({
+class LazyTest : FunSpec({
     test("validateLazy") {
         var executionCount = 0
 

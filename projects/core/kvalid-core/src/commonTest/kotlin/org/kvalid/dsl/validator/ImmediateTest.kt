@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 import org.kvalid.core.exception.ValidationException
 import kotlin.test.fail
 
-internal class ImmediateTest : FunSpec({
+class ImmediateTest : FunSpec({
     test("throwOnFailure") {
         val exception = shouldThrow<ValidationException> {
             throwOnFailure {

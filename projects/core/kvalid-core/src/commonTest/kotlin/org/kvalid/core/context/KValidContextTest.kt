@@ -5,7 +5,7 @@ import io.kotest.core.spec.style.FunSpec
 import org.kvalid.core.context.Contexts.failContext
 import org.kvalid.core.context.Contexts.successContext
 
-internal class KValidContextTest : FunSpec({
+class KValidContextTest : FunSpec({
     test("violation") {
         shouldFail {
             successContext.run {

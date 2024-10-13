@@ -5,7 +5,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import org.kvalid.dsl.extension.toNamed
 
-internal class KPropertyExtensionTest : FunSpec({
+class KPropertyExtensionTest : FunSpec({
     test("toNamed(value)") {
         val instance = Class("test")
 
