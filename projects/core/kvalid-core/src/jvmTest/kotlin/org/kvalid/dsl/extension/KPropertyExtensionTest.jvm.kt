@@ -15,13 +15,7 @@ class KPropertyExtensionTestJvm : FunSpec({
         }
 
         instance.run {
-            val named = try {
-                ::prop.toNamed()
-            } catch (e: Throwable) {
-                println(e)
-            }
-
-            println(named)
+            val named = ::prop.toNamed()
 
             named shouldBe NamedValue("prop", prop)
         }

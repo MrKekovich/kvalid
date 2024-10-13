@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="readme/images/kvalid-logo.svg" alt="KValid Logo">
+  <img src="docs/img/kvalid-logo.svg" alt="KValid Logo">
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@ KValid is a Kotlin Multiplatform library that provides a concise and powerful DS
 
 - 🌟 Concise and intuitive DSL
 - 🔧 Flexible rule creation
-- 📦 [Standard validation use cases included](readme/documentation/standard-use-cases.md).
+- 📦 [Standard validation use cases included](docs/documentation/standard-use-cases.md).
 - 🌍 Kotlin Multiplatform support
 - 🧩 Extensible architecture
 
@@ -136,7 +136,7 @@ fun main() {
 
 Comprehensive documentation and tutorials are coming soon! We'll provide a detailed guide on how to use KValid effectively in your projects.
 
-For more examples and use cases, check out our [documentation](readme/documentation/README).
+For more examples and use cases, check out our [documentation](docs/documentation/README).
 
 ## 🤝 Contributing
 
