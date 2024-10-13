@@ -1,9 +1,8 @@
 package org.kvalid.dsl.extension
 
-import org.kvalid.core.model.NamedValue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import org.kvalid.dsl.extension.toNamed
+import org.kvalid.core.model.NamedValue
 
 class KPropertyExtensionTest : FunSpec({
     test("toNamed(value)") {

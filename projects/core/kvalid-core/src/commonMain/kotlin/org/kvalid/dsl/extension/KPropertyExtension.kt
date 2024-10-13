@@ -1,7 +1,6 @@
 package org.kvalid.dsl.extension
 
 import org.kvalid.core.model.NamedValue
-import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty
 
 /**

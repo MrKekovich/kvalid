@@ -1,9 +1,8 @@
 package org.kvalid.dsl.model
 
-import org.kvalid.core.model.NamedValue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import org.kvalid.dsl.model.createRule
+import org.kvalid.core.model.NamedValue
 
 class RuleTest : FunSpec({
     test("createRule") {
