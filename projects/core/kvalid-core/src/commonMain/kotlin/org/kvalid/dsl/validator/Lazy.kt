@@ -16,11 +16,12 @@ typealias ViolationSequence = Sequence<ValidationException>
  *
  * @return A [Sequence] of [ValidationException] representing the outcome of the validation.
  */
-fun LazyValidator.asViolationSequence(): Sequence<ValidationException> = sequence {
-    for (rule in rules) {
-        if (!rule.validate()) yield(ValidationException(rule.failMessage))
+fun LazyValidator.asViolationSequence(): Sequence<ValidationException> =
+    sequence {
+        for (rule in rules) {
+            if (!rule.validate()) yield(ValidationException(rule.failMessage))
+        }
     }
-}
 
 /**
  * Lazily validates conditions defined within the given block using a [LazyValidator].
@@ -51,7 +52,9 @@ fun LazyValidator.asViolationSequence(): Sequence<ValidationException> = sequenc
  * @see Sequence
  */
 inline fun validateLazy(block: LazyValidator.() -> Unit): Sequence<ValidationException> =
-    LazyValidator().apply(block).asViolationSequence()
+    LazyValidator()
+        .apply(block)
+        .asViolationSequence()
 
 /**
  * Converts a sequence of [ValidationException] instances to a [ValidationResult].
@@ -63,4 +66,3 @@ fun Sequence<ValidationException>.toValidationResult(): ValidationResult {
 
     return ValidationResult(violations)
 }
-

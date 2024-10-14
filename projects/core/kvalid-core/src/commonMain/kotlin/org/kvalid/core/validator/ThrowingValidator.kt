@@ -22,7 +22,10 @@ object ThrowingValidator : KValidContext {
      * @param predicate The predicate to validate the value.
      * @throws ValidationException with the given [message] if the [predicate] evaluates to `false`.
      */
-    override fun validate(message: String, predicate: Predicate) {
+    override fun validate(
+        message: String,
+        predicate: Predicate,
+    ) {
         if (!predicate()) {
             throw ValidationException(message)
         }

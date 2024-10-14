@@ -5,4 +5,6 @@ package org.kvalid.core.exception
  *
  * @property message failure message
  */
-class ValidationException(override val message: String) : Throwable()
+class ValidationException(
+    override val message: String,
+) : Throwable()

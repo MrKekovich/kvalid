@@ -210,7 +210,7 @@ interface NamedCollectionValidationContext : ValidationContext {
         message: String = "$name must not contain any of the following: [${elements.joinToString()}]",
     ): NamedCollection<T> {
         value.validate(message) { collection ->
-             elements.none { it in collection }
+            elements.none { it in collection }
         }
         return this
     }
@@ -271,5 +271,4 @@ interface NamedCollectionValidationContext : ValidationContext {
         value.validate(message) { it.none(predicate) }
         return this
     }
-
 }

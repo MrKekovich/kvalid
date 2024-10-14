@@ -32,7 +32,6 @@ typealias RuleCallback<T> = (T) -> Rule
  */
 typealias NamedValueRuleCallback<T> = (NamedValue<T>) -> Rule
 
-
 /**
  * Validation context. The core of all validation contexts.
  */
@@ -53,9 +52,7 @@ interface ValidationContext {
      *
      * @param rule The rule to validate.
      */
-    fun validate(
-        rule: Rule,
-    ) {
+    fun validate(rule: Rule) {
         validate(rule.failMessage) { rule.validate() }
     }
 
@@ -101,9 +98,7 @@ interface ValidationContext {
      *
      * @param ruleCallback The [RuleCallback] function that returns a rule based on the value.
      */
-    fun <T> T.validate(
-        ruleCallback: RuleCallback<T>,
-    ): T {
+    fun <T> T.validate(ruleCallback: RuleCallback<T>): T {
         validate(ruleCallback(this))
         return this
     }
@@ -114,9 +109,7 @@ interface ValidationContext {
      * @param ruleCallback The [RuleCallback] function that generates a validation rule based on the value.
      * @return This [NamedValue] instance after validation.
      */
-    fun <T> NamedValue<T>.validateValue(
-        ruleCallback: RuleCallback<T>,
-    ): NamedValue<T> {
+    fun <T> NamedValue<T>.validateValue(ruleCallback: RuleCallback<T>): NamedValue<T> {
         validate(ruleCallback(value))
         return this
     }
@@ -124,11 +117,10 @@ interface ValidationContext {
     /**
      * Validates the value using a rule callback function to generate a rule dynamically with a message.
      *
-     * @param ruleCallbackWithMessage The [NamedValueRuleCallback] function that returns a rule based on the [NamedValue].
+     * @param ruleCallbackWithMessage The [NamedValueRuleCallback] function
+     * that returns a rule based on the [NamedValue].
      */
-    fun <T> NamedValue<T>.validate(
-        ruleCallbackWithMessage: NamedValueRuleCallback<T>,
-    ): NamedValue<T> {
+    fun <T> NamedValue<T>.validate(ruleCallbackWithMessage: NamedValueRuleCallback<T>): NamedValue<T> {
         validate(ruleCallbackWithMessage(this))
         return this
     }

@@ -14,9 +14,13 @@ interface KValidContext :
      * @param predicate
      * @return Created [Rule]
      */
-    fun rule(message: String, predicate: Predicate): Rule = Rule(message, predicate).also {
-        validate(it)
-    }
+    fun rule(
+        message: String,
+        predicate: Predicate,
+    ): Rule =
+        Rule(message, predicate).also {
+            validate(it)
+        }
 
     /**
      * Uses [validate] with [Rule], that has specified [message] and always returns `false` on [Rule.validate].

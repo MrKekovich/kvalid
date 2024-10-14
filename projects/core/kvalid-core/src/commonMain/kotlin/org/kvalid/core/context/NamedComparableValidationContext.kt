@@ -8,7 +8,6 @@ typealias NamedComparable<T> = NamedValue<out Comparable<T>>
  * Named comparable validation context.
  */
 interface NamedComparableValidationContext : ValidationContext {
-
     /**
      * Validates that the comparable value is equal to the specified value.
      *

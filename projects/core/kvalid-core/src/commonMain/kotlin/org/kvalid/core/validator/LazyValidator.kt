@@ -24,7 +24,10 @@ open class LazyValidator : KValidContext {
      * @param message The failure message that will be used in the [Rule] creation.
      * @param predicate The predicate that will be used in the [Rule] creation.
      */
-    override fun validate(message: String, predicate: Predicate) {
+    override fun validate(
+        message: String,
+        predicate: Predicate,
+    ) {
         validate(Rule(message, predicate))
     }
 

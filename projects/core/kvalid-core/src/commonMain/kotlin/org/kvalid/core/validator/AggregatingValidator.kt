@@ -20,12 +20,16 @@ open class AggregatingValidator : KValidContext {
         get() = _violations.toList()
 
     /**
-     * Adds a [ValidationException] to [violations] with the specified [message] if the [predicate] evaluates to `false`.
+     * Adds a [ValidationException] to [violations]
+     * with the specified [message] if the [predicate] evaluates to `false`.
      *
      * @param message The failure message.
      * @param predicate The predicate to validate the value.
      */
-    override fun validate(message: String, predicate: Predicate) {
+    override fun validate(
+        message: String,
+        predicate: Predicate,
+    ) {
         if (!predicate()) {
             _violations.add(ValidationException(message))
         }

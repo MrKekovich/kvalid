@@ -17,9 +17,7 @@ interface NamedStringValidationContext : ValidationContext {
      *
      * @param message the failure message.
      */
-    fun NamedString.notBlank(
-        message: String = "$name must not be blank",
-    ): NamedString {
+    fun NamedString.notBlank(message: String = "$name must not be blank"): NamedString {
         value.validate(message) { it.isNotBlank() }
         return this
     }
@@ -163,8 +161,7 @@ interface NamedStringValidationContext : ValidationContext {
     fun NamedString.matches(
         pattern: String,
         message: String = "$name must match $pattern",
-    ): NamedString =
-        matches(Regex(pattern), message)
+    ): NamedString = matches(Regex(pattern), message)
 
     /**
      * Validates that the string does not match the specified regular expression pattern.
@@ -197,6 +194,5 @@ interface NamedStringValidationContext : ValidationContext {
     fun NamedString.notMatches(
         pattern: String,
         message: String = "$name must not match $pattern",
-    ): NamedString =
-        notMatches(Regex(pattern), message)
+    ): NamedString = notMatches(Regex(pattern), message)
 }

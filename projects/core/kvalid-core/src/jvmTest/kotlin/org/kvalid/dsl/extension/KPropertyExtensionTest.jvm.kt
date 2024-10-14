@@ -6,20 +6,23 @@ import io.kotest.matchers.shouldBe
 import org.kvalid.core.model.NamedValue
 import org.kvalid.dsl.exception.PropertyAccessException
 
-class KPropertyExtensionTestJvm : FunSpec({
-    test("toNamed") {
-        val instance = ClassJvm("test")
+class KPropertyExtensionTestJvm :
+    FunSpec({
+        test("toNamed") {
+            val instance = ClassJvm("test")
 
-        shouldThrow<PropertyAccessException> {
-            ClassJvm::prop.toNamed()
+            shouldThrow<PropertyAccessException> {
+                ClassJvm::prop.toNamed()
+            }
+
+            instance.run {
+                val named = ::prop.toNamed()
+
+                named shouldBe NamedValue("prop", prop)
+            }
         }
+    })
 
-        instance.run {
-            val named = ::prop.toNamed()
-
-            named shouldBe NamedValue("prop", prop)
-        }
-    }
-})
-
-private data class ClassJvm(val prop: String)
+private data class ClassJvm(
+    val prop: String,
+)

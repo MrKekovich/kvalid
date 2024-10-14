@@ -10,178 +10,179 @@ import org.kvalid.core.context.Contexts.failContext
 import org.kvalid.core.context.Contexts.successContext
 import org.kvalid.dsl.model.withName
 
-class NamedStringContextTest : FunSpec({
-    test("notBlank") {
-        checkAll(Arb.string().filter { it.isNotBlank() }) { value ->
-            successContext.run {
-                value.withName("not blank").notBlank()
+class NamedStringContextTest :
+    FunSpec({
+        test("notBlank") {
+            checkAll(Arb.string().filter { it.isNotBlank() }) { value ->
+                successContext.run {
+                    value.withName("not blank").notBlank()
+                }
+            }
+
+            checkAll(Arb.blankString()) { value ->
+                failContext.run {
+                    value.withName("blank").notBlank()
+                }
             }
         }
 
-        checkAll(Arb.blankString()) { value ->
-            failContext.run {
-                value.withName("blank").notBlank()
+        test("ofLength(Int)") {
+            val length = 5
+
+            checkAll(Arb.string(length)) { lengthString ->
+                successContext.run {
+                    lengthString.withName("test").ofLength(length)
+                }
             }
-        }
-    }
 
-    test("ofLength(Int)") {
-        val length = 5
-
-        checkAll(Arb.string(length)) { lengthString ->
-            successContext.run {
-                lengthString.withName("test").ofLength(length)
-            }
-        }
-
-        checkAll(Arb.string().filter { it.length != length }) { value ->
-            failContext.run {
-                value.withName("test").ofLength(length)
-            }
-        }
-    }
-
-    test("ofLength(range)") {
-        val length = 5..10
-
-        checkAll(Arb.string(length)) { lengthString ->
-            successContext.run {
-                lengthString.withName("test").ofLength(length)
+            checkAll(Arb.string().filter { it.length != length }) { value ->
+                failContext.run {
+                    value.withName("test").ofLength(length)
+                }
             }
         }
 
-        checkAll(Arb.string().filter { it.length !in length }) { value ->
-            failContext.run {
-                value.withName("test").ofLength(length)
+        test("ofLength(range)") {
+            val length = 5..10
+
+            checkAll(Arb.string(length)) { lengthString ->
+                successContext.run {
+                    lengthString.withName("test").ofLength(length)
+                }
             }
-        }
-    }
 
-    test("notOfLength(Int)") {
-        val length = 5
-
-        checkAll(Arb.string().filter { it.length != length }) { value ->
-            successContext.run {
-                value.withName("test").notOfLength(length)
-            }
-        }
-
-        checkAll(Arb.string(length)) { lengthString ->
-            failContext.run {
-                lengthString.withName("test").notOfLength(length)
-            }
-        }
-    }
-
-    test("notOfLength(range)") {
-        val length = 5..10
-
-        checkAll(Arb.string().filter { it.length !in length }) { value ->
-            successContext.run {
-                value.withName("test").notOfLength(length)
+            checkAll(Arb.string().filter { it.length !in length }) { value ->
+                failContext.run {
+                    value.withName("test").ofLength(length)
+                }
             }
         }
 
-        checkAll(Arb.string(length)) { value ->
-            failContext.run {
-                value.withName("test").notOfLength(length)
+        test("notOfLength(Int)") {
+            val length = 5
+
+            checkAll(Arb.string().filter { it.length != length }) { value ->
+                successContext.run {
+                    value.withName("test").notOfLength(length)
+                }
             }
-        }
-    }
 
-    test("minLength") {
-        val minLength = 5
-
-        checkAll(Arb.string(minLength..100)) { value ->
-            successContext.run {
-                value.withName("test").minLength(minLength)
-            }
-        }
-
-        checkAll(Arb.string(0..<minLength)) { value ->
-            failContext.run {
-                value.withName("test").minLength(minLength)
-            }
-        }
-    }
-
-    test("maxLength") {
-        val maxLength = 5
-
-        checkAll(Arb.string(0..maxLength).filter { it.length <= maxLength }) { value ->
-            successContext.run {
-                value.withName("test").maxLength(maxLength)
+            checkAll(Arb.string(length)) { lengthString ->
+                failContext.run {
+                    lengthString.withName("test").notOfLength(length)
+                }
             }
         }
 
-        checkAll(Arb.string(minSize = maxLength + 1)) { value ->
-            failContext.run {
-                value.withName("test").maxLength(maxLength)
+        test("notOfLength(range)") {
+            val length = 5..10
+
+            checkAll(Arb.string().filter { it.length !in length }) { value ->
+                successContext.run {
+                    value.withName("test").notOfLength(length)
+                }
             }
-        }
-    }
 
-    val digitsOnlyRegex = Regex("^[0-9]+$")
-
-    val passingStrings = listOf("123", "45", "789")
-    val failingStrings = listOf("abc", "123.4", "12 3", "12-3", "1a2")
-
-    test("matches(Regex)") {
-        passingStrings.forEach { value ->
-            successContext.run {
-                value.withName("test").matches(digitsOnlyRegex)
+            checkAll(Arb.string(length)) { value ->
+                failContext.run {
+                    value.withName("test").notOfLength(length)
+                }
             }
         }
 
-        failingStrings.forEach { value ->
-            failContext.run {
-                value.withName("test").matches(digitsOnlyRegex)
-            }
-        }
-    }
+        test("minLength") {
+            val minLength = 5
 
-    test("matches(String)") {
-        passingStrings.forEach { value ->
-            successContext.run {
-                value.withName("test").matches(digitsOnlyRegex.pattern)
+            checkAll(Arb.string(minLength..100)) { value ->
+                successContext.run {
+                    value.withName("test").minLength(minLength)
+                }
             }
-        }
 
-        failingStrings.forEach { value ->
-            failContext.run {
-                value.withName("test").matches(digitsOnlyRegex.pattern)
-            }
-        }
-    }
-
-    test("notMatches(Regex)") {
-        failingStrings.forEach { value ->
-            successContext.run {
-                value.withName("test").notMatches(digitsOnlyRegex)
+            checkAll(Arb.string(0..<minLength)) { value ->
+                failContext.run {
+                    value.withName("test").minLength(minLength)
+                }
             }
         }
 
-        passingStrings.forEach { value ->
-            failContext.run {
-                value.withName("test").notMatches(digitsOnlyRegex)
-            }
-        }
-    }
+        test("maxLength") {
+            val maxLength = 5
 
-    test("notMatches(String)") {
-        failingStrings.forEach { value ->
-            successContext.run {
-                value.withName("test").notMatches(digitsOnlyRegex.pattern)
+            checkAll(Arb.string(0..maxLength).filter { it.length <= maxLength }) { value ->
+                successContext.run {
+                    value.withName("test").maxLength(maxLength)
+                }
+            }
+
+            checkAll(Arb.string(minSize = maxLength + 1)) { value ->
+                failContext.run {
+                    value.withName("test").maxLength(maxLength)
+                }
             }
         }
 
-        passingStrings.forEach { value ->
-            failContext.run {
-                value.withName("test").notMatches(digitsOnlyRegex.pattern)
+        val digitsOnlyRegex = Regex("^[0-9]+$")
+
+        val passingStrings = listOf("123", "45", "789")
+        val failingStrings = listOf("abc", "123.4", "12 3", "12-3", "1a2")
+
+        test("matches(Regex)") {
+            passingStrings.forEach { value ->
+                successContext.run {
+                    value.withName("test").matches(digitsOnlyRegex)
+                }
+            }
+
+            failingStrings.forEach { value ->
+                failContext.run {
+                    value.withName("test").matches(digitsOnlyRegex)
+                }
             }
         }
-    }
-})
+
+        test("matches(String)") {
+            passingStrings.forEach { value ->
+                successContext.run {
+                    value.withName("test").matches(digitsOnlyRegex.pattern)
+                }
+            }
+
+            failingStrings.forEach { value ->
+                failContext.run {
+                    value.withName("test").matches(digitsOnlyRegex.pattern)
+                }
+            }
+        }
+
+        test("notMatches(Regex)") {
+            failingStrings.forEach { value ->
+                successContext.run {
+                    value.withName("test").notMatches(digitsOnlyRegex)
+                }
+            }
+
+            passingStrings.forEach { value ->
+                failContext.run {
+                    value.withName("test").notMatches(digitsOnlyRegex)
+                }
+            }
+        }
+
+        test("notMatches(String)") {
+            failingStrings.forEach { value ->
+                successContext.run {
+                    value.withName("test").notMatches(digitsOnlyRegex.pattern)
+                }
+            }
+
+            passingStrings.forEach { value ->
+                failContext.run {
+                    value.withName("test").notMatches(digitsOnlyRegex.pattern)
+                }
+            }
+        }
+    })
 
 /**
  * Generates a blank string of length between [minLength] and [maxLength].
@@ -191,7 +192,10 @@ class NamedStringContextTest : FunSpec({
  * @param minLength min length.
  * @param maxLength max length.
  */
-private fun Arb.Companion.blankString(minLength: Int = 0, maxLength: Int = 100): Arb<String> {
+private fun Arb.Companion.blankString(
+    minLength: Int = 0,
+    maxLength: Int = 100,
+): Arb<String> {
     val size = maxLength - minLength
 
     return List(size) {
@@ -199,33 +203,34 @@ private fun Arb.Companion.blankString(minLength: Int = 0, maxLength: Int = 100):
     }.exhaustive().toArb()
 }
 
-private val whitespaceChars = listOf(
-    '\u0009',
-    '\u000A',
-    '\u000B',
-    '\u000C',
-    '\u000D',
-    '\u001C',
-    '\u001D',
-    '\u001E',
-    '\u001F',
-    '\u0020',
-    '\u00A0',
-    '\u1680',
-    '\u2000',
-    '\u2001',
-    '\u2002',
-    '\u2003',
-    '\u2004',
-    '\u2005',
-    '\u2006',
-    '\u2007',
-    '\u2008',
-    '\u2009',
-    '\u200A',
-    '\u2028',
-    '\u2029',
-    '\u202F',
-    '\u205F',
-    '\u3000'
-)
+private val whitespaceChars =
+    listOf(
+        '\u0009',
+        '\u000A',
+        '\u000B',
+        '\u000C',
+        '\u000D',
+        '\u001C',
+        '\u001D',
+        '\u001E',
+        '\u001F',
+        '\u0020',
+        '\u00A0',
+        '\u1680',
+        '\u2000',
+        '\u2001',
+        '\u2002',
+        '\u2003',
+        '\u2004',
+        '\u2005',
+        '\u2006',
+        '\u2007',
+        '\u2008',
+        '\u2009',
+        '\u200A',
+        '\u2028',
+        '\u2029',
+        '\u202F',
+        '\u205F',
+        '\u3000',
+    )

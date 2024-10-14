@@ -12,8 +12,7 @@ import org.kvalid.core.validator.ThrowingValidator
  * @return [Unit] if the validation succeeds.
  * @throws ValidationException if the validation fails.
  */
-inline fun throwOnFailure(block: ThrowingValidator.() -> Unit): Unit =
-    ThrowingValidator(block)
+inline fun throwOnFailure(block: ThrowingValidator.() -> Unit): Unit = ThrowingValidator(block)
 
 /**
  * Validates using `fail fast` functionality with a [ThrowingValidator].
@@ -22,9 +21,10 @@ inline fun throwOnFailure(block: ThrowingValidator.() -> Unit): Unit =
  * @param block The block of validation conditions to execute.
  * @return [ValidationResult] indicating success or failure of the validation.
  */
-inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult = try {
-    throwOnFailure(block)
-    ValidationResult.valid()
-} catch (violation: ValidationException) {
-    ValidationResult.invalid(violation)
-}
+inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
+    try {
+        throwOnFailure(block)
+        ValidationResult.valid()
+    } catch (violation: ValidationException) {
+        ValidationResult.invalid(violation)
+    }

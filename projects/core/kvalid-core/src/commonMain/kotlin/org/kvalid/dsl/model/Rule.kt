@@ -15,7 +15,10 @@ import org.kvalid.core.model.Rule
  * @param predicate The [Predicate] function to validate against.
  * @return The created [Rule] instance.
  */
-fun createRule(message: String, predicate: Predicate): Rule = Rule(message, predicate)
+fun createRule(
+    message: String,
+    predicate: Predicate,
+): Rule = Rule(message, predicate)
 
 /**
  * Creates a new [RuleCallback] with the given [message] and [ValuePredicate].
@@ -35,9 +38,13 @@ fun createRule(message: String, predicate: Predicate): Rule = Rule(message, pred
  * @param T the type of the value, that should [predicate] take.
  * @return A callback function that creates a Rule instance based on the provided [T] value.
  */
-fun <T> createRule(message: String, predicate: ValuePredicate<T>): RuleCallback<T> = {
-    Rule(message) { predicate(it) }
-}
+fun <T> createRule(
+    message: String,
+    predicate: ValuePredicate<T>,
+): RuleCallback<T> =
+    {
+        Rule(message) { predicate(it) }
+    }
 
 /**
  * Creates a new [NamedValueRuleCallback] using a [MessageCallback] and a [ValuePredicate].
@@ -59,12 +66,17 @@ fun <T> createRule(message: String, predicate: ValuePredicate<T>): RuleCallback<
  * @param message The [MessageCallback] function that generates the failure message based on the [NamedValue].
  * @param predicate The [ValuePredicate] function to validate against the [NamedValue.value].
  * @param T the type of the value, that should both predicates take.
- * @return A [NamedValueRuleCallback] that takes a [NamedValue] and returns a [Rule] instance based on the provided message and predicate.
+ * @return A [NamedValueRuleCallback] that takes a [NamedValue]
+ * and returns a [Rule] instance based on the provided message and predicate.
  * @see NamedValue
  */
-fun <T> createRule(message: MessageCallback<T>, predicate: ValuePredicate<T>): NamedValueRuleCallback<T> = {
-    Rule(message(it)) { predicate(it.value) }
-}
+fun <T> createRule(
+    message: MessageCallback<T>,
+    predicate: ValuePredicate<T>,
+): NamedValueRuleCallback<T> =
+    {
+        Rule(message(it)) { predicate(it.value) }
+    }
 
 /**
  * Creates new [Rule] instance with negated [Rule.validate] and existing [Rule.failMessage].

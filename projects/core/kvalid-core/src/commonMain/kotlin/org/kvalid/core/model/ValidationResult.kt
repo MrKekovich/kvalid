@@ -10,7 +10,7 @@ import kotlin.jvm.JvmInline
  */
 @JvmInline
 value class ValidationResult(
-    val violations: List<ValidationException>
+    val violations: List<ValidationException>,
 ) {
     /**
      * Indicates whether the validation result is valid (i.e., no violations).
@@ -64,7 +64,10 @@ value class ValidationResult(
          * @param violations The error messages.
          * @return A [ValidationResult] with the specified error messages converted to [ValidationException]s.
          */
-        fun invalid(vararg violations: String): ValidationResult = ValidationResult(violations.map { ValidationException(it) })
+        fun invalid(vararg violations: String): ValidationResult =
+            ValidationResult(
+                violations.map { ValidationException(it) },
+            )
 
         /**
          * Combines multiple [ValidationResult]s into a single [ValidationResult].
@@ -110,13 +113,14 @@ value class ValidationResult(
      */
     inline fun <T> fold(
         onValid: () -> T,
-        onInvalid: (List<ValidationException>) -> T
+        onInvalid: (List<ValidationException>) -> T,
     ): T = if (isValid) onValid() else onInvalid(violations)
 
     /**
      * Represents the type of validation result.
      */
     enum class Type {
-        VALID, INVALID
+        VALID,
+        INVALID,
     }
 }
