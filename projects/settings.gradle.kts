@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 }
 
 include(
-    ":core:kvalid-core"
+    ":core:kverify-core",
 )

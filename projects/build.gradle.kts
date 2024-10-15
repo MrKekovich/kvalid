@@ -8,8 +8,8 @@ allprojects {
         mavenLocal()
     }
 
-    val kvalidVersion: String by project
+    val kverifyVersion: String by project
 
-    group = "org.kvalid"
-    version = kvalidVersion
+    group = "io.github.kverify"
+    version = kverifyVersion
 }
