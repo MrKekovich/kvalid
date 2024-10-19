@@ -39,26 +39,20 @@ kotlin {
     linuxArm64()
 
     sourceSets {
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotest.framework.engine)
-                implementation(libs.kotest.property)
-                implementation(kotlin("test"))
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-            }
+        commonTest.dependencies {
+            implementation(libs.kotest.framework.engine)
+            implementation(libs.kotest.property)
+            implementation(kotlin("test"))
+            implementation(kotlin("test-common"))
+            implementation(kotlin("test-annotations-common"))
         }
 
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("reflect"))
-            }
+        jvmMain.dependencies {
+            implementation(kotlin("reflect"))
         }
 
-        val jvmTest by getting {
-            dependencies {
-                implementation(libs.kotest.runner.junit5)
-            }
+        jvmTest.dependencies {
+            implementation(libs.kotest.runner.junit5)
         }
     }
 }
