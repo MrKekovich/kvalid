@@ -5,7 +5,7 @@ import kotlin.test.assertTrue
 
 object Contexts {
     val successContext =
-        object : KVerifyContext {
+        object : ValidationContext {
             override fun validate(
                 message: String,
                 predicate: Predicate,
@@ -15,7 +15,7 @@ object Contexts {
         }
 
     val failContext =
-        object : KVerifyContext {
+        object : ValidationContext {
             override fun validate(
                 message: String,
                 predicate: Predicate,

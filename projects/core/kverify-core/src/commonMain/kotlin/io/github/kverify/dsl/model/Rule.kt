@@ -1,86 +1,61 @@
 package io.github.kverify.dsl.model
 
-import io.github.kverify.core.context.MessageCallback
-import io.github.kverify.core.context.NamedValueRuleCallback
-import io.github.kverify.core.context.Predicate
-import io.github.kverify.core.context.RuleCallback
-import io.github.kverify.core.context.ValuePredicate
+import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 
 /**
- * Creates a new validation rule with the given [message] and [predicate].
+ * Create rule that will be compatible with values of type [T]
  *
- * @param message The failure message if the rule's predicate fails.
- * @param predicate The [Predicate] function to validate against.
- * @return The created [Rule] instance.
+ * @param T The type of the value that will be passed to [predicate]
+ * @see ValidationContext.validate
+ */
+fun <T> createRule(predicate: ValidationContext.(T) -> Unit): Rule<T> =
+    Rule(
+        predicate,
+    )
+
+/**
+ * Create rule that will be compatible with [NamedValue] of type [T]
+ *
+ * @param T The type of the value that will be passed to [predicate] wrapped in [NamedValue]
+ * @see ValidationContext.validate
+ */
+fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): Rule<NamedValue<T>> =
+    Rule(
+        predicate,
+    )
+
+/**
+ * Create rule that will execute [ValidationContext.validate]
+ * with the given [message] and [predicate]
+ *
+ * @param T The type of the value that will be passed to [predicate]
+ * @param message The failure message
+ * @see ValidationContext.validate
+ */
+fun <T> createRule(
+    message: String,
+    predicate: (T) -> Boolean,
+): Rule<T> =
+    Rule {
+        validate(message) { predicate(it) }
+    }
+
+/**
+ * Create rule that will execute [ValidationContext.validate]
+ * with the given [message] and [predicate]
+ *
+ * **Does not take any value**
+ *
+ * @param message The failure message
+ * @param predicate
+ * @see ValidationContext.validate
  */
 fun createRule(
     message: String,
-    predicate: Predicate,
-): Rule = Rule(message, predicate)
-
-/**
- * Creates a new [RuleCallback] with the given [message] and [ValuePredicate].
- *
- * **Example**:
- * ```
- * val rule = createRule<Int>("Value must be positive") { it > 0 }
- * throwOnFailure {
- *     1.validate(rule) // (1 > 0) == true // passes
- *     0.validate(rule) // (0 > 0) == false // fails
- * }
- *
- * ```
- *
- * @param message The failure message if the rule's predicate fails.
- * @param predicate The validation predicate function, that takes a value of type [T] to validate against.
- * @param T the type of the value, that should [predicate] take.
- * @return A callback function that creates a Rule instance based on the provided [T] value.
- */
-fun <T> createRule(
-    message: String,
-    predicate: ValuePredicate<T>,
-): RuleCallback<T> =
-    {
-        Rule(message) { predicate(it) }
+    predicate: () -> Boolean,
+): Rule<Unit> =
+    Rule {
+        validate(message) { predicate() }
     }
-
-/**
- * Creates a new [NamedValueRuleCallback] using a [MessageCallback] and a [ValuePredicate].
- *
- * **Example**:
- *
- * ```
- * val rule = createRule<String>(
- *     message = { "'${it.name}' must not be equal to 'test'. Value: '${it.value}'" },
- *     predicate = { it.value != "test" }
- * )
- * throwOnFailure {
- *     NamedValue("example", "notTest").validate(rule) // passes: "notTest" != "test"
- *     NamedValue("example", "test").validate(rule) // fails: "test" == "test"
- *     // message generated: "'example' must not be equal to 'test'. Value: 'notTest'"
- * }
- * ```
- *
- * @param message The [MessageCallback] function that generates the failure message based on the [NamedValue].
- * @param predicate The [ValuePredicate] function to validate against the [NamedValue.value].
- * @param T the type of the value, that should both predicates take.
- * @return A [NamedValueRuleCallback] that takes a [NamedValue]
- * and returns a [Rule] instance based on the provided message and predicate.
- * @see NamedValue
- */
-fun <T> createRule(
-    message: MessageCallback<T>,
-    predicate: ValuePredicate<T>,
-): NamedValueRuleCallback<T> =
-    {
-        Rule(message(it)) { predicate(it.value) }
-    }
-
-/**
- * Creates new [Rule] instance with negated [Rule.validate] and existing [Rule.failMessage].
- *
- * @return new [Rule] instance.
- */
-operator fun Rule.not(): Rule = Rule(failMessage) { !validate() }

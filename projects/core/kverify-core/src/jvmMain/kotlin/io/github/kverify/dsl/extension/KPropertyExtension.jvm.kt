@@ -25,17 +25,26 @@ fun <T> KProperty<T>.toNamed(): NamedValue<T> =
         val original = getter.isAccessible
 
         getter.isAccessible = true
-        val named = NamedValue(name, getter.call())
+
+        val named =
+            NamedValue(
+                name,
+                getter.call(),
+            )
+
         getter.isAccessible = original
 
         named
     } catch (e: IllegalArgumentException) {
-        throw io.github.kverify.dsl.exception.PropertyAccessException(
-            "Cannot access value of the property '$name' without an instance. Hint: Use `instance::prop` instead of `Class::prop`",
+        throw PropertyAccessException(
+            """
+            Cannot access value of the property '$name' without an instance.
+            Hint: Use `instance::prop` instead of `Class::prop`
+            """.trimIndent(),
             e,
         )
     } catch (e: IllegalAccessException) {
-        throw io.github.kverify.dsl.exception.PropertyAccessException(
+        throw PropertyAccessException(
             "Illegal access to the property '$name'. Ensure the property is accessible and belongs to an instance.",
             e,
         )

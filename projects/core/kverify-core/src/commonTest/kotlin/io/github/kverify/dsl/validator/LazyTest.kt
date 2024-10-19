@@ -7,20 +7,21 @@ class LazyTest :
     FunSpec({
         test("validateLazy") {
             var executionCount = 0
+            val message = "fail"
 
             val result =
-                validateLazy {
-                    rule("fail") {
+                validateLazily {
+                    validate(message) {
                         executionCount++
                         false
                     }
 
-                    rule("fail") {
+                    validate(message) {
                         executionCount++
                         false
                     }
 
-                    rule("success") {
+                    validate("should not fail") {
                         executionCount++
                         true
                     }
@@ -28,9 +29,9 @@ class LazyTest :
 
             executionCount shouldBe 0
 
-            result.forEachIndexed { idx, exception ->
-                exception.message shouldBe "fail"
-                executionCount shouldBe idx + 1
+            result.forEachIndexed { index, validationException ->
+                validationException.message shouldBe message
+                executionCount shouldBe index + 1
             }
 
             executionCount shouldBe 3

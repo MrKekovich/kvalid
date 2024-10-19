@@ -119,3 +119,9 @@ mavenPublishing {
 
     signAllPublications()
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}

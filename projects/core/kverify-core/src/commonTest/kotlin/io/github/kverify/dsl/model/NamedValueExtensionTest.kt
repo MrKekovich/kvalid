@@ -1,9 +1,6 @@
-package io.github.kverify.dsl.extension
+package io.github.kverify.dsl.model
 
 import io.github.kverify.core.model.NamedValue
-import io.github.kverify.dsl.model.nested
-import io.github.kverify.dsl.model.withName
-import io.github.kverify.dsl.model.withValue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
@@ -29,8 +26,8 @@ class NamedValueExtensionTest :
                 val user = User(userName, userSurname)
 
                 user.withName("user").nested {
-                    name shouldBe userName
-                    surname shouldBe userSurname
+                    it.name shouldBe userName
+                    it.surname shouldBe userSurname
                 }
             }
         }

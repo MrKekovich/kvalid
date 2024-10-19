@@ -1,13 +1,13 @@
 package io.github.kverify.core.validator
 
-import io.github.kverify.core.context.KVerifyContext
 import io.github.kverify.core.context.Predicate
+import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.exception.ValidationException
 
 /**
  * An implementation of KVerifyContext that immediately throws exceptions for validation failures.
  */
-object ThrowingValidator : KVerifyContext {
+object ThrowingValidator : ValidationContext {
     /**
      * Executes the given validation block.
      *

@@ -1,37 +1,63 @@
 package io.github.kverify.dsl.model
 
-import io.github.kverify.core.model.NamedValue
+import io.github.kverify.core.context.Contexts.failContext
+import io.github.kverify.core.context.Contexts.successContext
+import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
 class RuleTest :
     FunSpec({
         test("createRule") {
-            val rule = createRule("test") { true }
+            val message = "test"
+            val rule = createRule(message) { true }
 
-            rule.failMessage shouldBe "test"
-            rule.validate() shouldBe true
+            successContext.run { validate(rule) }
+
+            shouldFail {
+                failContext.run { validate(rule) }
+            }.message shouldBe message
         }
 
-        test("createRule<T>") {
-            val callback = createRule<String>("test") { it.isNotBlank() }
+        test("createRule<T>(predicate)") {
+            val message = "test"
+            val rule =
+                createRule<String> {
+                    validate(message) { true }
+                }
+
+            successContext.run { "".validate(rule) }
+
+            shouldFail {
+                failContext.run { "".validate(rule) }
+            }.message shouldBe message
+        }
+
+        test("createRule<T>(message, predicate)") {
+            val message = "test"
+            val rule = createRule<String>(message) { true }
+
+            successContext.run { "".validate(rule) }
+
+            shouldFail {
+                failContext.run { "".validate(rule) }
+            }.message shouldBe message
+        }
+
+        test("createNamedRule") {
+            val name = "test"
             val value = "test"
-            val rule = callback(value)
+            val namedValue = name withValue value
 
-            rule.failMessage shouldBe "test"
-            rule.validate() shouldBe true
-        }
+            val rule =
+                createNamedRule<String> {
+                    validate("${it.name}=${it.value}") { true }
+                }
 
-        test("createRule(MessageCallback)") {
-            val callback =
-                createRule<String>(
-                    message = { "${it.name} must not be blank" },
-                    predicate = { it.isNotBlank() },
-                )
-            val namedValue = NamedValue("name", "test")
-            val rule = callback(namedValue)
+            successContext.run { namedValue.validate(rule) }
 
-            rule.failMessage shouldBe "name must not be blank"
-            rule.validate() shouldBe true
+            shouldFail {
+                failContext.run { namedValue.validate(rule) }
+            }.message shouldBe "$name=$value"
         }
     })

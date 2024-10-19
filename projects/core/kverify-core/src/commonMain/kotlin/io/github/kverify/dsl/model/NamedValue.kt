@@ -29,7 +29,7 @@ infix fun <T> String.withValue(value: T): NamedValue<T> = NamedValue(this, value
  * @param block The block of code to execute with the value as the receiver.
  * @return The original [NamedValue].
  */
-inline fun <T> NamedValue<T>.nested(block: T.() -> Unit): NamedValue<T> {
-    value.block()
+inline fun <T> NamedValue<T>.nested(block: (T) -> Unit): NamedValue<T> {
+    block(value)
     return this
 }

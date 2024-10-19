@@ -12,7 +12,7 @@ import io.github.kverify.core.validator.ThrowingValidator
  * @return [Unit] if the validation succeeds.
  * @throws ValidationException if the validation fails.
  */
-inline fun throwOnFailure(block: ThrowingValidator.() -> Unit): Unit = ThrowingValidator(block)
+inline fun validateOrThrow(block: ThrowingValidator.() -> Unit): Unit = ThrowingValidator(block)
 
 /**
  * Validates using `fail fast` functionality with a [ThrowingValidator].
@@ -23,7 +23,7 @@ inline fun throwOnFailure(block: ThrowingValidator.() -> Unit): Unit = ThrowingV
  */
 inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
     try {
-        throwOnFailure(block)
+        validateOrThrow(block)
         ValidationResult.valid()
     } catch (violation: ValidationException) {
         ValidationResult.invalid(violation)

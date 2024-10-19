@@ -18,8 +18,8 @@ typealias ViolationSequence = Sequence<ValidationException>
  */
 fun LazyValidator.asViolationSequence(): Sequence<ValidationException> =
     sequence {
-        for (rule in rules) {
-            if (!rule.validate()) yield(ValidationException(rule.failMessage))
+        for ((failureMessage, predicate) in rules) {
+            if (!predicate()) yield(ValidationException(failureMessage))
         }
     }
 
@@ -51,7 +51,7 @@ fun LazyValidator.asViolationSequence(): Sequence<ValidationException> =
  * @see ValidationException
  * @see Sequence
  */
-inline fun validateLazy(block: LazyValidator.() -> Unit): Sequence<ValidationException> =
+inline fun validateLazily(block: LazyValidator.() -> Unit): Sequence<ValidationException> =
     LazyValidator()
         .apply(block)
         .asViolationSequence()

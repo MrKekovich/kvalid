@@ -1,6 +1,7 @@
 package io.github.kverify.dsl.validator
 
 import io.github.kverify.core.exception.ValidationException
+import io.github.kverify.dsl.extension.violation
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -8,27 +9,24 @@ import kotlin.test.fail
 
 class ImmediateTest :
     FunSpec({
-        test("throwOnFailure") {
-            val exception =
-                shouldThrow<ValidationException> {
-                    throwOnFailure {
-                        violation("fail")
-                    }
-                }
-
-            exception.message shouldBe "fail"
+        test("validateOrThrow") {
+            shouldThrow<ValidationException> {
+                validateOrThrow { violation("fail") }
+            }.message shouldBe "fail"
         }
 
         test("validateFirst") {
+            val message = "fail"
+
             val result =
                 validateFirst {
-                    rule("fail") { false }
-                    rule("should not be executed") { false }
+                    validate(message) { false }
+                    validate("should not be executed") { false }
                 }.onValid { fail("Validation should fail") }
+                    .violations
+                    .also { it.size shouldBe 1 }
+                    .first()
 
-            result.violations.size shouldBe 1
-            result.violations.forEach {
-                it.message shouldBe "fail"
-            }
+            result.message shouldBe message
         }
     })
