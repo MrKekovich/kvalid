@@ -3,10 +3,11 @@ package io.github.kverify.rule.named
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 import io.github.kverify.dsl.model.createNamedRule
-import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.ComparableRules
+import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.ComparableRuleType
 
+@Suppress("TooManyFunctions")
 class NamedComparableRules(
     private val localization: RuleLocalization,
 ) {

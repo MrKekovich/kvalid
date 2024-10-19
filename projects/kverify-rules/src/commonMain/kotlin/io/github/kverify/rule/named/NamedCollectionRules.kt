@@ -3,10 +3,11 @@ package io.github.kverify.rule.named
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 import io.github.kverify.dsl.model.createNamedRule
-import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.CollectionRules
+import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.CollectionRuleType
 
+@Suppress("TooManyFunctions")
 class NamedCollectionRules(
     private val localization: RuleLocalization,
 ) {

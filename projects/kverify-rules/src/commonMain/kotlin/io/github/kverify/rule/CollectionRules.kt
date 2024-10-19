@@ -2,6 +2,7 @@ package io.github.kverify.rule
 
 private typealias CollectionPredicate<T> = (Collection<T>) -> Boolean
 
+@Suppress("TooManyFunctions")
 object CollectionRules {
     fun ofSize(size: Int): CollectionPredicate<*> =
         {
