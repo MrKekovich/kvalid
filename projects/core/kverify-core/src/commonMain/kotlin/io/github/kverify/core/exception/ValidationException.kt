@@ -7,4 +7,5 @@ package io.github.kverify.core.exception
  */
 class ValidationException(
     override val message: String,
+    override val cause: Throwable? = null,
 ) : Throwable()
