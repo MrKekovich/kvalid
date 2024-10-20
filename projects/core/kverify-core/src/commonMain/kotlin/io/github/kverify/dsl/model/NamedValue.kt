@@ -21,15 +21,29 @@ infix fun <T> T.withName(name: String): NamedValue<T> = NamedValue(name, this)
 infix fun <T> String.withValue(value: T): NamedValue<T> = NamedValue(this, value)
 
 /**
- * Executes the given block of code using the [NamedValue.value] as the receiver.
+ * Executes the given block of code using the [NamedValue.value] as the parameter.
  *
  * This allows for nested operations on the value while maintaining the original [NamedValue].
  *
  * @param T The type of the value.
- * @param block The block of code to execute with the value as the receiver.
+ * @param block The block of code to execute with the `value` as the parameter.
  * @return The original [NamedValue].
  */
 inline fun <T> NamedValue<T>.nested(block: (T) -> Unit): NamedValue<T> {
     block(value)
+    return this
+}
+
+/**
+ * Executes the given block of code using the [NamedValue.value] as the parameter if the [NamedValue.value] is not null.
+ *
+ * This allows for nested operations on the value while maintaining the original [NamedValue].
+ *
+ * @param T The type of the value.
+ * @param block The block of code to execute with the non-null `value` as the parameter.
+ * @return The original [NamedValue].
+ */
+inline infix fun <T> NamedValue<T?>.ifNotNull(block: (T) -> Unit): NamedValue<T?> {
+    if (value != null) block(value)
     return this
 }
