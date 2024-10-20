@@ -1,75 +1,74 @@
 package io.github.kverify.rule
 
-private typealias CollectionPredicate<T> = (Collection<T>) -> Boolean
-
 @Suppress("TooManyFunctions")
 object CollectionRules {
-    fun ofSize(size: Int): CollectionPredicate<*> =
+    fun <C : Collection<*>> ofSize(size: Int): Predicate<C> =
         {
             it.size == size
         }
 
-    fun notOfSize(size: Int): CollectionPredicate<*> =
+    fun <C : Collection<*>> notOfSize(size: Int): Predicate<C> =
         {
             it.size != size
         }
 
-    fun sizeBetween(range: IntRange): CollectionPredicate<*> =
+    fun <C : Collection<*>> sizeBetween(range: IntRange): Predicate<C> =
         {
             it.size in range
         }
 
-    fun sizeNotBetween(range: IntRange): CollectionPredicate<*> =
+    fun <C : Collection<*>> sizeNotBetween(range: IntRange): Predicate<C> =
         {
             it.size !in range
         }
 
-    fun sizeBetween(
+    fun <C : Collection<*>> sizeBetween(
         min: Int,
         max: Int,
-    ): CollectionPredicate<*> =
+    ): Predicate<C> =
         sizeBetween(
             min..max,
         )
 
-    fun sizeNotBetween(
+    fun <C : Collection<*>> sizeNotBetween(
         min: Int,
         max: Int,
-    ): CollectionPredicate<*> =
+    ): Predicate<C> =
         sizeNotBetween(
             min..max,
         )
 
-    fun <T> containsAll(elements: Collection<T>): CollectionPredicate<T> =
+    fun <T, C : Collection<T>> containsAll(elements: Collection<T>): Predicate<C> =
         { collection ->
             collection.containsAll(elements)
         }
 
-    fun <T> containsNone(elements: Collection<T>): CollectionPredicate<T> =
+    fun <T, C : Collection<T>> containsNone(elements: Collection<T>): Predicate<C> =
         { collection ->
             elements.none { it in collection }
         }
 
-    fun <T> contains(element: T): CollectionPredicate<T> =
+    fun <T, C : Collection<T>> contains(element: T): Predicate<C> =
         {
             it.contains(element)
         }
 
-    fun <T> notContains(element: T): CollectionPredicate<T> =
+    fun <T, C : Collection<T>> notContains(element: T): Predicate<C> =
         {
             !it.contains(element)
         }
 
-    fun <T> containsOnly(allowedElements: Collection<T>): CollectionPredicate<T> =
+    fun <T, C : Collection<T>> containsOnly(allowedElements: Collection<T>): Predicate<C> =
         {
             it.all { element -> element in allowedElements }
         }
 
-    val notEmpty: CollectionPredicate<*> = {
-        it.isNotEmpty()
-    }
+    fun <C : Collection<*>> notEmpty(): Predicate<C> =
+        {
+            it.isNotEmpty()
+        }
 
-    val distinct: CollectionPredicate<*> =
+    fun <C : Collection<*>> distinct(): Predicate<C> =
         {
             it.size == it.distinct().size
         }

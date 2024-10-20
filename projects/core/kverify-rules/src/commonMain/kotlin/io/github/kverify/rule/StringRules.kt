@@ -1,6 +1,6 @@
 package io.github.kverify.rule
 
-private typealias StringPredicate = (String) -> Boolean
+private typealias StringPredicate = Predicate<String>
 
 @Suppress("TooManyFunctions")
 object StringRules {
@@ -111,31 +111,38 @@ object StringRules {
             it.endsWith(suffix, ignoreCase)
         }
 
-    val alphabetic: StringPredicate = {
-        it.all { char -> char.isLetter() }
-    }
+    fun alphabetic(): StringPredicate =
+        {
+            it.all { char -> char.isLetter() }
+        }
 
-    val alphanumeric: StringPredicate = { str ->
-        str.all { char -> char.isLetterOrDigit() }
-    }
+    fun alphanumeric(): StringPredicate =
+        { str ->
+            str.all { char -> char.isLetterOrDigit() }
+        }
 
-    val notBlank: StringPredicate = {
-        it.isNotBlank()
-    }
+    fun notBlank(): StringPredicate =
+        {
+            it.isNotBlank()
+        }
 
-    val notEmpty: StringPredicate = {
-        it.isNotEmpty()
-    }
+    fun notEmpty(): StringPredicate =
+        {
+            it.isNotEmpty()
+        }
 
-    val lowerCase: StringPredicate = {
-        it.all { char -> char.isLowerCase() }
-    }
+    fun lowerCase(): StringPredicate =
+        {
+            it.all { char -> char.isLowerCase() }
+        }
 
-    val upperCase: StringPredicate = {
-        it.all { char -> char.isUpperCase() }
-    }
+    fun upperCase(): StringPredicate =
+        {
+            it.all { char -> char.isUpperCase() }
+        }
 
-    val numeric: StringPredicate = {
-        it.all { char -> char.isDigit() }
-    }
+    fun numeric(): StringPredicate =
+        {
+            it.all { char -> char.isDigit() }
+        }
 }

@@ -246,7 +246,7 @@ class NamedStringRules(
             }
         }
 
-    val alphabetic: Rule<NamedValue<String>> =
+    fun alphabetic(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -254,11 +254,11 @@ class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.alphabetic.invoke(namedValue.value)
+                StringRules.alphabetic().invoke(namedValue.value)
             }
         }
 
-    val alphanumeric: Rule<NamedValue<String>> =
+    fun alphanumeric(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -266,11 +266,11 @@ class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.alphanumeric.invoke(namedValue.value)
+                StringRules.alphanumeric().invoke(namedValue.value)
             }
         }
 
-    val notBlank: Rule<NamedValue<String>> =
+    fun notBlank(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -278,11 +278,11 @@ class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.notBlank.invoke(namedValue.value)
+                StringRules.notBlank().invoke(namedValue.value)
             }
         }
 
-    val notEmpty: Rule<NamedValue<String>> =
+    fun notEmpty(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -290,11 +290,11 @@ class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.notEmpty.invoke(namedValue.value)
+                StringRules.notEmpty().invoke(namedValue.value)
             }
         }
 
-    val lowerCase: Rule<NamedValue<String>> =
+    fun lowerCase(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -302,11 +302,11 @@ class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.lowerCase.invoke(namedValue.value)
+                StringRules.lowerCase().invoke(namedValue.value)
             }
         }
 
-    val upperCase: Rule<NamedValue<String>> =
+    fun upperCase(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -314,11 +314,11 @@ class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.upperCase.invoke(namedValue.value)
+                StringRules.upperCase().invoke(namedValue.value)
             }
         }
 
-    val numeric: Rule<NamedValue<String>> =
+    fun numeric(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -326,7 +326,7 @@ class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.numeric.invoke(namedValue.value)
+                StringRules.numeric().invoke(namedValue.value)
             }
         }
 }

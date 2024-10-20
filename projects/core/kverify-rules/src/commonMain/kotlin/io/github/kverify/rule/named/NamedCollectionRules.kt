@@ -12,7 +12,7 @@ import io.github.kverify.rule.type.CollectionRuleType
 class NamedCollectionRules(
     private val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
-    fun ofSize(size: Int): Rule<NamedValue<Collection<*>>> =
+    fun <C : Collection<*>> ofSize(size: Int): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -20,11 +20,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.ofSize(size).invoke(namedValue.value)
+                CollectionRules.ofSize<C>(size).invoke(namedValue.value)
             }
         }
 
-    fun notOfSize(size: Int): Rule<NamedValue<Collection<*>>> =
+    fun <C : Collection<*>> notOfSize(size: Int): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -32,11 +32,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.notOfSize(size).invoke(namedValue.value)
+                CollectionRules.notOfSize<C>(size).invoke(namedValue.value)
             }
         }
 
-    fun sizeBetween(range: IntRange): Rule<NamedValue<Collection<*>>> =
+    fun <C : Collection<*>> sizeBetween(range: IntRange): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -44,11 +44,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.sizeBetween(range).invoke(namedValue.value)
+                CollectionRules.sizeBetween<C>(range).invoke(namedValue.value)
             }
         }
 
-    fun sizeNotBetween(range: IntRange): Rule<NamedValue<Collection<*>>> =
+    fun <C : Collection<*>> sizeNotBetween(range: IntRange): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -56,14 +56,14 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.sizeNotBetween(range).invoke(namedValue.value)
+                CollectionRules.sizeNotBetween<C>(range).invoke(namedValue.value)
             }
         }
 
-    fun sizeBetween(
+    fun <C : Collection<*>> sizeBetween(
         min: Int,
         max: Int,
-    ): Rule<NamedValue<Collection<*>>> =
+    ):  Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -71,14 +71,14 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.sizeBetween(min, max).invoke(namedValue.value)
+                CollectionRules.sizeBetween<C>(min, max).invoke(namedValue.value)
             }
         }
 
-    fun sizeNotBetween(
+    fun <C : Collection<*>> sizeNotBetween(
         min: Int,
         max: Int,
-    ): Rule<NamedValue<Collection<*>>> =
+    ):  Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -86,11 +86,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.sizeNotBetween(min, max).invoke(namedValue.value)
+                CollectionRules.sizeNotBetween<C>(min, max).invoke(namedValue.value)
             }
         }
 
-    fun <T> containsAll(elements: Collection<T>): Rule<NamedValue<Collection<T>>> =
+    fun <T, C : Collection<T>> containsAll(elements: C): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -98,11 +98,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.containsAll(elements).invoke(namedValue.value)
+                CollectionRules.containsAll<T, C>(elements).invoke(namedValue.value)
             }
         }
 
-    fun containsNone(elements: Collection<*>): Rule<NamedValue<Collection<*>>> =
+    fun <T, C : Collection<T>> containsNone(elements: C): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -110,11 +110,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.containsNone(elements).invoke(namedValue.value)
+                CollectionRules.containsNone<T, C>(elements).invoke(namedValue.value)
             }
         }
 
-    fun <T> contains(element: T): Rule<NamedValue<Collection<T>>> =
+    fun <T, C : Collection<T>> contains(element: T): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -122,11 +122,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.contains(element).invoke(namedValue.value)
+                CollectionRules.contains<T, C>(element).invoke(namedValue.value)
             }
         }
 
-    fun <T> notContains(element: T): Rule<NamedValue<Collection<T>>> =
+    fun <T, C : Collection<T>> notContains(element: T): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -134,11 +134,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.notContains(element).invoke(namedValue.value)
+                CollectionRules.notContains<T, C>(element).invoke(namedValue.value)
             }
         }
 
-    fun <T> containsOnly(elements: Collection<T>): Rule<NamedValue<Collection<T>>> =
+    fun <T, C : Collection<T>> containsOnly(elements: Collection<T>): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -146,11 +146,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.containsOnly(elements).invoke(namedValue.value)
+                CollectionRules.containsOnly<T, C>(elements).invoke(namedValue.value)
             }
         }
 
-    val notEmpty: Rule<NamedValue<Collection<*>>> =
+    fun <C : Collection<*>> notEmpty(): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -158,11 +158,11 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.notEmpty.invoke(namedValue.value)
+                CollectionRules.notEmpty<C>().invoke(namedValue.value)
             }
         }
 
-    val distinct: Rule<NamedValue<Collection<*>>> =
+    fun <C : Collection<*>> distinct(): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -170,7 +170,7 @@ class NamedCollectionRules(
                     namedValue,
                 ),
             ) {
-                CollectionRules.distinct.invoke(namedValue.value)
+                CollectionRules.distinct<C>().invoke(namedValue.value)
             }
         }
 }

@@ -1,6 +1,6 @@
 package io.github.kverify.rule
 
-private typealias ComparablePredicate<T> = (Comparable<T>) -> Boolean
+private typealias ComparablePredicate<T> = Predicate<Comparable<T>>
 
 object ComparableRules {
     fun <T : Comparable<T>> equalTo(other: T): ComparablePredicate<T> =
