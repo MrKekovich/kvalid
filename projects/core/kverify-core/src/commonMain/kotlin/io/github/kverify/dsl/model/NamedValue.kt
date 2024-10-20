@@ -43,7 +43,8 @@ inline fun <T> NamedValue<T>.nested(block: (T) -> Unit): NamedValue<T> {
  * @param block The block of code to execute with the non-null `value` as the parameter.
  * @return The original [NamedValue].
  */
-inline infix fun <T> NamedValue<T?>.ifNotNull(block: (T) -> Unit): NamedValue<T?> {
-    if (value != null) block(value)
+@Suppress("UNCHECKED_CAST")
+inline infix fun <T> NamedValue<T?>.ifNotNull(block: (NamedValue<T>) -> Unit): NamedValue<T?> {
+    if (value != null) block(this as NamedValue<T>)
     return this
 }
