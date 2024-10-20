@@ -1,9 +1,13 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotest.multiplatform)
+    alias(libs.plugins.maven.publish)
+    id("maven-publish")
+    id("signing")
 }
 
 kotlin {
@@ -81,4 +85,42 @@ java {
     }
 }
 
-apply(from = file("../../gradle/publish.gradle.kts"))
+mavenPublishing {
+    val kverifyVersion: String by project
+    val groupId: String by project
+
+    coordinates(
+        groupId = groupId,
+        version = kverifyVersion,
+        artifactId = "kverify-rules",
+    )
+
+    pom {
+        name.set("KVerify")
+        description.set("KVerify - Kotlin Validation Library")
+        inceptionYear.set("2024")
+        url.set("https://github.com/kverify/kverify")
+
+        licenses {
+            license {
+                name.set("The Apache Software License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("MrKekovich")
+                name.set("MrKekovich")
+                email.set("mrkekovich.official@gmail.com")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/kverify/kverify")
+        }
+    }
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    signAllPublications()
+}
