@@ -1,18 +1,13 @@
-import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotest.multiplatform)
-    alias(libs.plugins.maven.publish)
-    id("maven-publish")
-    id("signing")
 }
 
 kotlin {
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
         withJava()
     }
 
@@ -51,10 +46,6 @@ kotlin {
             implementation(kotlin("test-annotations-common"))
         }
 
-        jvmMain.dependencies {
-            implementation(kotlin("reflect"))
-        }
-
         jvmTest.dependencies {
             implementation(libs.kotest.runner.junit5)
         }
@@ -78,44 +69,10 @@ tasks.named<Test>("jvmTest") {
     }
 }
 
-mavenPublishing {
-    val groupId: String by project
-    val kverifyVersion: String by project
-
-    coordinates(
-        groupId = "io.github.kverify",
-        artifactId = "kverify-rules",
-        version = kverifyVersion,
-    )
-
-    pom {
-        name.set("KVerify")
-        description.set("KVerify - Kotlin Validation Rules Library")
-        inceptionYear.set("2024")
-        url.set("https://github.com/kverify/kverify")
-
-        licenses {
-            license {
-                name.set("The Apache Software License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-            }
-        }
-
-        developers {
-            developer {
-                id.set("MrKekovich")
-                name.set("MrKekovich")
-                email.set("mrkekovich.official@gmail.com")
-            }
-        }
-
-        scm {
-            url.set("https://github.com/kverify/kverify")
-        }
+tasks.withType<KotlinCompile>().all {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-
-    signAllPublications()
 }
 
 java {
@@ -123,3 +80,5 @@ java {
         languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
+
+apply(from = file("../../gradle/publish.gradle.kts"))
