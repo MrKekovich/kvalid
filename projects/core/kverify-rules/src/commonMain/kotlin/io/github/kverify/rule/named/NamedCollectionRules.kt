@@ -4,12 +4,13 @@ import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.CollectionRules
+import io.github.kverify.rule.localization.DefaultRuleLocalization
 import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.CollectionRuleType
 
 @Suppress("TooManyFunctions")
 class NamedCollectionRules(
-    private val localization: RuleLocalization,
+    private val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
     fun ofSize(size: Int): Rule<NamedValue<Collection<*>>> =
         createNamedRule { namedValue ->

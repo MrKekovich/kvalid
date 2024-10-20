@@ -4,12 +4,13 @@ import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.StringRules
+import io.github.kverify.rule.localization.DefaultRuleLocalization
 import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.StringRuleType
 
 @Suppress("TooManyFunctions")
 class NamedStringRules(
-    private val localization: RuleLocalization,
+    private val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
     fun ofLength(length: Int): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
