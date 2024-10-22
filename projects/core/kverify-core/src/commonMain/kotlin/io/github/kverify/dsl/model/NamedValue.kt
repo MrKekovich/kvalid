@@ -48,3 +48,20 @@ inline infix fun <T> NamedValue<T?>.ifNotNull(block: (NamedValue<T>) -> Unit): N
     if (value != null) block(this as NamedValue<T>)
     return this
 }
+
+/**
+ * Returns the [NamedValue] if the value is **not** `null`, or `null` otherwise.
+ *
+ * This function acts as a utility to safely cast a nullable [NamedValue] to a non-nullable one
+ * if the value is non-null, or return `null` if the value is `null`.
+ *
+ * @param T The type of the value.
+ * @return The original [NamedValue] if the value is non-null, otherwise `null`.
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> NamedValue<T?>.unwrapOrNull(): NamedValue<T>? =
+    if (value != null) {
+        this as NamedValue<T>
+    } else {
+        null
+    }
