@@ -4,8 +4,10 @@ import io.github.kverify.core.model.NamedValue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
+import io.kotest.property.arbitrary.boolean
 import io.kotest.property.arbitrary.string
 import io.kotest.property.checkAll
+import kotlin.test.DefaultAsserter.fail
 
 class NamedValueExtensionTest :
     FunSpec({
@@ -29,6 +31,30 @@ class NamedValueExtensionTest :
                     it.name shouldBe userName
                     it.surname shouldBe userSurname
                 }
+            }
+        }
+
+        test("ifNotNull") {
+            checkAll(Arb.boolean()) { isNull ->
+                val value = if (isNull) null else "value"
+                val namedValue = NamedValue("name", value)
+
+                if (isNull) {
+                    namedValue.ifNotNull { fail("Code inside ifNotNull should not be executed if value is null") }
+                    return@checkAll
+                } else {
+                    namedValue.ifNotNull { return@checkAll }
+                }
+                fail("Code inside ifNotNull should be executed if value is not null")
+            }
+        }
+
+        test("unwrapOrNull") {
+            checkAll(Arb.boolean()) { isNull ->
+                val value = if (isNull) null else "value"
+                val namedValue = NamedValue("name", value)
+
+                namedValue.unwrapOrNull() shouldBe if (isNull) null else namedValue
             }
         }
     })
