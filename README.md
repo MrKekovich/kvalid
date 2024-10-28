@@ -51,55 +51,66 @@ dependencies {
 
 ## 📝 Quick Start
 ```kotlin
-import io.github.kverify.dsl.model.*
-import io.github.kverify.rule.named.*
+import io.github.kverify.dsl.extension.toNamed
+import io.github.kverify.dsl.model.createNamedRule
+import io.github.kverify.dsl.model.unwrapOrNull
+import io.github.kverify.dsl.model.withName
 import io.github.kverify.dsl.validator.validateAll
+import io.github.kverify.rule.localization.DefaultRuleLocalization
+import io.github.kverify.rule.named.NamedStringRules
 
 // 1. Define your data class
 data class User(
     val name: String,
     val email: String?,
-    val age: Int
+    val age: Int,
 )
 
 // 2. Create standard rule sets
 val stringRules = NamedStringRules(DefaultRuleLocalization())
 
 // 3. Define validation rules
-val emailRule = createNamedRule<String> { (name, value) ->
-    validate("$name has invalid email format") { value.contains("@") }
-}
-
-val userRules = createNamedRule<User> { (name, user) ->
-    user.run {
-        // Validate name
-        ::name.toNamed().validate(
-            stringRules.notBlank(),
-            stringRules.lengthBetween(2..50)
-        )
-        
-        // Validate optional email
-        ::email.toNamed().unwrapOrNull()?.validate(emailRule)
+val emailRule =
+    createNamedRule<String> { (name, value) ->
+        validate("$name has invalid email format") { value.contains("@") }
     }
-}
+
+val userRules =
+    createNamedRule<User> { (name, user) ->
+        user.run {
+            // Validate name
+            ::name.toNamed().validate(
+                stringRules.notBlank(),
+                stringRules.lengthBetween(2..50),
+            )
+
+            // Validate optional email
+            ::email.toNamed().unwrapOrNull()?.validate(emailRule)
+        }
+    }
 
 // 4. Validate an instance
-val user = User(
-    name = "John",
-    email = "john@example.com",
-    age = 25
-)
+val user =
+    User(
+        name = "John",
+        email = "john@example.com",
+        age = 25,
+    )
 
-val result = validateAll {
-    user.withName("user").validate(userRules)
-}
+val result =
+    validateAll {
+        user.withName("user").validate(userRules)
+    }
 
 // 5. Handle the results
-result.onValid {
-    println("User is valid!")
-}.onInvalid { errors ->
-    println("Validation failed:")
-    errors.forEach { println(it) }
+fun main() {
+    result
+        .onValid {
+            println("User is valid!")
+        }.onInvalid { errors ->
+            println("Validation failed:")
+            errors.forEach { println(it) }
+        }
 }
 ```
 
