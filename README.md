@@ -34,7 +34,7 @@ KVerify makes it easy while maintaining type safety and flexibility.
 - 🌐 Built-in localization framework for standard rule sets
 
 ## 🛠 Installation
-### Gradle
+### Groovy
 ```groovy
 dependencies {
     implementation "io.github.kverify:kverify-core:${version}"
