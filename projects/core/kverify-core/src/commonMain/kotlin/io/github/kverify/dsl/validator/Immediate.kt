@@ -2,7 +2,6 @@ package io.github.kverify.dsl.validator
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
-import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.validator.ThrowingValidator
 
 /**
