@@ -1,6 +1,7 @@
 package io.github.kverify.dsl.validator
 
 import io.github.kverify.core.exception.ValidationException
+import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.validator.LazyValidator
 
@@ -55,6 +56,11 @@ inline fun validateLazily(block: LazyValidator.() -> Unit): Sequence<ValidationE
     LazyValidator()
         .apply(block)
         .asViolationSequence()
+
+fun <T> T.validateLazily(vararg rules: Rule<T>): Sequence<ValidationException> =
+    validateLazily {
+        validate(*rules)
+    }
 
 /**
  * Converts a sequence of [ValidationException] instances to a [ValidationResult].
