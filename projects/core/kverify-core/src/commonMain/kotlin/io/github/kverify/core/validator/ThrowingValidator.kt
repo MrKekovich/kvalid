@@ -7,14 +7,7 @@ import io.github.kverify.core.exception.ValidationException
 /**
  * An implementation of KVerifyContext that immediately throws exceptions for validation failures.
  */
-object ThrowingValidator : ValidationContext {
-    /**
-     * Executes the given validation block.
-     *
-     * @param block The validation block to execute.
-     */
-    inline operator fun invoke(block: ThrowingValidator.() -> Unit): Unit = run(block)
-
+open class ThrowingValidator : ValidationContext {
     /**
      * Throws a [ValidationException] with the given [message] if the given [predicate] evaluates to `false`.
      *

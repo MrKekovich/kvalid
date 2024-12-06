@@ -12,7 +12,9 @@ import io.github.kverify.core.validator.ThrowingValidator
  * @return [Unit] if the validation succeeds.
  * @throws ValidationException if the validation fails.
  */
-inline fun validateOrThrow(block: ThrowingValidator.() -> Unit): Unit = ThrowingValidator(block)
+inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
+    ThrowingValidator().apply(block)
+}
 
 /**
  * Shortcut for [validateOrThrow],
