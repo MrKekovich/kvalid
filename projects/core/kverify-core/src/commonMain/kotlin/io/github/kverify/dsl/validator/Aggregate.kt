@@ -18,7 +18,8 @@ inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult
 }
 
 /**
- * Shortcut for [validateAll], allowing validation of the current object against the provided rules.
+ * Shortcut for [validateAll],
+ * allowing validation of the current object against the provided rules.
  * Collects all violations and returns a ValidationResult.
  *
  * @param rules The validation rules to apply to the current object.

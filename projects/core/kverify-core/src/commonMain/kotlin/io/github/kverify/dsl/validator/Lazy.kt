@@ -57,6 +57,14 @@ inline fun validateLazily(block: LazyValidator.() -> Unit): Sequence<ValidationE
         .apply(block)
         .asViolationSequence()
 
+/**
+ * Shortcut for [validateLazily]
+ * Lazily validates conditions defined within the given block using a [LazyValidator]
+ * against the current object.
+ *
+ * @param rules The validation rules to apply to the current object.
+ * @return Lazy sequence of [ValidationException] representing violations found during lazy validation.
+ */
 fun <T> T.validateLazily(vararg rules: Rule<T>): Sequence<ValidationException> =
     validateLazily {
         validate(*rules)

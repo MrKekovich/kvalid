@@ -15,7 +15,8 @@ import io.github.kverify.core.validator.ThrowingValidator
 inline fun validateOrThrow(block: ThrowingValidator.() -> Unit): Unit = ThrowingValidator(block)
 
 /**
- * Shortcut for [validateOrThrow], allowing validation of the current object against the provided rules.
+ * Shortcut for [validateOrThrow],
+ * allowing validation of the current object against the provided rules.
  * Throws a [ValidationException] immediately upon the first validation failure.
  *
  * @param rules The validation rules to apply to the current object.
@@ -44,7 +45,8 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationExcepti
     }
 
 /**
- * Shortcut for [validateFirst] that validates the current object against the provided rules using `fail fast` functionality.
+ * Shortcut for [validateFirst]
+ * that validates the current object against the provided rules using `fail fast` functionality.
  * Stops validation upon the first failure and returns the [ValidationException].
  * Returns `null` if the validation succeeds.
  *
