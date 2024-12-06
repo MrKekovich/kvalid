@@ -63,7 +63,7 @@ class NamedCollectionRules(
     fun <C : Collection<*>> sizeBetween(
         min: Int,
         max: Int,
-    ):  Rule<NamedValue<C>> =
+    ): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
@@ -78,7 +78,7 @@ class NamedCollectionRules(
     fun <C : Collection<*>> sizeNotBetween(
         min: Int,
         max: Int,
-    ):  Rule<NamedValue<C>> =
+    ): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
                 localization.getLocalization(
