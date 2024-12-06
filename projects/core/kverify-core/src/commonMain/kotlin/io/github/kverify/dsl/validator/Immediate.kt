@@ -30,28 +30,30 @@ fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
 
 /**
  * Validates using `fail fast` functionality with a [ThrowingValidator].
- * Stops validation upon the first failure and returns a [ValidationResult].
+ * Stops validation upon the first failure and returns the [ValidationException].
+ * Returns `null` if the validation succeeds.
  *
  * @param block The block of validation conditions to execute.
- * @return [ValidationResult] indicating success or failure of the validation.
+ * @return [ValidationException] if the validation fails, or `null` if the validation succeeds.
  */
-inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
+inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationException? =
     try {
         validateOrThrow(block)
-        ValidationResult.valid()
+        null
     } catch (violation: ValidationException) {
-        ValidationResult.invalid(violation)
+        violation
     }
 
 /**
- * Shortcut for [validateFirst], allowing `fail fast` validation of the current object against the provided rules.
- * Stops validation upon the first failure and returns a [ValidationResult].
+ * Shortcut for [validateFirst] that validates the current object against the provided rules using `fail fast` functionality.
+ * Stops validation upon the first failure and returns the [ValidationException].
+ * Returns `null` if the validation succeeds.
  *
  * @param rules The validation rules to apply to the current object.
- * @return [ValidationResult] indicating success or failure of the validation.
+ * @return [ValidationException] if the validation fails, or `null` if the validation succeeds.
  * @see validateFirst
  */
-fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
+fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationException? =
     validateFirst {
         validate(*rules)
     }
