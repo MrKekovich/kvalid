@@ -23,8 +23,8 @@ inline fun validateOrThrow(block: ThrowingValidator.() -> Unit): Unit = Throwing
  * @throws ValidationException if validation fails on the first rule.
  * @see validateOrThrow
  */
-fun <T> T.validateOrThrow(vararg rules: Rule<T>): ValidationResult =
-    validateFirst {
+fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
+    validateOrThrow {
         validate(*rules)
     }
 
