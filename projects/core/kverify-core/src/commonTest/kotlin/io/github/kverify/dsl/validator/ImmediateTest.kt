@@ -22,10 +22,9 @@ class ImmediateTest :
                 validateFirst {
                     validate(message) { false }
                     validate("should not be executed") { false }
-                }.onValid { fail("Validation should fail") }
-                    .violations
-                    .also { it.size shouldBe 1 }
-                    .first()
+                } ?: fail("Validation should fail")
+
+            result shouldBe ValidationException(message)
 
             result.message shouldBe message
         }
