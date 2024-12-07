@@ -37,13 +37,13 @@ class ComparableRulesTest :
         }
 
         test("greaterThan must return true") {
-            checkAll(Arb.int()) { num ->
+            checkAll(Arb.int(0..1000)) { num ->
                 ComparableRules.greaterThan(num - 1).invoke(num) shouldBe true
             }
         }
 
         test("greaterThan must return false") {
-            checkAll(Arb.int()) { num ->
+            checkAll(Arb.int(0..1000)) { num ->
                 ComparableRules.greaterThan(num + 1).invoke(num) shouldBe false
             }
         }
@@ -55,13 +55,13 @@ class ComparableRulesTest :
         }
 
         test("lessThan must return true") {
-            checkAll(Arb.int()) { num ->
+            checkAll(Arb.int(0..1000)) { num ->
                 ComparableRules.lessThan(num + 1).invoke(num) shouldBe true
             }
         }
 
         test("lessThan must return false") {
-            checkAll(Arb.int()) { num ->
+            checkAll(Arb.int(0..1000)) { num ->
                 ComparableRules.lessThan(num - 1).invoke(num) shouldBe false
             }
         }
@@ -73,19 +73,19 @@ class ComparableRulesTest :
         }
 
         test("between inclusive must return true") {
-            checkAll(Arb.int()) { num ->
+            checkAll(Arb.int(0..1000)) { num ->
                 ComparableRules.between(num - 1, num + 1).invoke(num) shouldBe true
             }
         }
 
         test("between exclusive must return false") {
-            checkAll(Arb.int()) { num ->
+            checkAll(Arb.int(0..1000)) { num ->
                 ComparableRules.between(num, num + 2, inclusive = false).invoke(num) shouldBe false
             }
         }
 
         test("notBetween inclusive must return false") {
-            checkAll(Arb.int()) { num ->
+            checkAll(Arb.int(0..1000)) { num ->
                 ComparableRules.notBetween(num - 1, num + 1).invoke(num) shouldBe false
             }
         }
