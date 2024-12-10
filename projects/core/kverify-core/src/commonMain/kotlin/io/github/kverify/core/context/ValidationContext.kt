@@ -38,7 +38,7 @@ interface ValidationContext {
      */
     fun <T> T.validate(vararg rules: Rule<T>): T {
         rules.forEach {
-            with(it) { validate(this@validate) }
+            it.run { validate(this@validate) }
         }
 
         return this
