@@ -9,7 +9,7 @@ import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.StringRuleType
 
 @Suppress("TooManyFunctions")
-class NamedStringRules(
+open class NamedStringRules(
     private val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
     fun ofLength(length: Int): Rule<NamedValue<String>> =

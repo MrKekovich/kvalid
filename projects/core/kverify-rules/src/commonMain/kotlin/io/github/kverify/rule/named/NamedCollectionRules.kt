@@ -9,7 +9,7 @@ import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.CollectionRuleType
 
 @Suppress("TooManyFunctions")
-class NamedCollectionRules(
+open class NamedCollectionRules(
     private val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
     fun <C : Collection<*>> ofSize(size: Int): Rule<NamedValue<C>> =
