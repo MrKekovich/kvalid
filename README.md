@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin--multiplatform-2.0.0-blue.svg?logo=kotlin" alt="Kotlin 2.0.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/Version-1.1.0-blue" alt="Version 0.1.0-alpha">
+  <img src="https://img.shields.io/badge/Version-1.1.0-blue" alt="Version 1.5.0">
 </p>
 
 ---
