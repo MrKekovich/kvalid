@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/img/kverify-logo.svg" alt="KValid Logo">
+  <img src="docs/img/kverify-logo.svg" alt="KVerify Logo">
 </p>
 
 <p align="center">
@@ -16,24 +16,23 @@
 
 ## 🚀 Overview
 
-KVerify is a modern Kotlin Multiplatform validation library
-that provides a concise and powerful DSL for defining and executing validation rules.
-Whether you're validating simple values or complex object hierarchies,
-KVerify makes it easy while maintaining type safety and flexibility.
+KVerify is a modern Kotlin Multiplatform validation library that provides a concise and powerful DSL for defining and executing validation rules.  
+Whether you're validating simple values or complex object hierarchies, KVerify makes it easy while maintaining type safety and flexibility.
 
 ## ✨ Key Features
 
-- 🌟 Intuitive DSL for defining validation rules
-- 🔧 Multiple validation strategies (immediate, aggregate, lazy)
-- 🎯 Type-safe validation rules
-- 🌍 Kotlin Multiplatform support
-- 📦 Modular architecture with core and rules packages
-- 🔄 Composable validation rules
-- 🏷️ Named value support for better error messages
-- 🎨 Flexible API for custom validation logic
-- 🌐 Built-in localization framework for standard rule sets
+- 🌟 Intuitive DSL for defining validation rules  
+- 🔧 Multiple validation strategies (immediate, aggregate, lazy)  
+- 🎯 Type-safe validation rules  
+- 🌍 Kotlin Multiplatform support  
+- 📦 Modular architecture with core and rules packages  
+- 🔄 Composable validation rules  
+- 🏷️ Named value support for better error messages  
+- 🎨 Flexible API for custom validation logic  
+- 🌐 Built-in localization framework for standard rule sets  
 
 ## 🛠 Installation
+
 ### Groovy
 ```groovy
 dependencies {
@@ -41,6 +40,7 @@ dependencies {
     implementation "io.github.kverify:kverify-rules:${version}" // Optional: standard rule sets
 }
 ```
+
 ### Kotlin
 ```kotlin
 dependencies {
@@ -50,6 +50,7 @@ dependencies {
 ```
 
 ## 📝 Quick Start
+
 ```kotlin
 import io.github.kverify.dsl.extension.toNamed
 import io.github.kverify.dsl.model.createNamedRule
@@ -115,14 +116,14 @@ fun main() {
 ```
 
 ## 📖 Documentation
-- KVerify wiki page is in progress! Check back later for updates.
+
+The [KVerify Wiki](https://github.com/KVerify/kverify/wiki) is available to guide you through installation, usage, and advanced features.
+⚠️ Please note that the wiki is still a work in progress — some pages might be incomplete or missing.
 
 ## 📄 License
 
-KValid is released under the [Apache 2.0 License](LICENSE).
+KVerify is released under the [Apache 2.0 License](LICENSE).
 
 ---
 
-<p align="center">
-  Made with ❤️ by <a href="https://github.com/mrkekovich">MrKekovich</a>
-</p>
+<p align="center"> Made with ❤️ by <a href="https://github.com/mrkekovich">MrKekovich</a> </p>
