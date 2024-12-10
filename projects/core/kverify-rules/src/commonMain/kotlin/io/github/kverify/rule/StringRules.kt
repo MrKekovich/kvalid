@@ -3,7 +3,7 @@ package io.github.kverify.rule
 private typealias StringPredicate = Predicate<String>
 
 @Suppress("TooManyFunctions")
-object StringRules {
+internal object StringRules {
     fun ofLength(length: Int): StringPredicate =
         {
             it.length == length

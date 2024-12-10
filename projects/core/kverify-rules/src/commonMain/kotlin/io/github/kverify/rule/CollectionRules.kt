@@ -1,7 +1,7 @@
 package io.github.kverify.rule
 
 @Suppress("TooManyFunctions")
-object CollectionRules {
+internal object CollectionRules {
     fun <C : Collection<*>> ofSize(size: Int): Predicate<C> =
         {
             it.size == size

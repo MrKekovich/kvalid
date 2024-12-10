@@ -2,7 +2,7 @@ package io.github.kverify.rule
 
 private typealias ComparablePredicate<T> = Predicate<Comparable<T>>
 
-object ComparableRules {
+internal object ComparableRules {
     fun <T : Comparable<T>> equalTo(other: T): ComparablePredicate<T> =
         {
             it == other
