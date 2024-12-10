@@ -95,7 +95,7 @@ open class NamedStringRules(
                     namedValue,
                 ),
             ) {
-                StringRules.lengthBetween(min..max).invoke(namedValue.value)
+                StringRules.lengthBetween(min, max).invoke(namedValue.value)
             }
         }
 
