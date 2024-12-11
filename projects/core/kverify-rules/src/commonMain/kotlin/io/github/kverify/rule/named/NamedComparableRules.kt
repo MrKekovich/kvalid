@@ -10,7 +10,7 @@ import io.github.kverify.rule.type.ComparableRuleType
 
 @Suppress("TooManyFunctions")
 open class NamedComparableRules(
-    private val localization: RuleLocalization = DefaultRuleLocalization(),
+    protected val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
     fun <T : Comparable<T>> equalTo(other: T): Rule<NamedValue<T>> =
         createNamedRule { namedValue ->
