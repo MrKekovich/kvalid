@@ -23,11 +23,11 @@ class NamedValueExtensionTest :
             }
         }
 
-        test("nested") {
+        test("useValue") {
             checkAll(Arb.string(), Arb.string()) { userName, userSurname ->
                 val user = User(userName, userSurname)
 
-                user.withName("user").nested {
+                user.withName("user").useValue {
                     it.name shouldBe userName
                     it.surname shouldBe userSurname
                 }

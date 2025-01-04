@@ -5,34 +5,35 @@ import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 
 /**
- * Create rule that will be compatible with values of type [T]
+ * Creates a [Rule] that can be used with a value of type [T].
  *
- * @param T The type of the value that will be passed to [predicate]
- * @see ValidationContext.validate
+ * Provides a [ValidationContext] for validation logic.
+ *
+ * @param T The type of the value passed to [predicate]
+ * @param predicate The validation logic to execute
+ * @return A new [Rule] based on the given [predicate]
  */
-fun <T> createRule(predicate: ValidationContext.(T) -> Unit): Rule<T> =
-    Rule(
-        predicate,
-    )
+fun <T> createRule(predicate: ValidationContext.(T) -> Unit): Rule<T> = Rule(predicate)
 
 /**
- * Create rule that will be compatible with [NamedValue] of type [T]
+ * Creates a [Rule] that can be used with a [NamedValue] of type [T].
  *
- * @param T The type of the value that will be passed to [predicate] wrapped in [NamedValue]
- * @see ValidationContext.validate
+ * Provides a [ValidationContext] and a [NamedValue] as the lambda parameter.
+ *
+ * @param T The type of the value wrapped in [NamedValue]
+ * @param predicate The validation logic to execute
+ * @return A new [Rule] based on the given [predicate]
  */
-fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): Rule<NamedValue<T>> =
-    Rule(
-        predicate,
-    )
+fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): Rule<NamedValue<T>> = Rule(predicate)
 
 /**
- * Create rule that will execute [ValidationContext.validate]
- * with the given [message] and [predicate]
+ * Creates a [Rule] that will execute [ValidationContext.validate] with the given [message]
+ * and [predicate].
  *
- * @param T The type of the value that will be passed to [predicate]
- * @param message The failure message
- * @see ValidationContext.validate
+ * @param T The type of the value passed to [predicate]
+ * @param message The failure message to use
+ * @param predicate The predicate to validate the value
+ * @return A new [Rule] that performs validation
  */
 fun <T> createRule(
     message: String,
@@ -43,16 +44,16 @@ fun <T> createRule(
     }
 
 /**
- * Create rule that will execute [ValidationContext.validate]
- * with the given [message] and [predicate]
+ * Creates a [Rule] that will execute [ValidationContext.validate] with the given [message]
+ * and [predicate].
  *
- * **Does not take any value**
+ * This rule does not take any value.
  *
- * @param message The failure message
- * @param predicate
- * @see ValidationContext.validate
+ * @param message The failure message to use
+ * @param predicate The predicate to validate
+ * @return A new [Rule] for unit validation
  */
-fun createRule(
+fun createUnitRule(
     message: String,
     predicate: () -> Boolean,
 ): Rule<Unit> =

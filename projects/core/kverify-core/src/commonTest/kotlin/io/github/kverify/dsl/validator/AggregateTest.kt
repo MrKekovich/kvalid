@@ -1,5 +1,7 @@
 package io.github.kverify.dsl.validator
 
+import io.github.kverify.dsl.extension.onInvalid
+import io.github.kverify.dsl.extension.onValid
 import io.github.kverify.dsl.extension.violation
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -9,16 +11,17 @@ class AggregateTest :
     FunSpec({
         test("validateAll") {
             val message = "fail"
-            val result =
-                validateAll {
-                    violation(message)
-                    violation(message)
-                }.onValid { fail("should not be valid") }
+            validateAll {
+                violation(message)
+                violation(message)
+            }.onValid {
+                fail("should not be valid")
+            }.onInvalid { exception ->
+                exception.violationMessages.size shouldBe 2
 
-            result.violations.size shouldBe 2
-
-            result.violations.forEach {
-                it.message shouldBe message
+                exception.violationMessages.forEach {
+                    it shouldBe message
+                }
             }
         }
     })

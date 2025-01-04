@@ -2,36 +2,34 @@ package io.github.kverify.core.validator
 
 import io.github.kverify.core.context.Predicate
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.exception.ValidationException
 
 /**
- * An implementation of ValidationContext that aggregates (collects) validation violations.
+ * A [ValidationContext] implementation that collects validation failure messages.
+ *
+ * This validator aggregates all failure messages into [violationMessages] without interrupting
+ * the validation process. It allows all validations to run and records any violations.
  */
 open class AggregatingValidator : ValidationContext {
     /**
-     * The internal list of validation violations.
+     * A mutable list of validation failure messages collected during the validation process.
      */
-    private val _violations: MutableList<ValidationException> = mutableListOf()
+    val violationMessages: MutableList<String> = mutableListOf()
 
     /**
-     * A read-only view of the validation violations.
-     */
-    val violations: List<ValidationException>
-        get() = _violations.toList()
-
-    /**
-     * Adds a [ValidationException] to [violations]
-     * with the specified [message] if the [predicate] evaluates to `false`.
+     * Adds the specified [message] to [violationMessages] if the [predicate] evaluates to `false`.
      *
-     * @param message The failure message.
-     * @param predicate The predicate to validate the value.
+     * This method performs the validation by evaluating the [predicate]. If the predicate fails,
+     * the failure message is recorded.
+     *
+     * @param message The failure message to record if validation fails
+     * @param predicate The predicate that determines whether the validation passes
      */
     override fun validate(
         message: String,
         predicate: Predicate,
     ) {
         if (!predicate()) {
-            _violations.add(ValidationException(message))
+            violationMessages.add(message)
         }
     }
 }

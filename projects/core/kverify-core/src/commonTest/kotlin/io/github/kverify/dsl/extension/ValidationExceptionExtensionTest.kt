@@ -12,10 +12,10 @@ class ValidationExceptionExtensionTest :
         test("throwIfPresent") {
             val message = "Error"
             shouldThrow<ValidationException> {
-                ValidationException(message).throwIfPresent()
+                ValidationException(message).throwOnFailure()
             }.message shouldBe message
 
-            null.throwIfPresent()
+            null.throwOnFailure()
         }
 
         test("onInvalid") {

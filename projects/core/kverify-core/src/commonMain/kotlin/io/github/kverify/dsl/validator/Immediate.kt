@@ -5,25 +5,27 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.validator.ThrowingValidator
 
 /**
- * Executes the validation block using a [ThrowingValidator]. Throws a [ValidationException]
- * immediately upon the first validation failure.
+ * Executes the provided [block] of validation logic using a [ThrowingValidator].
  *
- * @param block The block of validation logic to execute.
- * @return [Unit] if the validation succeeds.
- * @throws ValidationException if the validation fails.
+ * If any validation fails, a [ValidationException] is immediately thrown.
+ * This function does not return any value and does not aggregate validation violations.
+ *
+ * @param block The validation logic to execute
+ * @throws ValidationException if any validation fails
  */
 inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
     ThrowingValidator().apply(block)
 }
 
 /**
- * Shortcut for [validateOrThrow],
- * allowing validation of the current object against the provided rules.
- * Throws a [ValidationException] immediately upon the first validation failure.
+ * Validates the receiver against the provided [rules], throwing an exception on the first failure.
  *
- * @param rules The validation rules to apply to the current object.
- * @throws ValidationException if validation fails on the first rule.
- * @see validateOrThrow
+ * Uses [validateOrThrow] to perform the validation. If any rule fails,
+ * a [ValidationException] is thrown immediately.
+ *
+ * @param T The type of the value being validated
+ * @param rules The rules to validate the receiver against
+ * @throws ValidationException if any validation fails
  */
 fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
     validateOrThrow {
@@ -31,12 +33,13 @@ fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
     }
 
 /**
- * Validates using `fail fast` functionality with a [ThrowingValidator].
- * Stops validation upon the first failure and returns the [ValidationException].
- * Returns `null` if the validation succeeds.
+ * Executes the provided [block] of validation logic using a [ThrowingValidator],
+ * capturing the first validation failure as a [ValidationException].
  *
- * @param block The block of validation conditions to execute.
- * @return [ValidationException] if the validation fails, or `null` if the validation succeeds.
+ * If any validation fails, the exception is caught and returned. If no failures occur, `null` is returned.
+ *
+ * @param block The validation logic to execute
+ * @return A [ValidationException] if a validation failure occurs, or `null` if all validations pass
  */
 inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationException? =
     try {
@@ -47,14 +50,14 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationExcepti
     }
 
 /**
- * Shortcut for [validateFirst]
- * that validates the current object against the provided rules using `fail fast` functionality.
- * Stops validation upon the first failure and returns the [ValidationException].
- * Returns `null` if the validation succeeds.
+ * Validates the receiver against the provided [rules], returning the first failure if any.
  *
- * @param rules The validation rules to apply to the current object.
- * @return [ValidationException] if the validation fails, or `null` if the validation succeeds.
- * @see validateFirst
+ * Uses [validateFirst] to perform the validation. If any rule fails, the first [ValidationException]
+ * is returned. If no rules fail, `null` is returned.
+ *
+ * @param T The type of the value being validated
+ * @param rules The rules to validate the receiver against
+ * @return A [ValidationException] if a validation failure occurs, or `null` if all validations pass
  */
 fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationException? =
     validateFirst {

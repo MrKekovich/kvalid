@@ -6,16 +6,16 @@ import kotlin.reflect.KProperty
 import kotlin.reflect.jvm.isAccessible
 
 /**
- * Extension function to convert a [KProperty] to a [NamedValue].
+ * Converts a [KProperty] to a [NamedValue].
  *
- * This function attempts to get the value of the property using reflection
- * and creates a [NamedValue] instance with the property's and the retrieved value.
+ * Uses reflection to retrieve the property value and creates a [NamedValue] instance
+ * containing the property's name and the value.
  *
- * If the property value cannot be accessed, a [PropertyAccessException] is thrown with
- * a helpful message guiding the correct usage.
+ * If the property value cannot be accessed, a [PropertyAccessException] is thrown
+ * with a descriptive message suggesting the correct usage.
  *
  * @param T The type of the property's value.
- * @return A NamedValue instance containing the property's name and the retrieved value.
+ * @return A [NamedValue] containing the property name and the retrieved value.
  * @throws PropertyAccessException if the property value cannot be accessed.
  */
 fun <T> KProperty<T>.toNamed(): NamedValue<T> =

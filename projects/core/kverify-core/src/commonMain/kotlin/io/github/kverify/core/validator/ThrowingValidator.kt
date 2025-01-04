@@ -5,22 +5,29 @@ import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.exception.ValidationException
 
 /**
- * An implementation of KVerifyContext that immediately throws exceptions for validation failures.
+ * A [ValidationContext] implementation that throws a [ValidationException] on the first validation failure.
+ *
+ * This validator immediately interrupts the validation process if a failure occurs, throwing an exception
+ * with the specified failure message.
  */
 open class ThrowingValidator : ValidationContext {
     /**
-     * Throws a [ValidationException] with the given [message] if the given [predicate] evaluates to `false`.
+     * Validates a condition and throws a [ValidationException] if the validation fails.
      *
-     * @param message The failure message.
-     * @param predicate The predicate to validate the value.
-     * @throws ValidationException with the given [message] if the [predicate] evaluates to `false`.
+     * This method evaluates the [predicate]. If the predicate fails (returns `false`), a
+     * [ValidationException] is thrown containing the specified [message] as part of its
+     * [ValidationException.violationMessages].
+     *
+     * @param message The failure message to include in the exception
+     * @param predicate The predicate that determines whether the validation passes
+     * @throws ValidationException If the validation fails
      */
     override fun validate(
         message: String,
         predicate: Predicate,
     ) {
         if (!predicate()) {
-            throw ValidationException(message)
+            throw ValidationException(listOf(message))
         }
     }
 }

@@ -1,14 +1,14 @@
 package io.github.kverify.dsl.extension
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.validator.LazyValidator
 
 /**
- * Uses [ValidationContext.validate] with the given [message] and `false` as the `predicate`
+ * Triggers validation failure using the given [message].
  *
- * This method will add failing block to [LazyValidator] **immediately**.
+ * This function invokes [ValidationContext.validate] with `false` as the validation predicate,
+ * delegating the handling of the failure to the specific [ValidationContext] implementation.
  *
- * @param message Failure message
+ * @param message The failure message
  */
 fun ValidationContext.violation(message: String) {
     validate(message) { false }

@@ -1,11 +1,14 @@
 package io.github.kverify.core.model
 
 /**
- * Represents a named value.
+ * Represents a named key-value pair
  *
- * @param T the type of the value.
- * @property name the name of the value.
- * @property value the actual value.
+ * This class is commonly used in validation scenarios or any context where
+ * associating a [name] with a [value] is required
+ *
+ * @param T The type of the value.
+ * @property name The name associated with the value
+ * @property value The value associated with the name
  */
 data class NamedValue<T>(
     val name: String,

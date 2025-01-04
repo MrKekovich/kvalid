@@ -8,9 +8,9 @@ import io.kotest.matchers.shouldBe
 
 class RuleTest :
     FunSpec({
-        test("createRule") {
+        test("createUnitRule") {
             val message = "test"
-            val rule = createRule(message) { true }
+            val rule = createUnitRule(message) { true }
 
             successContext.run { validate(rule) }
 
@@ -19,7 +19,7 @@ class RuleTest :
             }.message shouldBe message
         }
 
-        test("createRule<T>(predicate)") {
+        test("createUnitRule<T>(predicate)") {
             val message = "test"
             val rule =
                 createRule<String> {
@@ -33,7 +33,7 @@ class RuleTest :
             }.message shouldBe message
         }
 
-        test("createRule<T>(message, predicate)") {
+        test("createUnitRule<T>(message, predicate)") {
             val message = "test"
             val rule = createRule<String>(message) { true }
 

@@ -1,22 +1,28 @@
 package io.github.kverify.core.context
 
-import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 
 /**
- * Lambda that returns a boolean value.
+ * A lambda function that evaluates a condition and returns a boolean result.
+ *
+ * Typically used in validation contexts to define custom validation logic.
  */
 typealias Predicate = () -> Boolean
 
 /**
- * Validation context. An interface for validating values.
+ * A context for performing validation operations.
+ *
+ * This interface provides methods for validating individual values, named values,
+ * and applying rules to ensure data integrity.
  */
 interface ValidationContext {
     /**
-     * Validate using the given [predicate]
+     * Validates a condition using the provided [predicate].
      *
-     * @param message failure message
-     * @param predicate validation predicate
+     * If the [predicate] evaluates to `false`, the validation fails with the specified [message].
+     *
+     * @param message The failure message to be associated with the validation error
+     * @param predicate A lambda that evaluates a condition to determine validation success
      */
     fun validate(
         message: String,
@@ -24,17 +30,23 @@ interface ValidationContext {
     )
 
     /**
-     * Validate using [Rule] that takes [Unit]
+     * Validates a rule that does not take any input value.
      *
-     * @param rule validation rule
+     * This method runs the given [rule], which must be defined for [Unit],
+     * within the current validation context.
+     *
+     * @param rule The rule to validate
      */
     fun validate(rule: Rule<Unit>): Unit = rule.run { validate(Unit) }
 
     /**
-     * Validate the [NamedValue] with the given [rules]
+     * Validates the current value against the provided [rules].
      *
-     * @param rules validation rules
-     * @return Unchanged [NamedValue]
+     * This method applies each rule to the value and validates it within the current
+     * validation context. The original value is returned unchanged, enabling method chaining.
+     *
+     * @param rules A vararg array of rules to apply to the value
+     * @return The original value, unchanged
      */
     fun <T> T.validate(vararg rules: Rule<T>): T {
         rules.forEach {

@@ -4,13 +4,13 @@ import io.github.kverify.core.model.NamedValue
 import kotlin.reflect.KProperty
 
 /**
- * Creates a [NamedValue] from a KProperty and a provided value.
+ * Converts a [KProperty] into a [NamedValue] by associating it with the specified [value].
  *
- * This function takes a property and a value, and returns a [NamedValue]
- * containing the property's name and the provided value.
+ * This extension function creates a [NamedValue] using the property's [KProperty.name]
+ * and the provided [value].
  *
- * @param T The type of the property's value.
- * @param value The value to associate with the property.
- * @return A [NamedValue] containing the property's name and the provided value.
+ * @param T The type of the property's value
+ * @param value The value to associate with the property
+ * @return A [NamedValue] instance containing the property's name and the specified [value]
  */
 fun <T> KProperty<T>.toNamed(value: T): NamedValue<T> = NamedValue(name, value)
