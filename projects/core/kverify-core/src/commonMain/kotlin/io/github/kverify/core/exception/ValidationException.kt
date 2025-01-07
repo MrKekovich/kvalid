@@ -11,30 +11,35 @@ package io.github.kverify.core.exception
  * @property cause The underlying cause of the exception, if any.
  */
 open class ValidationException(
-    val violationMessages: List<String> = emptyList(),
     override val message: String? = null,
+    val violationMessages: List<String> = emptyList(),
     override val cause: Throwable? = null,
-) : Throwable() {
-    constructor(
-        violationMessages: List<String>,
-        cause: Throwable? = null,
-    ) : this(
-        violationMessages = violationMessages,
-        message =
-            buildString {
-                append("Validation failed")
-                if (violationMessages.isNotEmpty()) {
-                    append(": ${violationMessages.joinToString(", ")}")
-                }
-            },
-        cause = cause,
-    )
+) : Throwable()
 
-    constructor(
-        message: String,
-        cause: Throwable? = null,
-    ) : this(
-        violationMessages = emptyList(),
+/**
+ * Creates a [ValidationException] with the provided violation messages and cause.
+ *
+ * This factory function constructs a [ValidationException] instance, automatically generating
+ * a descriptive message based on the provided violation messages. If [violationMessages] is empty,
+ * a generic "Validation failed" message is used.
+ *
+ * @param violationMessages A list of messages describing the validation failures.
+ * @param cause The underlying cause of the exception, if any.
+ * @return A [ValidationException] instance with the specified violation messages and cause.
+ */
+fun ValidationException(
+    violationMessages: List<String>,
+    cause: Throwable? = null,
+): ValidationException {
+    val message =
+        if (violationMessages.isEmpty()) {
+            "Validation failed"
+        } else {
+            "Validation failed: ${violationMessages.joinToString(", ")}"
+        }
+
+    return ValidationException(
+        violationMessages = violationMessages,
         message = message,
         cause = cause,
     )
