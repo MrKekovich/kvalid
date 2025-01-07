@@ -64,6 +64,10 @@ value class ValidationResult(
         } else {
             "ValidationResult(valid=false, violations=$violationMessages)"
         }
+
+    companion object {
+        val VALID = ValidationResult(emptyList())
+    }
 }
 
 /**
