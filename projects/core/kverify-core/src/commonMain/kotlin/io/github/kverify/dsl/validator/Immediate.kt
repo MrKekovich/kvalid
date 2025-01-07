@@ -64,3 +64,21 @@ inline fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
     validateFirst {
         validate(*rules)
     }
+
+/**
+ * Executes the given [block] with a [ThrowingValidator] that throws on the first validation failure.
+ *
+ * If a [ValidationException] is thrown during validation, this function catches it and returns a failed [Result].
+ * If no exception is thrown, it returns a successful [Result] containing the result of [block].
+ *
+ * @param block The block of validation logic to execute.
+ * @return A [Result] containing either the result of [block] or the thrown [ValidationException].
+ */
+inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> =
+    try {
+        Result.success(
+            ThrowingValidator().run(block),
+        )
+    } catch (e: ValidationException) {
+        Result.failure(e)
+    }
