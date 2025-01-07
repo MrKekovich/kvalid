@@ -76,7 +76,7 @@ value class ValidationResult(
  * @param violationMessages The violation messages to include in the validation result.
  * @return A new [ValidationResult] containing the provided violation messages.
  */
-fun ValidationResult(vararg violationMessages: String): ValidationResult =
+inline fun ValidationResult(vararg violationMessages: String): ValidationResult =
     ValidationResult(
         violationMessages.toList(),
     )
@@ -89,7 +89,7 @@ fun ValidationResult(vararg violationMessages: String): ValidationResult =
  * @param validationException The exception containing violation messages.
  * @return A new [ValidationResult] containing the violation messages from the exception.
  */
-fun ValidationResult(validationException: ValidationException): ValidationResult =
+inline fun ValidationResult(validationException: ValidationException): ValidationResult =
     ValidationResult(
         validationException.violationMessages,
     )
