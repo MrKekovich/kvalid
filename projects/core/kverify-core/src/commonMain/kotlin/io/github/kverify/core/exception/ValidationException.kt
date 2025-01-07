@@ -10,7 +10,7 @@ package io.github.kverify.core.exception
  * @property message An optional custom exception message.
  * @property cause The underlying cause of the exception, if any.
  */
-class ValidationException(
+open class ValidationException(
     val violationMessages: List<String> = emptyList(),
     override val message: String? = null,
     override val cause: Throwable? = null,
