@@ -25,9 +25,9 @@ class ImmediateTest :
                 validate("should not be executed") { false }
             }.onValid {
                 fail("Validation should fail")
-            }.onInvalid { exception ->
-                exception.violationMessages.size shouldBe 1
-                exception.violationMessages[0] shouldBe message
+            }.onInvalid { violationMessages ->
+                violationMessages.size shouldBe 1
+                violationMessages[0] shouldBe message
             }
         }
     })

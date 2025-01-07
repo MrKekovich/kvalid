@@ -2,6 +2,7 @@ package io.github.kverify.dsl.validator
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
+import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.validator.AggregatingValidator
 
 /**
@@ -14,15 +15,10 @@ import io.github.kverify.core.validator.AggregatingValidator
  * @param block The validation logic to execute
  * @return A [ValidationException] if there are validation failures, or `null` if all validations pass
  */
-inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationException? {
-    val violationMessages = AggregatingValidator().apply(block).violationMessages
-
-    return if (violationMessages.isNotEmpty()) {
-        ValidationException(violationMessages = violationMessages)
-    } else {
-        null
-    }
-}
+inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult =
+    ValidationResult(
+        AggregatingValidator().apply(block).violationMessages,
+    )
 
 /**
  * Validates the receiver against the provided [rules],
@@ -35,7 +31,7 @@ inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationExcept
  * @param rules The rules to validate the receiver against
  * @return A [ValidationException] if there are validation failures, or `null` if all validations pass
  */
-fun <T> T.validateAll(vararg rules: Rule<T>): ValidationException? =
+fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
     validateAll lambda@{
         this@validateAll.validate(*rules)
     }

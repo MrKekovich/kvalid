@@ -16,10 +16,10 @@ class AggregateTest :
                 violation(message)
             }.onValid {
                 fail("should not be valid")
-            }.onInvalid { exception ->
-                exception.violationMessages.size shouldBe 2
+            }.onInvalid { violationMessages ->
+                violationMessages.size shouldBe 2
 
-                exception.violationMessages.forEach {
+                violationMessages.forEach {
                     it shouldBe message
                 }
             }

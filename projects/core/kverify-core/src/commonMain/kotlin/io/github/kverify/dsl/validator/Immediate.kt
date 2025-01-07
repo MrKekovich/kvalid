@@ -2,6 +2,7 @@ package io.github.kverify.dsl.validator
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
+import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.validator.ThrowingValidator
 
 /**
@@ -41,12 +42,12 @@ fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
  * @param block The validation logic to execute
  * @return A [ValidationException] if a validation failure occurs, or `null` if all validations pass
  */
-inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationException? =
+inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
-        null
+        ValidationResult.VALID
     } catch (violation: ValidationException) {
-        violation
+        ValidationResult(violation.violationMessages)
     }
 
 /**
@@ -59,7 +60,7 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationExcepti
  * @param rules The rules to validate the receiver against
  * @return A [ValidationException] if a validation failure occurs, or `null` if all validations pass
  */
-fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationException? =
+fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
     validateFirst {
         validate(*rules)
     }
