@@ -11,23 +11,47 @@ import kotlin.test.fail
 
 class ImmediateTest :
     FunSpec({
+        val message = "fail"
+
         test("validateOrThrow") {
             shouldThrow<ValidationException> {
-                validateOrThrow { violation("fail") }
-            }.message shouldBe "fail"
+                validateOrThrow { violation(message) }
+            }.violationMessages.first() shouldBe message
         }
 
         test("validateFirst") {
-            val message = "fail"
-
             validateFirst {
-                validate(message) { false }
-                validate("should not be executed") { false }
+                violation(message)
+                fail("Code after first violation should not be executed")
             }.onValid {
                 fail("Validation should fail")
             }.onInvalid { violationMessages ->
                 violationMessages.size shouldBe 1
-                violationMessages[0] shouldBe message
+                violationMessages.first() shouldBe message
             }
+        }
+
+        test("runValidatingFirst") {
+            val expectedResult = "result"
+
+            val failResult =
+                runValidatingFirst {
+                    violation(message)
+                    fail("Code after first violation should not be executed")
+                    expectedResult
+                }
+
+            failResult.isFailure shouldBe true
+            shouldThrow<ValidationException> {
+                failResult.getOrThrow()
+            }.violationMessages.first() shouldBe message
+
+            val successResult =
+                runValidatingFirst {
+                    expectedResult
+                }
+
+            successResult.isSuccess shouldBe true
+            successResult.getOrNull() shouldBe expectedResult
         }
     })
