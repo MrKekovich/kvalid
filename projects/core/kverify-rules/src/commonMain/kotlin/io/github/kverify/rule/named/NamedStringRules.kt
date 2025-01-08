@@ -100,10 +100,13 @@ open class NamedStringRules(
             min..max,
         )
 
-    fun contains(string: String): Rule<NamedValue<String>> =
+    fun contains(
+        string: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                namedValue.value.contains(string),
+                namedValue.value.contains(string, ignoreCase),
             ) {
                 localization.getLocalization(
                     StringRuleType.Contains(string),
@@ -112,10 +115,13 @@ open class NamedStringRules(
             }
         }
 
-    fun contains(char: Char): Rule<NamedValue<String>> =
+    fun contains(
+        char: Char,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                namedValue.value.contains(char),
+                namedValue.value.contains(char, ignoreCase),
             ) {
                 localization.getLocalization(
                     StringRuleType.Contains(char),
@@ -136,10 +142,13 @@ open class NamedStringRules(
             }
         }
 
-    fun notContains(string: String): Rule<NamedValue<String>> =
+    fun notContains(
+        string: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                !namedValue.value.contains(string),
+                !namedValue.value.contains(string, ignoreCase),
             ) {
                 localization.getLocalization(
                     StringRuleType.Contains(string),
@@ -148,10 +157,13 @@ open class NamedStringRules(
             }
         }
 
-    fun notContains(char: Char): Rule<NamedValue<String>> =
+    fun notContains(
+        char: Char,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                !namedValue.value.contains(char),
+                !namedValue.value.contains(char, ignoreCase),
             ) {
                 localization.getLocalization(
                     StringRuleType.NotContains(char),
@@ -220,10 +232,13 @@ open class NamedStringRules(
             }
         }
 
-    fun startsWith(prefix: String): Rule<NamedValue<String>> =
+    fun startsWith(
+        prefix: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                namedValue.value.startsWith(prefix),
+                namedValue.value.startsWith(prefix, ignoreCase),
             ) {
                 localization.getLocalization(
                     StringRuleType.StartsWith(prefix),
@@ -232,10 +247,13 @@ open class NamedStringRules(
             }
         }
 
-    fun endsWith(suffix: String): Rule<NamedValue<String>> =
+    fun endsWith(
+        suffix: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                namedValue.value.endsWith(suffix),
+                namedValue.value.endsWith(suffix, ignoreCase),
             ) {
                 localization.getLocalization(
                     StringRuleType.EndsWith(suffix),
