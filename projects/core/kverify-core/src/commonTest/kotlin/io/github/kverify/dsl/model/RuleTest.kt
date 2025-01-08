@@ -2,6 +2,7 @@ package io.github.kverify.dsl.model
 
 import io.github.kverify.core.context.Contexts.failContext
 import io.github.kverify.core.context.Contexts.successContext
+import io.github.kverify.dsl.extension.validate
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -12,10 +13,10 @@ class RuleTest :
             val message = "test"
             val rule = createUnitRule(message) { true }
 
-            successContext.run { validate(rule) }
+            successContext.run { applyUnitRule(rule) }
 
             shouldFail {
-                failContext.run { validate(rule) }
+                failContext.run { applyUnitRule(rule) }
             }.message shouldBe message
         }
 
@@ -26,10 +27,10 @@ class RuleTest :
                     validate(message) { true }
                 }
 
-            successContext.run { "".validate(rule) }
+            successContext.run { "".applyRules(rule) }
 
             shouldFail {
-                failContext.run { "".validate(rule) }
+                failContext.run { "".applyRules(rule) }
             }.message shouldBe message
         }
 
@@ -37,10 +38,10 @@ class RuleTest :
             val message = "test"
             val rule = createRule<String>(message) { true }
 
-            successContext.run { "".validate(rule) }
+            successContext.run { "".applyRules(rule) }
 
             shouldFail {
-                failContext.run { "".validate(rule) }
+                failContext.run { "".applyRules(rule) }
             }.message shouldBe message
         }
 
@@ -54,10 +55,10 @@ class RuleTest :
                     validate("${it.name}=${it.value}") { true }
                 }
 
-            successContext.run { namedValue.validate(rule) }
+            successContext.run { namedValue.applyRules(rule) }
 
             shouldFail {
-                failContext.run { namedValue.validate(rule) }
+                failContext.run { namedValue.applyRules(rule) }
             }.message shouldBe "$name=$value"
         }
     })

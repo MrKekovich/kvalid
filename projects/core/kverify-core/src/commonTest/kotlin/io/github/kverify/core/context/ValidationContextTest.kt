@@ -2,7 +2,7 @@ package io.github.kverify.core.context
 
 import io.github.kverify.core.context.Contexts.failContext
 import io.github.kverify.core.context.Contexts.successContext
-import io.github.kverify.dsl.extension.violation
+import io.github.kverify.dsl.extension.validate
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 
@@ -11,12 +11,12 @@ class ValidationContextTest :
         test("violation") {
             shouldFail {
                 successContext.run {
-                    violation("test")
+                    onFailure("test")
                 }
             }
 
             failContext.run {
-                violation("test")
+                onFailure("test")
             }
         }
 

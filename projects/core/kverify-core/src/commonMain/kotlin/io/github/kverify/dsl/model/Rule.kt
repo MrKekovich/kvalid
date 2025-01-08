@@ -3,6 +3,7 @@ package io.github.kverify.dsl.model
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
+import io.github.kverify.dsl.extension.validate
 
 /**
  * Creates a [Rule] that can be used with a value of type [T].

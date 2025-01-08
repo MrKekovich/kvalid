@@ -37,7 +37,7 @@ interface ValidationContext {
      *
      * @param rule The rule to validate
      */
-    fun validate(rule: Rule<Unit>): Unit = rule.run { validate(Unit) }
+    fun applyUnitRule(rule: Rule<Unit>): Unit = rule.run { validate(Unit) }
 
     /**
      * Validates the current value against the provided [rules].
@@ -48,9 +48,9 @@ interface ValidationContext {
      * @param rules A vararg array of rules to apply to the value
      * @return The original value, unchanged
      */
-    fun <T> T.validate(vararg rules: Rule<T>): T {
+    fun <T> T.applyRules(vararg rules: Rule<T>): T {
         rules.forEach {
-            it.run { validate(this@validate) }
+            it.run { validate(this@applyRules) }
         }
 
         return this

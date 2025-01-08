@@ -33,7 +33,7 @@ inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult
  */
 inline fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
     validateAll lambda@{
-        this@validateAll.validate(*rules)
+        this@validateAll.applyRules(*rules)
     }
 
 /**

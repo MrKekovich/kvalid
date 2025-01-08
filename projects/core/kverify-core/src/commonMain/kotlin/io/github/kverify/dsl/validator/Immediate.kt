@@ -30,7 +30,7 @@ inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
  */
 inline fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
     validateOrThrow {
-        validate(*rules)
+        applyRules(*rules)
     }
 
 /**
@@ -62,7 +62,7 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult 
  */
 inline fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
     validateFirst {
-        validate(*rules)
+        applyRules(*rules)
     }
 
 /**

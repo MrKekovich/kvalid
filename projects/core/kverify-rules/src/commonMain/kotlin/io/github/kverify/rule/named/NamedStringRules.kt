@@ -2,6 +2,7 @@ package io.github.kverify.rule.named
 
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
+import io.github.kverify.dsl.extension.validate
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.StringRules
 import io.github.kverify.rule.localization.DefaultRuleLocalization
