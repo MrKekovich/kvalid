@@ -34,3 +34,27 @@ inline fun ValidationContext.validate(
 ) {
     if (!predicate()) onFailure(message)
 }
+
+/**
+ * Validates a condition and throws an error if the condition is `false`.
+ * The failure message is a fixed string provided by [message].
+ *
+ * @param condition The condition to validate.
+ * @param message The failure message to use if the validation fails.
+ */
+inline fun ValidationContext.validate(
+    condition: Boolean,
+    message: String,
+): Unit = validate(condition) { message }
+
+/**
+ * Validates a condition and throws an error if the condition is `false`.
+ * The failure message is a fixed string provided by [message].
+ *
+ * @param message The failure message to use if the validation fails.
+ * @param condition The condition to validate.
+ */
+inline fun ValidationContext.validate(
+    message: String,
+    condition: Boolean,
+): Unit = validate(condition) { message }
