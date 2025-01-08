@@ -3,7 +3,6 @@ package io.github.kverify.dsl.validator
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.dsl.extension.onInvalid
 import io.github.kverify.dsl.extension.onValid
-import io.github.kverify.dsl.extension.violation
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -15,13 +14,13 @@ class ImmediateTest :
 
         test("validateOrThrow") {
             shouldThrow<ValidationException> {
-                validateOrThrow { violation(message) }
+                validateOrThrow { onFailure(message) }
             }.violationMessages.first() shouldBe message
         }
 
         test("validateFirst") {
             validateFirst {
-                violation(message)
+                onFailure(message)
                 fail("Code after first violation should not be executed")
             }.onValid {
                 fail("Validation should fail")
@@ -36,7 +35,7 @@ class ImmediateTest :
 
             val failResult =
                 runValidatingFirst {
-                    violation(message)
+                    onFailure(message)
                     fail("Code after first violation should not be executed")
                     expectedResult
                 }
