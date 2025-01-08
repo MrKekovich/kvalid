@@ -1,33 +1,25 @@
 package io.github.kverify.core.validator
 
-import io.github.kverify.core.context.Predicate
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.exception.ValidationException
 
 /**
- * A [ValidationContext] implementation that throws a [ValidationException] on the first validation failure.
+ * A [ValidationContext] implementation that throws a [ValidationException]
+ * on the first validation failure.
  *
- * This validator immediately interrupts the validation process if a failure occurs, throwing an exception
- * with the specified failure message.
+ * This validator immediately interrupts the validation process if a failure
+ * occurs, throwing [ValidationException] with the specified failure message. It is
+ * useful in scenarios where validation errors should halt execution.
  */
 open class ThrowingValidator : ValidationContext {
     /**
-     * Validates a condition and throws a [ValidationException] if the validation fails.
+     * Throws a [ValidationException] with the given [message].
      *
-     * This method evaluates the [predicate]. If the predicate fails (returns `false`), a
-     * [ValidationException] is thrown containing the specified [message] as part of its
-     * [ValidationException.violationMessages].
+     * This method interrupts the validation process and provides
+     * an exception describing the validation failure.
      *
-     * @param message The failure message to include in the exception
-     * @param predicate The predicate that determines whether the validation passes
-     * @throws ValidationException If the validation fails
+     * @param message The failure message to include in the exception.
+     * @throws ValidationException Always thrown with the provided [message].
      */
-    override fun validate(
-        message: String,
-        predicate: Predicate,
-    ) {
-        if (!predicate()) {
-            throw ValidationException(listOf(message))
-        }
-    }
+    override fun onFailure(message: String): Nothing = throw ValidationException(listOf(message))
 }

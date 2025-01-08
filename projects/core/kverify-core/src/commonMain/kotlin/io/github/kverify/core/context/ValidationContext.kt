@@ -12,22 +12,22 @@ internal typealias Predicate = () -> Boolean
 /**
  * A context for performing validation operations.
  *
- * This interface provides methods for validating individual values, named values,
- * and applying rules to ensure data integrity.
+ * This interface provides a contract for handling validation failures.
+ * Custom implementations can define specific behaviors for managing
+ * failed validations, such as aggregating failure messages or
+ * throwing exceptions.
  */
 interface ValidationContext {
     /**
-     * Validates a condition using the provided [predicate].
+     * Handles a validation failure with the given [message].
      *
-     * If the [predicate] evaluates to `false`, the validation fails with the specified [message].
+     * Implementations define how validation failures are processed,
+     * such as collecting failure messages or interrupting execution
+     * by throwing an exception.
      *
-     * @param message The failure message to be associated with the validation error
-     * @param predicate A lambda that evaluates a condition to determine validation success
+     * @param message The failure message describing why the validation failed.
      */
-    fun validate(
-        message: String,
-        predicate: Predicate,
-    )
+    fun onFailure(message: String)
 
     /**
      * Validates a rule that does not take any input value.
