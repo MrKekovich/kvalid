@@ -7,7 +7,7 @@ import io.github.kverify.core.model.Rule
  *
  * Typically used in validation contexts to define custom validation logic.
  */
-typealias Predicate = () -> Boolean
+internal typealias Predicate = () -> Boolean
 
 /**
  * A context for performing validation operations.
