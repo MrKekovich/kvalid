@@ -35,6 +35,10 @@ sealed interface StringRuleType : RuleType {
         constructor(char: Char) : this(char.toString())
     }
 
+    data class ContainsRegex(
+        val regex: Regex,
+    ) : StringRuleType
+
     data class NotContains(
         val string: String,
     ) : StringRuleType {

@@ -124,6 +124,18 @@ open class NamedStringRules(
             }
         }
 
+    fun contains(regex: Regex): Rule<NamedValue<String>> =
+        createNamedRule { namedValue ->
+            validate(
+                namedValue.value.contains(regex),
+            ) {
+                localization.getLocalization(
+                    StringRuleType.ContainsRegex(regex),
+                    namedValue,
+                )
+            }
+        }
+
     fun notContains(string: String): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(

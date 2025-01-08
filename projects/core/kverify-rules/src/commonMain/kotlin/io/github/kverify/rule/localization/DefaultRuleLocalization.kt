@@ -46,11 +46,13 @@ class DefaultRuleLocalization : RuleLocalization {
             is ComparableRuleType.NotEqualTo<*> -> "$name must not be equal to ${key.other}"
         }
 
+    @Suppress("CyclomaticComplexMethod")
     private fun NamedValue<*>.getStringLocalization(key: StringRuleType): String =
         when (key) {
             is StringRuleType.Alphabetic -> "$name must be alphabetic"
             is StringRuleType.Alphanumeric -> "$name must be alphanumeric"
             is StringRuleType.Contains -> "$name must contain ${key.string}"
+            is StringRuleType.ContainsRegex -> "$name must contain ${key.regex.pattern}"
             is StringRuleType.ContainsAll -> "$name must contain all characters: ${key.chars}"
             is StringRuleType.ContainsNone -> "$name must not contain any of the following characters: ${key.chars}"
             is StringRuleType.ContainsOnly -> "$name must contain only following characters: ${key.chars}"
