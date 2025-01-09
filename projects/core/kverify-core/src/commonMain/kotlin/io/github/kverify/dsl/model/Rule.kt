@@ -143,7 +143,7 @@ inline fun createUnitRule(
  * @param condition The condition to validate.
  * @return A [Rule] to validate the condition.
  */
-inline fun createUnitRule(
+fun createUnitRule(
     message: String,
     condition: Boolean,
 ): Rule<Unit> =
@@ -159,7 +159,7 @@ inline fun createUnitRule(
  * @param message The failure message to use if the validation fails.
  * @return A [Rule] to validate the condition.
  */
-inline fun createUnitRule(
+fun createUnitRule(
     condition: Boolean,
     message: String,
 ): Rule<Unit> =

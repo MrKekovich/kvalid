@@ -97,7 +97,7 @@ inline fun <T> ValidationResult.fold(
  * @param cause An optional underlying cause for the exception.
  * @return A [ValidationException] if this [ValidationResult] is invalid, or `null` if it is valid.
  */
-inline fun ValidationResult.asExceptionOrNull(
+fun ValidationResult.asExceptionOrNull(
     message: String? = null,
     cause: Throwable? = null,
 ): ValidationException? =
@@ -120,7 +120,7 @@ inline fun ValidationResult.asExceptionOrNull(
  * @param cause An optional underlying cause for the exception.
  * @return A [ValidationException] if this [ValidationResult] is invalid, or `null` if it is valid.
  */
-inline fun ValidationResult.asExceptionOrNull(cause: Throwable? = null): ValidationException? =
+fun ValidationResult.asExceptionOrNull(cause: Throwable? = null): ValidationException? =
     fold(
         onValid = { null },
         onInvalid = {

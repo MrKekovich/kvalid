@@ -31,7 +31,7 @@ inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult
  * @param rules The rules to validate the receiver against
  * @return A [ValidationException] if there are validation failures, or `null` if all validations pass
  */
-inline fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
+fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
     validateAll lambda@{
         this@validateAll.applyRules(*rules)
     }
