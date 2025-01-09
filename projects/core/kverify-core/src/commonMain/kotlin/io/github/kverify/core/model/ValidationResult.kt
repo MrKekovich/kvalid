@@ -1,6 +1,5 @@
 package io.github.kverify.core.model
 
-import io.github.kverify.core.exception.ValidationException
 import kotlin.jvm.JvmInline
 
 /**
@@ -66,6 +65,9 @@ value class ValidationResult(
         }
 
     companion object {
+        /**
+         * An instance representing a valid validation result.
+         */
         val VALID = ValidationResult(emptyList())
     }
 }
