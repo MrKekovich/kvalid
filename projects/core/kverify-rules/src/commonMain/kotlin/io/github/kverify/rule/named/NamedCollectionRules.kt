@@ -10,6 +10,7 @@ import io.github.kverify.rule.type.CollectionRuleType
 
 @Suppress("TooManyFunctions")
 open class NamedCollectionRules(
+    @Suppress("MemberVisibilityCanBePrivate")
     protected val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
     fun <C : Collection<*>> ofSize(size: Int): Rule<NamedValue<C>> =
