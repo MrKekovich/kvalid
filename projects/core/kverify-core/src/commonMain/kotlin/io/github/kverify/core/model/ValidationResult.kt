@@ -80,16 +80,3 @@ inline fun ValidationResult(vararg violationMessages: String): ValidationResult 
     ValidationResult(
         violationMessages.toList(),
     )
-
-/**
- * Creates a [ValidationResult] from a [ValidationException].
- *
- * Extracts the violation messages from the exception to construct the validation result.
- *
- * @param validationException The exception containing violation messages.
- * @return A new [ValidationResult] containing the violation messages from the exception.
- */
-inline fun ValidationResult(validationException: ValidationException): ValidationResult =
-    ValidationResult(
-        validationException.violationMessages,
-    )
