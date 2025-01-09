@@ -84,7 +84,7 @@ java {
         languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
-
+// TODO: Move publishing into a separate script
 mavenPublishing {
     val kverifyVersion: String by project
     val groupId: String by project
