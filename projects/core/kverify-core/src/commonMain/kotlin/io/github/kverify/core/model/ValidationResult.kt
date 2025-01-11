@@ -80,5 +80,5 @@ value class ValidationResult(
  */
 inline fun ValidationResult(vararg violationMessages: String): ValidationResult =
     ValidationResult(
-        violationMessages.toList(),
+        violationMessages.asList(),
     )
