@@ -1,6 +1,7 @@
 package io.github.kverify.dsl.validator
 
 import io.github.kverify.core.exception.ValidationException
+import io.github.kverify.dsl.extension.asViolation
 import io.github.kverify.dsl.extension.onInvalid
 import io.github.kverify.dsl.extension.onValid
 import io.kotest.assertions.throwables.shouldThrow
@@ -28,7 +29,7 @@ class AggregateTest :
 
         test("runValidating") {
             val expectedResult = "result"
-            val failMessage = "Fail"
+            val failMessage = "Fail".asViolation()
 
             val failResult =
                 runValidatingAll {
@@ -39,7 +40,7 @@ class AggregateTest :
             failResult.isFailure shouldBe true
             shouldThrow<ValidationException> {
                 failResult.getOrThrow()
-            }.violationMessages.first() shouldBe failMessage
+            }.violations.first() shouldBe failMessage
 
             val successResult =
                 runValidatingAll {

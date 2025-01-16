@@ -1,29 +1,30 @@
 package io.github.kverify.core.validator
 
 import io.github.kverify.core.context.ValidationContext
+import io.github.kverify.core.violation.Violation
 
 /**
  * A [ValidationContext] implementation that collects validation failure messages.
  *
- * This validator aggregates all failure messages into [violationMessages]
+ * This validator aggregates all [Violation]s encountered during validation
  * without interrupting the validation process. It allows all validations
  * to run and records any violations encountered during execution.
  */
 open class AggregatingValidator : ValidationContext {
     /**
-     * A mutable list of validation failure messages collected during the validation process.
+     * A mutable list of validation failures collected during the validation process.
      */
-    val violationMessages: MutableList<String> = mutableListOf()
+    val violations: MutableList<Violation> = mutableListOf()
 
     /**
-     * Adds the given [message] to the list of [violationMessages].
+     * Adds the given [violation] to the list of [violations].
      *
      * This method is called whenever a validation failure occurs, allowing
-     * all failure messages to be collected for later inspection.
+     * all violations to be collected for later inspection.
      *
-     * @param message The failure message to record.
+     * @param violation The violation to record.
      */
-    override fun onFailure(message: String) {
-        violationMessages.add(message)
+    override fun onFailure(violation: Violation) {
+        violations.add(violation)
     }
 }

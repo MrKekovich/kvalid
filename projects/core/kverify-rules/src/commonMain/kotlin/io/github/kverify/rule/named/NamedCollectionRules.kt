@@ -2,6 +2,7 @@ package io.github.kverify.rule.named
 
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
+import io.github.kverify.dsl.extension.asViolation
 import io.github.kverify.dsl.extension.validate
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.localization.DefaultRuleLocalization
@@ -18,10 +19,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size == size,
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.OfSize(size),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.OfSize(size),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -30,10 +32,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size != size,
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.NotOfSize(size),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.NotOfSize(size),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -42,10 +45,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size in range,
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.SizeBetween(range),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.SizeBetween(range),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -54,10 +58,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size !in range,
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.SizeNotBetween(range),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.SizeNotBetween(range),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -82,10 +87,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.containsAll(elements),
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.ContainsAll(elements),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.ContainsAll(elements),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -94,10 +100,11 @@ open class NamedCollectionRules(
             validate(
                 elements.none { it in namedValue.value },
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.ContainsNone(elements),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.ContainsNone(elements),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -106,10 +113,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.contains(element),
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.Contains(element),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.Contains(element),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -118,10 +126,11 @@ open class NamedCollectionRules(
             validate(
                 !namedValue.value.contains(element),
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.NotContains(element),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.NotContains(element),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -130,10 +139,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.all { element -> element in allowedElements },
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.ContainsOnly(allowedElements),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.ContainsOnly(allowedElements),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -142,10 +152,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.isNotEmpty(),
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.NotEmpty,
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.NotEmpty,
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -154,10 +165,11 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size == namedValue.value.toSet().size,
             ) {
-                localization.getLocalization(
-                    CollectionRuleType.Distinct,
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        CollectionRuleType.Distinct,
+                        namedValue,
+                    ).asViolation()
             }
         }
 }

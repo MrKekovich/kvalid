@@ -9,7 +9,7 @@ import kotlin.test.DefaultAsserter.fail
 
 class ValidationResultExtensionTest :
     FunSpec({
-        val message = "message"
+        val message = "message".asViolation()
 
         val validResult = ValidationResult()
         val invalidResult = ValidationResult(message)
@@ -52,6 +52,6 @@ class ValidationResultExtensionTest :
 
         test("asExceptionOrNull") {
             validResult.asExceptionOrNull() shouldBe null
-            invalidResult.asExceptionOrNull()?.violationMessages shouldBe listOf(message)
+            invalidResult.asExceptionOrNull()?.violations shouldBe listOf(message)
         }
     })

@@ -2,6 +2,7 @@ package io.github.kverify.rule.named
 
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
+import io.github.kverify.dsl.extension.asViolation
 import io.github.kverify.dsl.extension.validate
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.localization.DefaultRuleLocalization
@@ -18,10 +19,11 @@ open class NamedComparableRules(
             validate(
                 namedValue.value == other,
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.EqualTo(other),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.EqualTo(other),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -30,10 +32,11 @@ open class NamedComparableRules(
             validate(
                 namedValue.value != other,
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.NotEqualTo(other),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.NotEqualTo(other),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -42,10 +45,11 @@ open class NamedComparableRules(
             validate(
                 namedValue.value > other,
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.GreaterThan(other),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.GreaterThan(other),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -54,10 +58,11 @@ open class NamedComparableRules(
             validate(
                 namedValue.value >= other,
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.GreaterThanOrEqualTo(other),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.GreaterThanOrEqualTo(other),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -66,10 +71,11 @@ open class NamedComparableRules(
             validate(
                 namedValue.value < other,
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.LessThan(other),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.LessThan(other),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -78,10 +84,11 @@ open class NamedComparableRules(
             validate(
                 namedValue.value <= other,
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.LessThanOrEqualTo(other),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.LessThanOrEqualTo(other),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -98,10 +105,11 @@ open class NamedComparableRules(
                     namedValue.value > min && namedValue.value < max
                 },
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.Between(min, max),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.Between(min, max),
+                        namedValue,
+                    ).asViolation()
             }
         }
 
@@ -118,10 +126,11 @@ open class NamedComparableRules(
                     namedValue.value <= min || namedValue.value >= max
                 },
             ) {
-                localization.getLocalization(
-                    ComparableRuleType.NotBetween(min, max),
-                    namedValue,
-                )
+                localization
+                    .getLocalization(
+                        ComparableRuleType.NotBetween(min, max),
+                        namedValue,
+                    ).asViolation()
             }
         }
 }

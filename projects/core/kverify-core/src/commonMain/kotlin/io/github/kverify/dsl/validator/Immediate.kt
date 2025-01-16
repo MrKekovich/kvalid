@@ -47,7 +47,7 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult 
         validateOrThrow(block)
         ValidationResult.VALID
     } catch (violation: ValidationException) {
-        ValidationResult(violation.violationMessages)
+        ValidationResult(violation.violations)
     }
 
 /**

@@ -2,6 +2,7 @@ package io.github.kverify.dsl.extension
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.ValidationResult
+import io.github.kverify.core.violation.Violation
 
 /**
  * Throws a [ValidationException] if [ValidationResult] is invalid.
@@ -27,13 +28,13 @@ fun ValidationResult.throwOnFailure(
     limit: Int = -1,
     truncated: CharSequence = "...",
     cause: Throwable? = null,
-    transform: ((String) -> CharSequence)? = null,
+    transform: (Violation) -> String = { it.message },
 ) {
     if (isValid) return
 
     throw ValidationException(
         message =
-            violationMessages.joinToString(
+            violations.joinToString(
                 separator = separator,
                 prefix = prefix,
                 postfix = postfix,
@@ -41,7 +42,7 @@ fun ValidationResult.throwOnFailure(
                 truncated = truncated,
                 transform = transform,
             ),
-        violationMessages = violationMessages,
+        violations = violations,
         cause = cause,
     )
 }
@@ -63,8 +64,8 @@ inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
  * @param block The code block to execute, receiving the list of violation messages.
  * @return [ValidationResult], unchanged.
  */
-inline fun ValidationResult.onInvalid(block: (List<String>) -> Unit): ValidationResult {
-    if (isInvalid) block(violationMessages)
+inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
+    if (isInvalid) block(violations)
     return this
 }
 
@@ -80,12 +81,12 @@ inline fun ValidationResult.onInvalid(block: (List<String>) -> Unit): Validation
  */
 inline fun <T> ValidationResult.fold(
     onValid: () -> T,
-    onInvalid: (List<String>) -> T,
+    onInvalid: (List<Violation>) -> T,
 ): T =
     if (isValid) {
         onValid()
     } else {
-        onInvalid(violationMessages)
+        onInvalid(violations)
     }
 
 /**
@@ -97,7 +98,7 @@ inline fun <T> ValidationResult.fold(
  * @param cause An optional underlying cause for the exception.
  * @return A [ValidationException] if this [ValidationResult] is invalid, or `null` if it is valid.
  */
-fun ValidationResult.asExceptionOrNull(
+inline fun ValidationResult.asExceptionOrNull(
     message: String? = null,
     cause: Throwable? = null,
 ): ValidationException? =
@@ -106,7 +107,7 @@ fun ValidationResult.asExceptionOrNull(
         onInvalid = {
             ValidationException(
                 message = message,
-                violationMessages = it,
+                violations = it,
                 cause = cause,
             )
         },
@@ -120,12 +121,12 @@ fun ValidationResult.asExceptionOrNull(
  * @param cause An optional underlying cause for the exception.
  * @return A [ValidationException] if this [ValidationResult] is invalid, or `null` if it is valid.
  */
-fun ValidationResult.asExceptionOrNull(cause: Throwable? = null): ValidationException? =
+inline fun ValidationResult.asExceptionOrNull(cause: Throwable? = null): ValidationException? =
     fold(
         onValid = { null },
         onInvalid = {
             ValidationException(
-                violationMessages = it,
+                violations = it,
                 cause = cause,
             )
         },

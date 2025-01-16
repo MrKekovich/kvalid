@@ -1,6 +1,8 @@
 package io.github.kverify.core.context
 
 import io.github.kverify.core.model.Rule
+import io.github.kverify.core.violation.Violation
+import io.github.kverify.dsl.extension.asViolation
 
 /**
  * A lambda function that evaluates a condition and returns a boolean result.
@@ -19,15 +21,25 @@ internal typealias Predicate = () -> Boolean
  */
 interface ValidationContext {
     /**
-     * Handles a validation failure with the given [message].
+     * Handles a validation failure with the given [violation].
      *
      * Implementations define how validation failures are processed,
      * such as collecting failure messages or interrupting execution
      * by throwing an exception.
      *
+     * @param violation The violation object describing why the validation failed.
+     */
+    fun onFailure(violation: Violation)
+
+    /**
+     * Handles a validation failure with the given [message].
+     *
+     * This overload allows handling failures using a simple message string.
+     * It provides flexibility for scenarios where a typed violation is unnecessary.
+     *
      * @param message The failure message describing why the validation failed.
      */
-    fun onFailure(message: String)
+    fun onFailure(message: String): Unit = onFailure(message.asViolation())
 
     /**
      * Validates a rule that does not take any input value.
