@@ -2,12 +2,12 @@ package io.github.kverify.rule.named
 
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
-import io.github.kverify.dsl.extension.asViolation
 import io.github.kverify.dsl.extension.validate
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.localization.DefaultRuleLocalization
 import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.StringRuleType
+import io.github.kverify.rule.violation.StringViolation
 
 @Suppress("TooManyFunctions")
 open class NamedStringRules(
@@ -19,11 +19,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.length == length,
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.OfLength(length),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.OfLength(
+                            length = length,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.OfLength(
+                    message = message,
+                    length = length,
+                )
             }
         }
 
@@ -32,11 +39,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.length != length,
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.NotOfLength(length),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.NotOfLength(
+                            length = length,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.NotOfLength(
+                    message = message,
+                    length = length,
+                )
             }
         }
 
@@ -45,11 +59,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.length <= max,
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.MaxLength(max),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.MaxLength(
+                            max = max,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.MaxLength(
+                    message = message,
+                    max = max,
+                )
             }
         }
 
@@ -58,11 +79,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.length >= min,
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.MinLength(min),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.MinLength(
+                            min = min,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.MinLength(
+                    message = message,
+                    min = min,
+                )
             }
         }
 
@@ -71,11 +99,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.length in range,
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.LengthBetween(range),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.LengthBetween(
+                            range = range,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.LengthBetween(
+                    message = message,
+                    range,
+                )
             }
         }
 
@@ -84,11 +119,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.length !in range,
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.LengthNotBetween(range),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.LengthNotBetween(
+                            range = range,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.LengthNotBetween(
+                    message = message,
+                    range,
+                )
             }
         }
 
@@ -116,27 +158,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.contains(string, ignoreCase),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.Contains(string),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Contains(
+                            string = string,
+                        ),
                         namedValue,
-                    ).asViolation()
-            }
-        }
+                    )
 
-    fun contains(
-        char: Char,
-        ignoreCase: Boolean = false,
-    ): Rule<NamedValue<String>> =
-        createNamedRule { namedValue ->
-            validate(
-                namedValue.value.contains(char, ignoreCase),
-            ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.Contains(char),
-                        namedValue,
-                    ).asViolation()
+                StringViolation.Contains(
+                    message = message,
+                    string,
+                )
             }
         }
 
@@ -145,11 +178,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.contains(regex),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.ContainsRegex(regex),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsRegex(
+                            regex = regex,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.ContainsRegex(
+                    message = message,
+                    regex,
+                )
             }
         }
 
@@ -161,27 +201,38 @@ open class NamedStringRules(
             validate(
                 !namedValue.value.contains(string, ignoreCase),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.Contains(string),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Contains(
+                            string = string,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.Contains(
+                    message = message,
+                    string,
+                )
             }
         }
 
-    fun notContains(
-        char: Char,
-        ignoreCase: Boolean = false,
-    ): Rule<NamedValue<String>> =
+    fun notContains(regex: Regex): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                !namedValue.value.contains(char, ignoreCase),
+                !namedValue.value.contains(regex),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.NotContains(char),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsRegex(
+                            regex = regex,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.NotContainsRegex(
+                    message = message,
+                    regex,
+                )
             }
         }
 
@@ -190,37 +241,56 @@ open class NamedStringRules(
             validate(
                 chars.all { char -> char in namedValue.value },
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.ContainsAll(chars),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsAll(chars = chars),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.ContainsAll(
+                    message = message,
+                    chars,
+                )
             }
         }
 
-    fun containsOnly(allowedChars: Set<Char>): Rule<NamedValue<String>> =
+    fun containsOnly(chars: Set<Char>): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                namedValue.value.all { char -> char in allowedChars },
+                namedValue.value.all { char -> char in chars },
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.ContainsOnly(allowedChars),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsOnly(
+                            chars = chars,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.ContainsOnly(
+                    message = message,
+                    chars,
+                )
             }
         }
 
-    fun containsNone(prohibitedChars: Set<Char>): Rule<NamedValue<String>> =
+    fun containsNone(chars: Set<Char>): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                namedValue.value.none { char -> char in prohibitedChars },
+                namedValue.value.none { char -> char in chars },
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.ContainsNone(prohibitedChars),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsNone(
+                            chars = chars,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.ContainsNone(
+                    message = message,
+                    chars,
+                )
             }
         }
 
@@ -229,11 +299,18 @@ open class NamedStringRules(
             validate(
                 regex.matches(namedValue.value),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.Matches(regex),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Matches(
+                            regex = regex,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.Matches(
+                    message = message,
+                    regex,
+                )
             }
         }
 
@@ -242,11 +319,18 @@ open class NamedStringRules(
             validate(
                 !regex.matches(namedValue.value),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.NotMatches(regex),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.NotMatches(
+                            regex = regex,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.NotMatches(
+                    message = message,
+                    regex,
+                )
             }
         }
 
@@ -258,11 +342,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.startsWith(prefix, ignoreCase),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.StartsWith(prefix),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.StartsWith(
+                            prefix = prefix,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.StartsWith(
+                    message = message,
+                    prefix,
+                )
             }
         }
 
@@ -274,11 +365,18 @@ open class NamedStringRules(
             validate(
                 namedValue.value.endsWith(suffix, ignoreCase),
             ) {
-                localization
-                    .getLocalization(
-                        StringRuleType.EndsWith(suffix),
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.EndsWith(
+                            suffix = suffix,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.EndsWith(
+                    message = message,
+                    suffix,
+                )
             }
         }
 
@@ -287,11 +385,15 @@ open class NamedStringRules(
             validate(
                 namedValue.value.all { char -> char.isLetter() },
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         StringRuleType.Alphabetic,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.Alphabetic(
+                    message = message,
+                )
             }
         }
 
@@ -300,11 +402,15 @@ open class NamedStringRules(
             validate(
                 namedValue.value.all { char -> char.isLetterOrDigit() },
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         StringRuleType.Alphanumeric,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.Alphanumeric(
+                    message = message,
+                )
             }
         }
 
@@ -313,11 +419,15 @@ open class NamedStringRules(
             validate(
                 namedValue.value.isNotBlank(),
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         StringRuleType.NotBlank,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.NotBlank(
+                    message = message,
+                )
             }
         }
 
@@ -326,11 +436,15 @@ open class NamedStringRules(
             validate(
                 namedValue.value.isNotEmpty(),
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         StringRuleType.NotEmpty,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.NotEmpty(
+                    message = message,
+                )
             }
         }
 
@@ -339,11 +453,15 @@ open class NamedStringRules(
             validate(
                 namedValue.value.all { char -> char.isLowerCase() },
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         StringRuleType.LowerCase,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.LowerCase(
+                    message = message,
+                )
             }
         }
 
@@ -352,11 +470,15 @@ open class NamedStringRules(
             validate(
                 namedValue.value.all { char -> char.isUpperCase() },
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         StringRuleType.UpperCase,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.UpperCase(
+                    message = message,
+                )
             }
         }
 
@@ -365,11 +487,15 @@ open class NamedStringRules(
             validate(
                 namedValue.value.all { char -> char.isDigit() },
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         StringRuleType.Numeric,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                StringViolation.Numeric(
+                    message = message,
+                )
             }
         }
 }

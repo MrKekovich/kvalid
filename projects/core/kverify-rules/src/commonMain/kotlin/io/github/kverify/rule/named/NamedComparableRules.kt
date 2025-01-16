@@ -2,12 +2,12 @@ package io.github.kverify.rule.named
 
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
-import io.github.kverify.dsl.extension.asViolation
 import io.github.kverify.dsl.extension.validate
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.localization.DefaultRuleLocalization
 import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.ComparableRuleType
+import io.github.kverify.rule.violation.ComparableViolation
 
 @Suppress("TooManyFunctions")
 open class NamedComparableRules(
@@ -19,11 +19,16 @@ open class NamedComparableRules(
             validate(
                 namedValue.value == other,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.EqualTo(other),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.EqualTo(other = other),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.EqualTo(
+                    message = message,
+                    other = other,
+                )
             }
         }
 
@@ -32,11 +37,16 @@ open class NamedComparableRules(
             validate(
                 namedValue.value != other,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.NotEqualTo(other),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.NotEqualTo(other = other),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.NotEqualTo(
+                    message = message,
+                    other = other,
+                )
             }
         }
 
@@ -45,11 +55,16 @@ open class NamedComparableRules(
             validate(
                 namedValue.value > other,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.GreaterThan(other),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.GreaterThan(other = other),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.GreaterThan(
+                    message = message,
+                    other = other,
+                )
             }
         }
 
@@ -58,11 +73,16 @@ open class NamedComparableRules(
             validate(
                 namedValue.value >= other,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.GreaterThanOrEqualTo(other),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.GreaterThanOrEqualTo(other = other),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.GreaterThanOrEqualTo(
+                    message = message,
+                    other = other,
+                )
             }
         }
 
@@ -71,11 +91,16 @@ open class NamedComparableRules(
             validate(
                 namedValue.value < other,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.LessThan(other),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.LessThan(other = other),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.LessThan(
+                    message = message,
+                    other = other,
+                )
             }
         }
 
@@ -84,53 +109,75 @@ open class NamedComparableRules(
             validate(
                 namedValue.value <= other,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.LessThanOrEqualTo(other),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.LessThanOrEqualTo(other = other),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.LessThanOrEqualTo(
+                    message = message,
+                    other = other,
+                )
             }
         }
 
     fun <T : Comparable<T>> between(
-        min: T,
-        max: T,
-        inclusive: Boolean = true,
+        lower: T,
+        upper: T,
     ): Rule<NamedValue<T>> =
         createNamedRule { namedValue ->
             validate(
-                if (inclusive) {
-                    namedValue.value in min..max
-                } else {
-                    namedValue.value > min && namedValue.value < max
-                },
+                namedValue.value in upper..lower,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.Between(min, max),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.Between(
+                            lower = lower,
+                            upper = upper,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.Between(
+                    message = message,
+                    lower = lower,
+                    upper = upper,
+                )
             }
         }
 
+    fun <T : Comparable<T>> between(range: ClosedRange<T>): Rule<NamedValue<T>> =
+        between(
+            range.start,
+            range.endInclusive,
+        )
+
     fun <T : Comparable<T>> notBetween(
-        min: T,
-        max: T,
-        inclusive: Boolean = true,
+        lower: T,
+        upper: T,
     ): Rule<NamedValue<T>> =
         createNamedRule { namedValue ->
             validate(
-                if (inclusive) {
-                    namedValue.value < min || namedValue.value > max
-                } else {
-                    namedValue.value <= min || namedValue.value >= max
-                },
+                namedValue.value !in lower..upper,
             ) {
-                localization
-                    .getLocalization(
-                        ComparableRuleType.NotBetween(min, max),
+                val message =
+                    localization.getLocalization(
+                        ComparableRuleType.NotBetween(lower, upper),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                ComparableViolation.NotBetween(
+                    message = message,
+                    lower = lower,
+                    upper = upper,
+                )
             }
         }
+
+    fun <T : Comparable<T>> notBetween(range: ClosedRange<T>): Rule<NamedValue<T>> =
+        notBetween(
+            range.start,
+            range.endInclusive,
+        )
 }

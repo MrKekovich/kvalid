@@ -2,12 +2,12 @@ package io.github.kverify.rule.named
 
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
-import io.github.kverify.dsl.extension.asViolation
 import io.github.kverify.dsl.extension.validate
 import io.github.kverify.dsl.model.createNamedRule
 import io.github.kverify.rule.localization.DefaultRuleLocalization
 import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.CollectionRuleType
+import io.github.kverify.rule.violation.CollectionViolation
 
 @Suppress("TooManyFunctions")
 open class NamedCollectionRules(
@@ -19,11 +19,18 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size == size,
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.OfSize(size),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.OfSize(
+                            size = size,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.OfSize(
+                    message = message,
+                    size = size,
+                )
             }
         }
 
@@ -32,11 +39,18 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size != size,
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.NotOfSize(size),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.NotOfSize(
+                            size = size,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.NotOfSize(
+                    message = message,
+                    size = size,
+                )
             }
         }
 
@@ -45,11 +59,18 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size in range,
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.SizeBetween(range),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.SizeBetween(
+                            range = range,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.SizeBetween(
+                    message = message,
+                    range = range,
+                )
             }
         }
 
@@ -58,11 +79,18 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size !in range,
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.SizeNotBetween(range),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.SizeNotBetween(
+                            range = range,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.SizeNotBetween(
+                    message = message,
+                    range = range,
+                )
             }
         }
 
@@ -87,11 +115,18 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.containsAll(elements),
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.ContainsAll(elements),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.ContainsAll(
+                            elements = elements,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.ContainsAll(
+                    message = message,
+                    elements = elements,
+                )
             }
         }
 
@@ -100,11 +135,18 @@ open class NamedCollectionRules(
             validate(
                 elements.none { it in namedValue.value },
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.ContainsNone(elements),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.ContainsNone(
+                            elements = elements,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.ContainsNone(
+                    message = message,
+                    elements = elements,
+                )
             }
         }
 
@@ -113,11 +155,18 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.contains(element),
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.Contains(element),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.Contains(
+                            element = element,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.Contains(
+                    message = message,
+                    element = element,
+                )
             }
         }
 
@@ -126,24 +175,38 @@ open class NamedCollectionRules(
             validate(
                 !namedValue.value.contains(element),
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.NotContains(element),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.NotContains(
+                            element = element,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.NotContains(
+                    message = message,
+                    element = element,
+                )
             }
         }
 
-    fun <T, C : Collection<T>> containsOnly(allowedElements: Collection<T>): Rule<NamedValue<C>> =
+    fun <T, C : Collection<T>> containsOnly(elements: Collection<T>): Rule<NamedValue<C>> =
         createNamedRule { namedValue ->
             validate(
-                namedValue.value.all { element -> element in allowedElements },
+                namedValue.value.all { element -> element in elements },
             ) {
-                localization
-                    .getLocalization(
-                        CollectionRuleType.ContainsOnly(allowedElements),
+                val message =
+                    localization.getLocalization(
+                        CollectionRuleType.ContainsOnly(
+                            elements = elements,
+                        ),
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.ContainsOnly(
+                    message = message,
+                    elements = elements,
+                )
             }
         }
 
@@ -152,11 +215,15 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.isNotEmpty(),
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         CollectionRuleType.NotEmpty,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.NotEmpty(
+                    message = message,
+                )
             }
         }
 
@@ -165,11 +232,15 @@ open class NamedCollectionRules(
             validate(
                 namedValue.value.size == namedValue.value.toSet().size,
             ) {
-                localization
-                    .getLocalization(
+                val message =
+                    localization.getLocalization(
                         CollectionRuleType.Distinct,
                         namedValue,
-                    ).asViolation()
+                    )
+
+                CollectionViolation.Distinct(
+                    message = message,
+                )
             }
         }
 }

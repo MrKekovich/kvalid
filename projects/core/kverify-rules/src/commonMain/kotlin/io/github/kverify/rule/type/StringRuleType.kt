@@ -19,42 +19,38 @@ sealed interface StringRuleType : RuleType {
 
     data class LengthBetween(
         val range: IntRange,
-    ) : StringRuleType {
-        constructor(min: Int, max: Int) : this(min..max)
-    }
+    ) : StringRuleType
 
     data class LengthNotBetween(
         val range: IntRange,
-    ) : StringRuleType {
-        constructor(min: Int, max: Int) : this(min..max)
-    }
+    ) : StringRuleType
 
     data class Contains(
         val string: String,
-    ) : StringRuleType {
-        constructor(char: Char) : this(char.toString())
-    }
-
-    data class ContainsRegex(
-        val regex: Regex,
     ) : StringRuleType
 
     data class NotContains(
         val string: String,
-    ) : StringRuleType {
-        constructor(char: Char) : this(char.toString())
-    }
-
-    data class ContainsAll(
-        val chars: Set<Char>,
     ) : StringRuleType
 
     data class ContainsOnly(
         val chars: Set<Char>,
     ) : StringRuleType
 
+    data class ContainsAll(
+        val chars: Set<Char>,
+    ) : StringRuleType
+
     data class ContainsNone(
         val chars: Set<Char>,
+    ) : StringRuleType
+
+    data class ContainsRegex(
+        val regex: Regex,
+    ) : StringRuleType
+
+    data class NotContainsRegex(
+        val regex: Regex,
     ) : StringRuleType
 
     data class Matches(
@@ -77,6 +73,8 @@ sealed interface StringRuleType : RuleType {
 
     data object Alphanumeric : StringRuleType
 
+    data object Numeric : StringRuleType
+
     data object NotBlank : StringRuleType
 
     data object NotEmpty : StringRuleType
@@ -84,6 +82,4 @@ sealed interface StringRuleType : RuleType {
     data object LowerCase : StringRuleType
 
     data object UpperCase : StringRuleType
-
-    data object Numeric : StringRuleType
 }
