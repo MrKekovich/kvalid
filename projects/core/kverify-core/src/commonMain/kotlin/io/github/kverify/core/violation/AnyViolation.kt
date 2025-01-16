@@ -6,4 +6,6 @@ import kotlin.jvm.JvmInline
 @PublishedApi
 internal value class AnyViolation(
     override val message: String,
-) : Violation
+) : Violation {
+    override fun toString(): String = "Violation(message=$message)"
+}
