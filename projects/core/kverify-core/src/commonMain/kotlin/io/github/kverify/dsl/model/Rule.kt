@@ -88,22 +88,6 @@ inline fun <T> createRule(
     }
 
 /**
- * Creates a [Rule] that validates a condition without any input value, using the provided [predicate].
- * If the validation fails, the rule uses the fixed [message] as the failure message.
- *
- * @param message The failure message to use if the validation fails.
- * @param predicate A lambda that evaluates a condition and returns `true` if valid, or `false` otherwise.
- * @return A [Rule] to validate the condition.
- */
-inline fun createUnitRule(
-    message: String,
-    crossinline predicate: () -> Boolean,
-): Rule<Unit> =
-    Rule {
-        validate(predicate()) { message }
-    }
-
-/**
  * Creates a [Rule] that validates a fixed [condition] without any input value.
  * If the condition is `false`, the rule generates the failure message using [lazyFailureMessage].
  *
@@ -117,52 +101,4 @@ inline fun createUnitRule(
 ): Rule<Unit> =
     Rule {
         validate(condition) { lazyFailureMessage() }
-    }
-
-/**
- * Creates a [Rule] that validates a condition without any input value using the provided [predicate].
- * If the validation fails, the failure message is generated using [lazyFailureMessage].
- *
- * @param predicate A lambda that evaluates a condition and returns `true` if valid, or `false` otherwise.
- * @param lazyFailureMessage A lambda that generates the failure message.
- * @return A [Rule] to validate the condition.
- */
-inline fun createUnitRule(
-    crossinline predicate: () -> Boolean,
-    crossinline lazyFailureMessage: () -> String,
-): Rule<Unit> =
-    Rule {
-        validate(predicate()) { lazyFailureMessage() }
-    }
-
-/**
- * Creates a [Rule] that validates a fixed [condition] without any input value.
- * If the condition is `false`, the rule uses the fixed [message] as the failure message.
- *
- * @param message The failure message to use if the validation fails.
- * @param condition The condition to validate.
- * @return A [Rule] to validate the condition.
- */
-fun createUnitRule(
-    message: String,
-    condition: Boolean,
-): Rule<Unit> =
-    Rule {
-        validate(condition) { message }
-    }
-
-/**
- * Creates a [Rule] that validates a fixed [condition] without any input value.
- * If the condition is `false`, the rule uses the fixed [message] as the failure message.
- *
- * @param condition The condition to validate.
- * @param message The failure message to use if the validation fails.
- * @return A [Rule] to validate the condition.
- */
-fun createUnitRule(
-    condition: Boolean,
-    message: String,
-): Rule<Unit> =
-    Rule {
-        validate(condition) { message }
     }
