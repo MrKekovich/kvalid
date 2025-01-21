@@ -1,31 +1,31 @@
 package io.github.kverify.core.model
 
-import io.github.kverify.core.exception.ValidationException
+import io.github.kverify.core.violation.Violation
 import kotlin.jvm.JvmInline
 
 /**
  * Represents the result of a validation process.
  *
- * This class encapsulates a list of violation messages and provides utility
+ * This class encapsulates a list of violations and provides utility
  * functions to check validity, combine validation results, and produce string representations.
  *
- * @property violationMessages A list of messages describing validation failures.
+ * @property violations A list of violations describing validation failures.
  */
 @JvmInline
 value class ValidationResult(
-    val violationMessages: List<String>,
+    val violations: List<Violation>,
 ) {
     /**
      * Indicates whether the validation result is valid (i.e., no violations are present).
      */
     inline val isValid: Boolean
-        get() = violationMessages.isEmpty()
+        get() = violations.isEmpty()
 
     /**
      * Indicates whether the validation result is invalid (i.e., at least one violation is present).
      */
     inline val isInvalid: Boolean
-        get() = violationMessages.isNotEmpty()
+        get() = violations.isNotEmpty()
 
     /**
      * Combines this validation result with another validation result.
@@ -37,7 +37,7 @@ value class ValidationResult(
      */
     operator fun plus(other: ValidationResult): ValidationResult =
         ValidationResult(
-            violationMessages + other.violationMessages,
+            violations + other.violations,
         )
 
     /**
@@ -50,7 +50,7 @@ value class ValidationResult(
      */
     operator fun plus(results: List<ValidationResult>): ValidationResult =
         ValidationResult(
-            violationMessages + results.flatMap { it.violationMessages },
+            violations + results.flatMap { it.violations },
         )
 
     /**
@@ -62,34 +62,24 @@ value class ValidationResult(
         if (isValid) {
             "ValidationResult(valid=true)"
         } else {
-            "ValidationResult(valid=false, violations=$violationMessages)"
+            "ValidationResult(valid=false, violations=$violations)"
         }
 
     companion object {
+        /**
+         * An instance representing a valid validation result.
+         */
         val VALID = ValidationResult(emptyList())
     }
 }
 
 /**
- * Creates a [ValidationResult] from one or more violation messages.
+ * Creates a [ValidationResult] from one or more violations.
  *
- * @param violationMessages The violation messages to include in the validation result.
- * @return A new [ValidationResult] containing the provided violation messages.
+ * @param violations The violations to include in the validation result.
+ * @return A new [ValidationResult] containing the provided violations.
  */
-inline fun ValidationResult(vararg violationMessages: String): ValidationResult =
+inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     ValidationResult(
-        violationMessages.toList(),
-    )
-
-/**
- * Creates a [ValidationResult] from a [ValidationException].
- *
- * Extracts the violation messages from the exception to construct the validation result.
- *
- * @param validationException The exception containing violation messages.
- * @return A new [ValidationResult] containing the violation messages from the exception.
- */
-inline fun ValidationResult(validationException: ValidationException): ValidationResult =
-    ValidationResult(
-        validationException.violationMessages,
+        violations.asList(),
     )

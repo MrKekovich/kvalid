@@ -1,9 +1,9 @@
 package io.github.kverify.dsl.validator
 
 import io.github.kverify.core.exception.ValidationException
+import io.github.kverify.dsl.extension.asViolation
 import io.github.kverify.dsl.extension.onInvalid
 import io.github.kverify.dsl.extension.onValid
-import io.github.kverify.dsl.extension.violation
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -11,23 +11,23 @@ import kotlin.test.fail
 
 class ImmediateTest :
     FunSpec({
-        val message = "fail"
+        val message = "fail".asViolation()
 
         test("validateOrThrow") {
             shouldThrow<ValidationException> {
-                validateOrThrow { violation(message) }
-            }.violationMessages.first() shouldBe message
+                validateOrThrow { onFailure(message) }
+            }.violations.first() shouldBe message
         }
 
         test("validateFirst") {
             validateFirst {
-                violation(message)
+                onFailure(message)
                 fail("Code after first violation should not be executed")
             }.onValid {
                 fail("Validation should fail")
-            }.onInvalid { violationMessages ->
-                violationMessages.size shouldBe 1
-                violationMessages.first() shouldBe message
+            }.onInvalid { violations ->
+                violations.size shouldBe 1
+                violations.first() shouldBe message
             }
         }
 
@@ -36,7 +36,7 @@ class ImmediateTest :
 
             val failResult =
                 runValidatingFirst {
-                    violation(message)
+                    onFailure(message)
                     fail("Code after first violation should not be executed")
                     expectedResult
                 }
@@ -44,7 +44,7 @@ class ImmediateTest :
             failResult.isFailure shouldBe true
             shouldThrow<ValidationException> {
                 failResult.getOrThrow()
-            }.violationMessages.first() shouldBe message
+            }.violations.first() shouldBe message
 
             val successResult =
                 runValidatingFirst {

@@ -17,7 +17,7 @@ import io.github.kverify.core.validator.AggregatingValidator
  */
 inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult =
     ValidationResult(
-        AggregatingValidator().apply(block).violationMessages,
+        AggregatingValidator().apply(block).violations,
     )
 
 /**
@@ -31,9 +31,9 @@ inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult
  * @param rules The rules to validate the receiver against
  * @return A [ValidationException] if there are validation failures, or `null` if all validations pass
  */
-inline fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
+fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
     validateAll lambda@{
-        this@validateAll.validate(*rules)
+        this@validateAll.applyRules(*rules)
     }
 
 /**
@@ -53,11 +53,11 @@ inline fun <T> runValidatingAll(block: AggregatingValidator.() -> T): Result<T> 
     AggregatingValidator().run {
         val result = this.block()
 
-        if (violationMessages.isEmpty()) {
+        if (violations.isEmpty()) {
             Result.success(result)
         } else {
             Result.failure(
-                ValidationException(violationMessages),
+                ValidationException(violations),
             )
         }
     }

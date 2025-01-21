@@ -28,9 +28,9 @@ inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
  * @param rules The rules to validate the receiver against
  * @throws ValidationException if any validation fails
  */
-inline fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
+fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
     validateOrThrow {
-        validate(*rules)
+        applyRules(*rules)
     }
 
 /**
@@ -47,7 +47,7 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult 
         validateOrThrow(block)
         ValidationResult.VALID
     } catch (violation: ValidationException) {
-        ValidationResult(violation.violationMessages)
+        ValidationResult(violation.violations)
     }
 
 /**
@@ -60,9 +60,9 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult 
  * @param rules The rules to validate the receiver against
  * @return A [ValidationException] if a validation failure occurs, or `null` if all validations pass
  */
-inline fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
+fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
     validateFirst {
-        validate(*rules)
+        applyRules(*rules)
     }
 
 /**

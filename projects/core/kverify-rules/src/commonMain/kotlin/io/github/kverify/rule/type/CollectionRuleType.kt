@@ -11,15 +11,11 @@ sealed interface CollectionRuleType : RuleType {
 
     data class SizeBetween(
         val range: IntRange,
-    ) : CollectionRuleType {
-        constructor(min: Int, max: Int) : this(min..max)
-    }
+    ) : CollectionRuleType
 
     data class SizeNotBetween(
         val range: IntRange,
-    ) : CollectionRuleType {
-        constructor(min: Int, max: Int) : this(min..max)
-    }
+    ) : CollectionRuleType
 
     data class ContainsAll<T>(
         val elements: Collection<T>,

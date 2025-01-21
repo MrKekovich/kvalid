@@ -85,6 +85,7 @@ java {
     }
 }
 
+// TODO: Move publishing into a separate script
 mavenPublishing {
     val kverifyVersion: String by project
     val groupId: String by project

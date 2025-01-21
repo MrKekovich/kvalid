@@ -2,85 +2,135 @@ package io.github.kverify.rule.named
 
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
+import io.github.kverify.dsl.extension.validate
 import io.github.kverify.dsl.model.createNamedRule
-import io.github.kverify.rule.StringRules
 import io.github.kverify.rule.localization.DefaultRuleLocalization
 import io.github.kverify.rule.localization.RuleLocalization
 import io.github.kverify.rule.type.StringRuleType
+import io.github.kverify.rule.violation.StringViolation
 
 @Suppress("TooManyFunctions")
 open class NamedStringRules(
+    @Suppress("MemberVisibilityCanBePrivate")
     protected val localization: RuleLocalization = DefaultRuleLocalization(),
 ) {
     fun ofLength(length: Int): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.OfLength(length),
-                    namedValue,
-                ),
+                namedValue.value.length == length,
             ) {
-                StringRules.ofLength(length).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.OfLength(
+                            length = length,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.OfLength(
+                    message = message,
+                    length = length,
+                )
             }
         }
 
     fun notOfLength(length: Int): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.NotOfLength(length),
-                    namedValue,
-                ),
+                namedValue.value.length != length,
             ) {
-                StringRules.notOfLength(length).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.NotOfLength(
+                            length = length,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.NotOfLength(
+                    message = message,
+                    length = length,
+                )
             }
         }
 
     fun maxLength(max: Int): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.MaxLength(max),
-                    namedValue,
-                ),
+                namedValue.value.length <= max,
             ) {
-                StringRules.maxLength(max).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.MaxLength(
+                            max = max,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.MaxLength(
+                    message = message,
+                    max = max,
+                )
             }
         }
 
     fun minLength(min: Int): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.MinLength(min),
-                    namedValue,
-                ),
+                namedValue.value.length >= min,
             ) {
-                StringRules.minLength(min).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.MinLength(
+                            min = min,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.MinLength(
+                    message = message,
+                    min = min,
+                )
             }
         }
 
     fun lengthBetween(range: IntRange): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.LengthBetween(range),
-                    namedValue,
-                ),
+                namedValue.value.length in range,
             ) {
-                StringRules.lengthBetween(range).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.LengthBetween(
+                            range = range,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.LengthBetween(
+                    message = message,
+                    range,
+                )
             }
         }
 
     fun lengthNotBetween(range: IntRange): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.LengthNotBetween(range),
-                    namedValue,
-                ),
+                namedValue.value.length !in range,
             ) {
-                StringRules.lengthNotBetween(range).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.LengthNotBetween(
+                            range = range,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.LengthNotBetween(
+                    message = message,
+                    range,
+                )
             }
         }
 
@@ -88,245 +138,364 @@ open class NamedStringRules(
         min: Int,
         max: Int,
     ): Rule<NamedValue<String>> =
-        createNamedRule { namedValue ->
-            validate(
-                localization.getLocalization(
-                    StringRuleType.LengthBetween(min, max),
-                    namedValue,
-                ),
-            ) {
-                StringRules.lengthBetween(min, max).invoke(namedValue.value)
-            }
-        }
+        lengthNotBetween(
+            min..max,
+        )
 
     fun lengthNotBetween(
         min: Int,
         max: Int,
     ): Rule<NamedValue<String>> =
+        lengthNotBetween(
+            min..max,
+        )
+
+    fun contains(
+        string: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.LengthNotBetween(min, max),
-                    namedValue,
-                ),
+                namedValue.value.contains(string, ignoreCase),
             ) {
-                StringRules.lengthNotBetween(min, max).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Contains(
+                            string = string,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.Contains(
+                    message = message,
+                    string,
+                )
             }
         }
 
-    fun contains(string: String): Rule<NamedValue<String>> =
+    fun contains(regex: Regex): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.Contains(string),
-                    namedValue,
-                ),
+                namedValue.value.contains(regex),
             ) {
-                StringRules.contains(string).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsRegex(
+                            regex = regex,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.ContainsRegex(
+                    message = message,
+                    regex,
+                )
             }
         }
 
-    fun notContains(string: String): Rule<NamedValue<String>> =
+    fun notContains(
+        string: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.Contains(string),
-                    namedValue,
-                ),
+                !namedValue.value.contains(string, ignoreCase),
             ) {
-                StringRules.notContains(string).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Contains(
+                            string = string,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.Contains(
+                    message = message,
+                    string,
+                )
             }
         }
 
-    fun contains(char: Char): Rule<NamedValue<String>> =
+    fun notContains(regex: Regex): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.Contains(char),
-                    namedValue,
-                ),
+                !namedValue.value.contains(regex),
             ) {
-                StringRules.contains(char).invoke(namedValue.value)
-            }
-        }
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsRegex(
+                            regex = regex,
+                        ),
+                        namedValue,
+                    )
 
-    fun notContains(char: Char): Rule<NamedValue<String>> =
-        createNamedRule { namedValue ->
-            validate(
-                localization.getLocalization(
-                    StringRuleType.NotContains(char),
-                    namedValue,
-                ),
-            ) {
-                StringRules.notContains(char).invoke(namedValue.value)
+                StringViolation.NotContainsRegex(
+                    message = message,
+                    regex,
+                )
             }
         }
 
     fun containsAll(chars: Set<Char>): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.ContainsAll(chars),
-                    namedValue,
-                ),
+                chars.all { char -> char in namedValue.value },
             ) {
-                StringRules.containsAll(chars).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsAll(chars = chars),
+                        namedValue,
+                    )
+
+                StringViolation.ContainsAll(
+                    message = message,
+                    chars,
+                )
             }
         }
 
     fun containsOnly(chars: Set<Char>): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.ContainsOnly(chars),
-                    namedValue,
-                ),
+                namedValue.value.all { char -> char in chars },
             ) {
-                StringRules.containsOnly(chars).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsOnly(
+                            chars = chars,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.ContainsOnly(
+                    message = message,
+                    chars,
+                )
             }
         }
 
     fun containsNone(chars: Set<Char>): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.ContainsNone(chars),
-                    namedValue,
-                ),
+                namedValue.value.none { char -> char in chars },
             ) {
-                StringRules.containsNone(chars).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.ContainsNone(
+                            chars = chars,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.ContainsNone(
+                    message = message,
+                    chars,
+                )
             }
         }
 
     fun matches(regex: Regex): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.Matches(regex),
-                    namedValue,
-                ),
+                regex.matches(namedValue.value),
             ) {
-                StringRules.matches(regex).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Matches(
+                            regex = regex,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.Matches(
+                    message = message,
+                    regex,
+                )
             }
         }
 
     fun notMatches(regex: Regex): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.NotMatches(regex),
-                    namedValue,
-                ),
+                !regex.matches(namedValue.value),
             ) {
-                StringRules.notMatches(regex).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.NotMatches(
+                            regex = regex,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.NotMatches(
+                    message = message,
+                    regex,
+                )
             }
         }
 
-    fun startsWith(prefix: String): Rule<NamedValue<String>> =
+    fun startsWith(
+        prefix: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.StartsWith(prefix),
-                    namedValue,
-                ),
+                namedValue.value.startsWith(prefix, ignoreCase),
             ) {
-                StringRules.startsWith(prefix).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.StartsWith(
+                            prefix = prefix,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.StartsWith(
+                    message = message,
+                    prefix,
+                )
             }
         }
 
-    fun endsWith(suffix: String): Rule<NamedValue<String>> =
+    fun endsWith(
+        suffix: String,
+        ignoreCase: Boolean = false,
+    ): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.EndsWith(suffix),
-                    namedValue,
-                ),
+                namedValue.value.endsWith(suffix, ignoreCase),
             ) {
-                StringRules.endsWith(suffix).invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.EndsWith(
+                            suffix = suffix,
+                        ),
+                        namedValue,
+                    )
+
+                StringViolation.EndsWith(
+                    message = message,
+                    suffix,
+                )
             }
         }
 
     fun alphabetic(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.Alphabetic,
-                    namedValue,
-                ),
+                namedValue.value.all { char -> char.isLetter() },
             ) {
-                StringRules.alphabetic().invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Alphabetic,
+                        namedValue,
+                    )
+
+                StringViolation.Alphabetic(
+                    message = message,
+                )
             }
         }
 
     fun alphanumeric(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.Alphanumeric,
-                    namedValue,
-                ),
+                namedValue.value.all { char -> char.isLetterOrDigit() },
             ) {
-                StringRules.alphanumeric().invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Alphanumeric,
+                        namedValue,
+                    )
+
+                StringViolation.Alphanumeric(
+                    message = message,
+                )
             }
         }
 
     fun notBlank(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.NotBlank,
-                    namedValue,
-                ),
+                namedValue.value.isNotBlank(),
             ) {
-                StringRules.notBlank().invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.NotBlank,
+                        namedValue,
+                    )
+
+                StringViolation.NotBlank(
+                    message = message,
+                )
             }
         }
 
     fun notEmpty(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.NotEmpty,
-                    namedValue,
-                ),
+                namedValue.value.isNotEmpty(),
             ) {
-                StringRules.notEmpty().invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.NotEmpty,
+                        namedValue,
+                    )
+
+                StringViolation.NotEmpty(
+                    message = message,
+                )
             }
         }
 
     fun lowerCase(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.LowerCase,
-                    namedValue,
-                ),
+                namedValue.value.all { char -> char.isLowerCase() },
             ) {
-                StringRules.lowerCase().invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.LowerCase,
+                        namedValue,
+                    )
+
+                StringViolation.LowerCase(
+                    message = message,
+                )
             }
         }
 
     fun upperCase(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.UpperCase,
-                    namedValue,
-                ),
+                namedValue.value.all { char -> char.isUpperCase() },
             ) {
-                StringRules.upperCase().invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.UpperCase,
+                        namedValue,
+                    )
+
+                StringViolation.UpperCase(
+                    message = message,
+                )
             }
         }
 
     fun numeric(): Rule<NamedValue<String>> =
         createNamedRule { namedValue ->
             validate(
-                localization.getLocalization(
-                    StringRuleType.Numeric,
-                    namedValue,
-                ),
+                namedValue.value.all { char -> char.isDigit() },
             ) {
-                StringRules.numeric().invoke(namedValue.value)
+                val message =
+                    localization.getLocalization(
+                        StringRuleType.Numeric,
+                        namedValue,
+                    )
+
+                StringViolation.Numeric(
+                    message = message,
+                )
             }
         }
 }
