@@ -92,7 +92,7 @@ mavenPublishing {
     coordinates(
         groupId = groupId,
         version = kverifyVersion,
-        artifactId = "kverify-rules",
+        artifactId = "rule-set",
     )
 
     pom {
