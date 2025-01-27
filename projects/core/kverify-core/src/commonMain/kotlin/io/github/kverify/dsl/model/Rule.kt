@@ -6,6 +6,8 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.dsl.extension.validate
 
+typealias NamedRule<T> = Rule<NamedValue<T>>
+
 /**
  * Creates a [Rule] that can be used with a value of type [T].
  *
@@ -29,7 +31,7 @@ fun <T> createRule(predicate: ValidationContext.(T) -> Unit): Rule<T> =
  * @param predicate The validation logic to execute.
  * @return A new [Rule] based on the given [predicate].
  */
-fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): Rule<NamedValue<T>> =
+fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): NamedRule<T> =
     Rule(
         predicate,
     )
