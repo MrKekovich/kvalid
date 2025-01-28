@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Publish all" type="CompoundRunConfigurationType">
-    <toRun name="projects:core:kverify-core [publishAndReleaseToMavenCentral]" type="GradleRunConfiguration" />
-    <toRun name="projects:core:kverify-rules [publishAndReleaseToMavenCentral]" type="GradleRunConfiguration" />
-    <method v="2" />
-  </configuration>
-</component>
