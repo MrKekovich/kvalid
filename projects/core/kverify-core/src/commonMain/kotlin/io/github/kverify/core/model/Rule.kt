@@ -6,77 +6,20 @@ import io.github.kverify.core.violation.Violation
 
 typealias NamedRule<T> = Rule<NamedValue<T>>
 
-/**
- * Represents a validation rule that can be applied to a value of type [T].
- *
- * This functional interface defines the contract for validating a value within a
- * [ValidationContext].
- *
- * @param T The type of the value to be validated
- */
 fun interface Rule<T> {
-    /**
-     * Validates the given [value] within the [ValidationContext].
-     *
-     * This method is invoked to perform the actual validation logic for the rule.
-     *
-     * @param value The value to validate
-     */
-    fun ValidationContext.validate(value: T)
-
-    /**
-     * Combines this [Rule] with another [Rule], creating a new composite [Rule].
-     *
-     * The resulting [Rule] validates the given value using both rules sequentially.
-     * If either rule fails, the combined validation is considered unsuccessful.
-     *
-     * @param other The other [Rule] to combine with this one
-     * @return A new [Rule] that applies both validations
-     */
-    operator fun plus(other: Rule<T>): Rule<T> =
-        Rule validationContext@{
-            this@Rule.run { validate(it) }
-            other.run { validate(it) }
-        }
+    fun ValidationContext.runValidation(value: T)
 }
 
-/**
- * Creates a [Rule] that can be used with a value of type [T].
- *
- * Provides a [ValidationContext] for validation logic.
- *
- * @param T The type of the value passed to [predicate].
- * @param predicate The validation logic to execute.
- * @return A new [Rule] based on the given [predicate].
- */
 fun <T> createRule(predicate: ValidationContext.(T) -> Unit): Rule<T> =
     Rule(
         predicate,
     )
 
-/**
- * Creates a [Rule] that can be used with a [NamedValue] of type [T].
- *
- * Provides a [ValidationContext] and a [NamedValue] as the lambda parameter.
- *
- * @param T The type of the value wrapped in [NamedValue].
- * @param predicate The validation logic to execute.
- * @return A new [Rule] based on the given [predicate].
- */
 fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): NamedRule<T> =
     Rule(
         predicate,
     )
 
-/**
- * Creates a [Rule] that will execute [ValidationContext.validate] with the given [violation]
- * and [predicate].
- *
- * @param T The type of the value passed to [predicate].
- * @param violation The violation to use if the validation fails.
- * @param predicate The predicate to validate the value.
- * @return A new [Rule] that performs validation.
- */
 inline fun <T> createRule(
     violation: Violation,
     crossinline predicate: (T) -> Boolean,
@@ -85,17 +28,6 @@ inline fun <T> createRule(
         validate(predicate(it)) { violation }
     }
 
-/**
- * Creates a [Rule] that validates a value using a fixed [condition] and a lazy violation generator.
- *
- * The returned rule uses the [ValidationContext.validate] function to check if the [condition]
- * is `true`. If it is `false`, the [lazyViolation] lambda is invoked to generate a [Violation] for the given value.
- *
- * @param T The type of the value being validated.
- * @param condition The condition to validate.
- * @param lazyViolation A lambda that generates a [Violation] based on the value.
- * @return A new [Rule] that performs validation with the specified [condition].
- */
 inline fun <T> createRule(
     condition: Boolean,
     crossinline lazyViolation: (T) -> Violation,
@@ -104,15 +36,6 @@ inline fun <T> createRule(
         validate(condition) { lazyViolation(it) }
     }
 
-/**
- * Creates a [Rule] that validates a value using the provided [predicate] and generates a [Violation]
- * with [lazyViolation] if the validation fails.
- *
- * @param T The type of the value being validated.
- * @param predicate A lambda that takes the value and returns `true` if the validation passes, or `false` otherwise.
- * @param lazyViolation A lambda that takes the value and generates the failure message.
- * @return A [Rule] to validate the given value.
- */
 inline fun <T> createRule(
     crossinline predicate: (T) -> Boolean,
     crossinline lazyViolation: (T) -> Violation,
@@ -121,18 +44,28 @@ inline fun <T> createRule(
         validate(predicate(it)) { lazyViolation(it) }
     }
 
-/**
- * Creates a [Rule] that validates a fixed [condition] without any input value.
- * If the condition is `false`, the rule generates the [Violation] using [lazyViolation].
- *
- * @param condition The condition to validate.
- * @param lazyViolation A lambda that generates the failure message.
- * @return A [Rule] to validate the condition.
- */
 inline fun createUnitRule(
     condition: Boolean,
     crossinline lazyViolation: () -> Violation,
 ): Rule<Unit> =
     Rule {
         validate(condition) { lazyViolation() }
+    }
+
+inline fun <T> Rule<T>.runValidation(
+    context: ValidationContext,
+    value: T,
+): Unit = context.runValidation(value)
+
+operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
+    Rule validationContext@{ value ->
+        this@plus.runValidation(
+            this@validationContext,
+            value,
+        )
+
+        other.runValidation(
+            this@validationContext,
+            value,
+        )
     }
