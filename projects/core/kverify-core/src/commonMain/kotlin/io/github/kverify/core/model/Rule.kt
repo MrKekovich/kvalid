@@ -15,11 +15,6 @@ fun <T> createRule(predicate: ValidationContext.(T) -> Unit): Rule<T> =
         predicate,
     )
 
-fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): NamedRule<T> =
-    Rule(
-        predicate,
-    )
-
 inline fun <T> createRule(
     violation: Violation,
     crossinline predicate: (T) -> Boolean,
@@ -43,6 +38,11 @@ inline fun <T> createRule(
     Rule {
         validate(predicate(it)) { lazyViolation(it) }
     }
+
+fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): NamedRule<T> =
+    Rule(
+        predicate,
+    )
 
 inline fun createUnitRule(
     condition: Boolean,

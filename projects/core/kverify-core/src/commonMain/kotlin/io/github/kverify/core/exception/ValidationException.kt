@@ -11,17 +11,6 @@ open class ValidationException(
 ) : Throwable()
 
 fun ValidationException(
-    message: String? = null,
-    violationMessages: List<String> = emptyList(),
-    cause: Throwable? = null,
-): ValidationException =
-    ValidationException(
-        message,
-        violationMessages.map { it.asViolation() },
-        cause,
-    )
-
-fun ValidationException(
     violations: List<Violation>,
     cause: Throwable? = null,
 ): ValidationException {
@@ -45,6 +34,17 @@ fun ValidationException(
 ): ValidationException =
     ValidationException(
         violations.asList(),
+        cause,
+    )
+
+fun ValidationException(
+    message: String? = null,
+    violationMessages: List<String> = emptyList(),
+    cause: Throwable? = null,
+): ValidationException =
+    ValidationException(
+        message,
+        violationMessages.map { it.asViolation() },
         cause,
     )
 
