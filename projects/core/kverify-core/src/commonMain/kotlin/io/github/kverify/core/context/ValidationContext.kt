@@ -5,13 +5,6 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 
 /**
- * A lambda function that evaluates a condition and returns a boolean result.
- *
- * Typically used in validation contexts to define custom validation logic.
- */
-internal typealias Predicate = () -> Boolean
-
-/**
  * A context for performing validation operations.
  *
  * This interface provides a contract for handling validation failures.
@@ -19,7 +12,7 @@ internal typealias Predicate = () -> Boolean
  * failed validations, such as aggregating failure messages or
  * throwing exceptions.
  */
-interface ValidationContext {
+fun interface ValidationContext {
     /**
      * Handles a validation failure with the given [violation].
      *
