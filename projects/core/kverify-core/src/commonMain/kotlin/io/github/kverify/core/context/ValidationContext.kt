@@ -8,14 +8,6 @@ import io.github.kverify.core.violation.asViolation
 fun interface ValidationContext {
     fun onFailure(violation: Violation)
 
-    fun applyUnitRules(vararg rules: Rule<Unit>): Unit =
-        rules.forEach {
-            it.runValidation(
-                context = this@ValidationContext,
-                value = Unit,
-            )
-        }
-
     fun <T> T.applyRules(vararg rules: Rule<T>): T {
         rules.forEach {
             it.runValidation(
@@ -25,6 +17,14 @@ fun interface ValidationContext {
         }
         return this
     }
+
+    fun applyUnitRules(vararg rules: Rule<Unit>): Unit =
+        rules.forEach {
+            it.runValidation(
+                context = this@ValidationContext,
+                value = Unit,
+            )
+        }
 }
 
 fun ValidationContext.onFailure(message: String): Unit = onFailure(message.asViolation())
