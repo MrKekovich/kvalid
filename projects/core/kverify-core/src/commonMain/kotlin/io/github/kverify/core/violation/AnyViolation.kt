@@ -7,5 +7,5 @@ import kotlin.jvm.JvmInline
 internal value class AnyViolation(
     override val message: String,
 ) : Violation {
-    override fun toString(): String = "Violation(message=$message)"
+    override fun toString(): String = "AnyViolation(message=$message)"
 }

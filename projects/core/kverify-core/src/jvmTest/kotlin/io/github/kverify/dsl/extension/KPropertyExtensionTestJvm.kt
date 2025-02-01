@@ -1,7 +1,8 @@
 package io.github.kverify.dsl.extension
 
+import io.github.kverify.core.jvm.exception.PropertyAccessException
+import io.github.kverify.core.jvm.model.toNamed
 import io.github.kverify.core.model.NamedValue
-import io.github.kverify.dsl.exception.PropertyAccessException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe

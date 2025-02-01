@@ -1,12 +1,12 @@
 package io.github.kverify.rule.set
 
+import io.github.kverify.core.context.validate
+import io.github.kverify.core.model.NamedRule
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
+import io.github.kverify.core.model.createNamedRule
+import io.github.kverify.core.model.createRule
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.dsl.extension.validate
-import io.github.kverify.dsl.model.NamedRule
-import io.github.kverify.dsl.model.createNamedRule
-import io.github.kverify.dsl.model.createRule
 import io.github.kverify.rule.set.violation.CollectionViolations
 
 @Suppress("TooManyFunctions")

@@ -1,9 +1,11 @@
-package io.github.kverify.dsl.extension
+package io.github.kverify.core.jvm.model
 
+import io.github.kverify.core.jvm.exception.PropertyAccessException
 import io.github.kverify.core.model.NamedValue
-import io.github.kverify.dsl.exception.PropertyAccessException
 import kotlin.reflect.KProperty
 import kotlin.reflect.jvm.isAccessible
+
+// JVM-specific code. For Kotlin Multiplatform, see `NamedValue` class
 
 /**
  * Converts a [KProperty] to a [NamedValue].

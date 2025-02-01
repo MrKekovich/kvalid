@@ -1,4 +1,4 @@
-package io.github.kverify.dsl.exception
+package io.github.kverify.core.jvm.exception
 
 /**
  * Exception thrown when accessing a property fails due to reflection-related issues.

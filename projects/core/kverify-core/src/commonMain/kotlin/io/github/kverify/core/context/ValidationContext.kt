@@ -2,7 +2,7 @@ package io.github.kverify.core.context
 
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.dsl.extension.asViolation
+import io.github.kverify.core.violation.asViolation
 
 /**
  * A lambda function that evaluates a condition and returns a boolean result.
@@ -32,16 +32,6 @@ interface ValidationContext {
     fun onFailure(violation: Violation)
 
     /**
-     * Handles a validation failure with the given [message].
-     *
-     * This overload allows handling failures using a simple message string.
-     * It provides flexibility for scenarios where a typed violation is unnecessary.
-     *
-     * @param message The failure message describing why the validation failed.
-     */
-    fun onFailure(message: String): Unit = onFailure(message.asViolation())
-
-    /**
      * Validates a rule that does not take any input value.
      *
      * This method runs the given [rule], which must be defined for [Unit],
@@ -68,3 +58,29 @@ interface ValidationContext {
         return this
     }
 }
+
+/**
+ * Validates a condition and handles failures using a lazy [Violation].
+ *
+ * The provided [condition] is evaluated, and if it is `false`, the [lazyViolation]
+ * lambda is invoked to generate a [Violation], which is then passed to [onFailure].
+ *
+ * @param condition The condition to validate.
+ * @param lazyViolation A lambda to produce the [Violation] if the condition fails.
+ */
+inline fun ValidationContext.validate(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+) {
+    if (!condition) onFailure(lazyViolation())
+}
+
+/**
+ * Handles a validation failure with the given [message].
+ *
+ * This overload allows handling failures using a simple message string.
+ * It provides flexibility for scenarios where a typed violation is unnecessary.
+ *
+ * @param message The failure message describing why the validation failed.
+ */
+fun ValidationContext.onFailure(message: String): Unit = onFailure(message.asViolation())

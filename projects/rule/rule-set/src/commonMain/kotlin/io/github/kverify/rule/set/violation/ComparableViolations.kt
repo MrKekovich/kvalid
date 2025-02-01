@@ -1,7 +1,7 @@
 package io.github.kverify.rule.set.violation
 
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.dsl.extension.asViolation
+import io.github.kverify.core.violation.asViolation
 
 interface ComparableViolations {
     fun <T : Comparable<T>> equalTo(

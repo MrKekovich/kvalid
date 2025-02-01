@@ -1,7 +1,7 @@
 package io.github.kverify.core.exception
 
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.dsl.extension.asViolation
+import io.github.kverify.core.violation.asViolation
 import kotlin.jvm.JvmName
 
 /**
