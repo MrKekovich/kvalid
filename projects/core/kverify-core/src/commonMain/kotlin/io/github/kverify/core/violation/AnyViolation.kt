@@ -9,4 +9,4 @@ value class AnyViolation(
     override fun toString(): String = "AnyViolation(message=$message)"
 }
 
-inline fun String.asViolation(): Violation = AnyViolation(this)
+inline fun String.asViolation(): AnyViolation = AnyViolation(this)
