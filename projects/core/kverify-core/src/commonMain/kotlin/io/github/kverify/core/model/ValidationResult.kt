@@ -41,6 +41,26 @@ inline fun ValidationResult(vararg violations: Violation): ValidationResult =
         violations.asList(),
     )
 
+inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
+    if (isValid) block()
+    return this
+}
+
+inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
+    if (isInvalid) block(violations)
+    return this
+}
+
+inline fun <T> ValidationResult.fold(
+    onValid: () -> T,
+    onInvalid: (List<Violation>) -> T,
+): T =
+    if (isValid) {
+        onValid()
+    } else {
+        onInvalid(violations)
+    }
+
 @Suppress("LongParameterList")
 fun ValidationResult.throwOnFailure(
     separator: CharSequence = ", ",
@@ -67,26 +87,6 @@ fun ValidationResult.throwOnFailure(
         cause = cause,
     )
 }
-
-inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
-    if (isValid) block()
-    return this
-}
-
-inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
-    if (isInvalid) block(violations)
-    return this
-}
-
-inline fun <T> ValidationResult.fold(
-    onValid: () -> T,
-    onInvalid: (List<Violation>) -> T,
-): T =
-    if (isValid) {
-        onValid()
-    } else {
-        onInvalid(violations)
-    }
 
 inline fun ValidationResult.asExceptionOrNull(
     message: String? = null,
