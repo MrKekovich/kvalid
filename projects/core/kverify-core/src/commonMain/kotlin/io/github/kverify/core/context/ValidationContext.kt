@@ -27,11 +27,17 @@ fun interface ValidationContext {
         }
 }
 
-fun ValidationContext.onFailure(message: String): Unit = onFailure(message.asViolation())
+fun ValidationContext.onFailure(message: String): Unit =
+    onFailure(
+        message.asViolation(),
+    )
 
 inline fun ValidationContext.validate(
     condition: Boolean,
     violationGenerator: () -> Violation,
 ) {
-    if (!condition) onFailure(violationGenerator())
+    if (!condition) {
+        val violation = violationGenerator()
+        onFailure(violation)
+    }
 }
