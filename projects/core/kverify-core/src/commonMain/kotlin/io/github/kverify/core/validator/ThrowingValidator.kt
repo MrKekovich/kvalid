@@ -28,6 +28,23 @@ inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
     ThrowingValidator().apply(block)
 }
 
+@OptIn(ExperimentalContracts::class)
+inline fun validateOrThrow(
+    condition: Boolean,
+    violationGenerator: () -> Violation,
+) {
+    contract {
+        returns() implies condition
+    }
+
+    validateOrThrow {
+        validate(
+            condition,
+            violationGenerator,
+        )
+    }
+}
+
 inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
