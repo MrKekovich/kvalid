@@ -26,8 +26,3 @@ fun <T> NamedValue<T?>.unwrapOrNull(): NamedValue<T>? =
     } else {
         null
     }
-
-inline fun <T> NamedValue<T>.useValue(block: (T) -> Unit): NamedValue<T> {
-    block(value)
-    return this
-}
