@@ -12,7 +12,7 @@ class ThrowingValidator : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     @OptIn(ExperimentalContracts::class)
-    fun validate(
+    inline fun validate(
         condition: Boolean,
         lazyViolation: () -> Violation,
     ) {
