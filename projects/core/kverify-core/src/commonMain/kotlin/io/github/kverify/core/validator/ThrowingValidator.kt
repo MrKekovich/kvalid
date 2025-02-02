@@ -8,7 +8,7 @@ import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
-open class ThrowingValidator : ValidationContext {
+class ThrowingValidator : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     @OptIn(ExperimentalContracts::class)

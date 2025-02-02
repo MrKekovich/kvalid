@@ -6,7 +6,7 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
 
-open class AggregatingValidator : ValidationContext {
+class AggregatingValidator : ValidationContext {
     val violations: MutableList<Violation> = mutableListOf()
 
     override fun onFailure(violation: Violation) {
