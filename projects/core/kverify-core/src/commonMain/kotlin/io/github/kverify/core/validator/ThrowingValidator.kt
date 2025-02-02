@@ -28,17 +28,17 @@ inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
     ThrowingValidator().apply(block)
 }
 
-fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
-    validateOrThrow {
-        applyRules(*rules)
-    }
-
 inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
         ValidationResult.VALID
     } catch (violation: ValidationException) {
         ValidationResult(violation.violations)
+    }
+
+fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
+    validateOrThrow {
+        applyRules(*rules)
     }
 
 fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
