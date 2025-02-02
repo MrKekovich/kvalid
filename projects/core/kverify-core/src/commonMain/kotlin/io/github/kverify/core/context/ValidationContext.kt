@@ -17,20 +17,20 @@ fun interface ValidationContext {
         }
         return this
     }
-
-    fun applyUnitRules(vararg rules: Rule<Unit>): Unit =
-        rules.forEach {
-            it.runValidation(
-                context = this@ValidationContext,
-                value = Unit,
-            )
-        }
 }
 
 fun ValidationContext.onFailure(message: String): Unit =
     onFailure(
         message.asViolation(),
     )
+
+fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
+    rules.forEach {
+        it.runValidation(
+            context = this@applyUnitRules,
+            value = Unit,
+        )
+    }
 
 inline fun ValidationContext.validate(
     condition: Boolean,
