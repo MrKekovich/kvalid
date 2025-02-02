@@ -19,11 +19,6 @@ value class ValidationResult(
             violations + other.violations,
         )
 
-    operator fun plus(results: List<ValidationResult>): ValidationResult =
-        ValidationResult(
-            violations + results.flatMap { it.violations },
-        )
-
     override fun toString(): String =
         if (isValid) {
             "ValidationResult(valid=true)"
@@ -39,6 +34,11 @@ value class ValidationResult(
 inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     ValidationResult(
         violations.asList(),
+    )
+
+operator fun ValidationResult.plus(results: List<ValidationResult>): ValidationResult =
+    ValidationResult(
+        violations + results.flatMap { it.violations },
     )
 
 inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
