@@ -4,52 +4,24 @@ import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.validate
 import io.github.kverify.core.violation.Violation
 
-typealias NamedRule<T> = Rule<NamedValue<T>>
-
 fun interface Rule<T> {
     fun ValidationContext.runValidation(value: T)
 }
 
-fun <T> createRule(predicate: ValidationContext.(T) -> Unit): Rule<T> =
-    Rule(
-        predicate,
-    )
+typealias NamedRule<T> = Rule<NamedValue<T>>
 
-inline fun <T> createRule(
-    violation: Violation,
-    crossinline predicate: (T) -> Boolean,
-): Rule<T> =
-    Rule {
-        validate(predicate(it)) { violation }
-    }
-
-inline fun <T> createRule(
-    condition: Boolean,
-    crossinline lazyViolation: (T) -> Violation,
-): Rule<T> =
-    Rule {
-        validate(condition) { lazyViolation(it) }
-    }
+fun <T> createRule(block: ValidationContext.(T) -> Unit): Rule<T> = Rule(block)
 
 inline fun <T> createRule(
     crossinline predicate: (T) -> Boolean,
-    crossinline lazyViolation: (T) -> Violation,
+    crossinline violationGenerator: (T) -> Violation,
 ): Rule<T> =
     Rule {
-        validate(predicate(it)) { lazyViolation(it) }
-    }
-
-fun <T> createNamedRule(predicate: ValidationContext.(NamedValue<T>) -> Unit): NamedRule<T> =
-    Rule(
-        predicate,
-    )
-
-inline fun createUnitRule(
-    condition: Boolean,
-    crossinline lazyViolation: () -> Violation,
-): Rule<Unit> =
-    Rule {
-        validate(condition) { lazyViolation() }
+        validate(
+            predicate(it),
+        ) {
+            violationGenerator(it)
+        }
     }
 
 inline fun <T> Rule<T>.runValidation(
