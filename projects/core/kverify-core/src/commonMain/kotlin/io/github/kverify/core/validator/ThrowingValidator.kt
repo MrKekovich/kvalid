@@ -8,9 +8,19 @@ import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
+/**
+ * Implementation of [ValidationContext] that throws a [ValidationException]
+ * containing the first [Violation] reported via [ValidationContext.onFailure].
+ */
 class ThrowingValidator : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
+    /**
+     * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
+     *
+     * @throws ValidationException with the result of calling [violationGenerator]
+     * if [condition] is `false`.
+     */
     @OptIn(ExperimentalContracts::class)
     inline fun validate(
         condition: Boolean,
@@ -24,10 +34,21 @@ class ThrowingValidator : ValidationContext {
     }
 }
 
+/**
+ * Executes the given [block] within a [ThrowingValidator] context.
+ *
+ * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
+ */
 inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
     ThrowingValidator().apply(block)
 }
 
+/**
+ *  * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
+ *
+ * @throws ValidationException with the result of calling [violationGenerator]
+ * if [condition] is `false`.
+ */
 @OptIn(ExperimentalContracts::class)
 inline fun validateOrThrow(
     condition: Boolean,
@@ -45,6 +66,12 @@ inline fun validateOrThrow(
     }
 }
 
+/**
+ * Executes the given [block] within a [ThrowingValidator] context.
+ *
+ * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
+ * or [ValidationResult.VALID] if no violations occurred.
+ */
 inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
@@ -53,16 +80,34 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult 
         ValidationResult(violation.violations)
     }
 
+/**
+ * Applies the given [rules] to this value within a [ThrowingValidator] context.
+ *
+ * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
+ */
 fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
     validateOrThrow {
         applyRules(*rules)
     }
 
+/**
+ * Applies the given [rules] to this value within a [ThrowingValidator] context.
+ *
+ * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
+ * or [ValidationResult.VALID] if no violations occurred.
+ */
 fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
     validateFirst {
         applyRules(*rules)
     }
 
+/**
+ * Runs [block] within a [ThrowingValidator] context,
+ * stopping if any [Violation] is reported via [ValidationContext.onFailure].
+ *
+ * @return [Result.success], wrapping result of running [block] if no [Violation]s were reported.
+ * [Result.failure], wrapping [ValidationException] with the first reported [Violation] otherwise.
+ */
 inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> =
     try {
         Result.success(

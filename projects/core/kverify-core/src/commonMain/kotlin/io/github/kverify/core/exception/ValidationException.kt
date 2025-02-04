@@ -4,6 +4,9 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 import kotlin.jvm.JvmName
 
+/**
+ * Represents an exception thrown during validation with a list of [violations].
+ */
 open class ValidationException(
     message: String? = null,
     val violations: List<Violation> = emptyList(),
@@ -13,6 +16,13 @@ open class ValidationException(
         cause = cause,
     )
 
+/**
+ * Creates a [ValidationException] containing the given [violations] and an optional [cause].
+ *
+ * - If [violations] list is not empty, their [Violation.message]s are joined into a single string,
+ *   separated by newlines.
+ * - If [violations] list is empty, the default message is `"Validation failed"`.
+ */
 fun ValidationException(
     violations: List<Violation>,
     cause: Throwable? = null,
@@ -35,6 +45,9 @@ fun ValidationException(
     )
 }
 
+/**
+ * Creates a [ValidationException] containing the given [violations] and an optional [cause].
+ */
 fun ValidationException(
     vararg violations: Violation,
     cause: Throwable? = null,
@@ -44,6 +57,10 @@ fun ValidationException(
         cause,
     )
 
+/**
+ * Creates a [ValidationException] with the given [message] and [violationMessages],
+ * mapping the [violationMessages] to [io.github.kverify.core.violation.AnyViolation] objects.
+ */
 fun ValidationException(
     message: String? = null,
     violationMessages: List<String> = emptyList(),
@@ -55,6 +72,10 @@ fun ValidationException(
         cause,
     )
 
+/**
+ * Creates a [ValidationException] from the given [violationMessages],
+ * mapping them to [io.github.kverify.core.violation.AnyViolation] objects.
+ */
 @JvmName("ValidationExceptionFromMessages")
 fun ValidationException(
     violationMessages: List<String> = emptyList(),

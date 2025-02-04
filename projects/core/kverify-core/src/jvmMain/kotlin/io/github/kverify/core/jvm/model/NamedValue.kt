@@ -7,6 +7,13 @@ import kotlin.reflect.jvm.isAccessible
 
 // JVM-specific code. For Kotlin Multiplatform, see `NamedValue` class
 
+/**
+ * Converts a property to a [NamedValue] containing its name and value.
+ *
+ * This function attempts to retrieve the property value using reflection. If there are issues
+ * accessing the property (e.g., missing instance or illegal access), a [PropertyAccessException]
+ * is thrown with a helpful error message.
+ */
 fun <T> KProperty<T>.toNamed(): NamedValue<T> =
     try {
         val name = name

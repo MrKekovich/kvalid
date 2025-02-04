@@ -5,9 +5,18 @@ import io.github.kverify.core.model.runValidation
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 
+/**
+ * Represents a validation context that handles validation failures.
+ */
 fun interface ValidationContext {
+    /**
+     * Handles a validation failure for a given [violation].
+     */
     fun onFailure(violation: Violation)
 
+    /**
+     * @return this value after applying all [rules].
+     */
     fun <T> T.applyRules(vararg rules: Rule<T>): T {
         rules.forEach {
             it.runValidation(
@@ -19,11 +28,18 @@ fun interface ValidationContext {
     }
 }
 
+/**
+ * Converts [message] into [io.github.kverify.core.violation.AnyViolation]
+ * and handles a validation failure.
+ */
 fun ValidationContext.onFailure(message: String): Unit =
     onFailure(
         message.asViolation(),
     )
 
+/**
+ * Applies given [rules] to [Unit] within the current validation context.
+ */
 fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
     rules.forEach {
         it.runValidation(
@@ -32,6 +48,10 @@ fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
         )
     }
 
+/**
+ * Calls [ValidationContext.onFailure] with the result of calling [violationGenerator]
+ * if the [condition] is `false`.
+ */
 inline fun ValidationContext.validate(
     condition: Boolean,
     violationGenerator: () -> Violation,

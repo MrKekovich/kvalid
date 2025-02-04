@@ -6,6 +6,11 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
 
+/**
+ * Implementation of the [ValidationContext], that
+ * collects [Violation]s reported via [ValidationContext.onFailure]
+ * and stores them in [violationsStorage].
+ */
 class AggregatingValidator(
     val violationsStorage: MutableCollection<Violation> = mutableListOf(),
 ) : ValidationContext {
@@ -14,6 +19,13 @@ class AggregatingValidator(
     }
 }
 
+/**
+ * Executes the given [block] within an [AggregatingValidator] context,
+ * collecting [Violation]s reported via [ValidationContext.onFailure]
+ * and storing them in [violationsStorage].
+ *
+ * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
+ */
 inline fun validateAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
     block: AggregatingValidator.() -> Unit,
@@ -25,6 +37,13 @@ inline fun validateAll(
             .toList(),
     )
 
+/**
+ * Applies all [rules] to this value within an [AggregatingValidator] context,
+ * collecting [Violation]s reported via [ValidationContext.onFailure]
+ * and storing them in [violationsStorage].
+ *
+ * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
+ */
 fun <T> T.validateAll(
     vararg rules: Rule<T>,
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
@@ -33,6 +52,15 @@ fun <T> T.validateAll(
         this@validateAll.applyRules(*rules)
     }
 
+/**
+ * Runs the given [block] within an [AggregatingValidator] context,
+ * collecting [Violation]s reported via [ValidationContext.onFailure]
+ * and storing them in [violationsStorage].
+ *
+ * @return [Result.success] if [violationsStorage] is empty,
+ * otherwise returns [Result.failure] wrapping a [ValidationException]
+ * with all collected [Violation]s
+ */
 inline fun <T> runValidatingAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
     block: AggregatingValidator.() -> T,
