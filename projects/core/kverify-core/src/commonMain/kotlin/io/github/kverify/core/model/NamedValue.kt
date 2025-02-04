@@ -14,8 +14,8 @@ infix fun <T> String.withValue(value: T): NamedValue<T> = NamedValue(this, value
 fun <T> KProperty<T>.toNamed(value: T): NamedValue<T> = NamedValue(name, value)
 
 @Suppress("UNCHECKED_CAST")
-inline infix fun <T> NamedValue<T?>.ifValueNotNull(block: (NamedValue<T>) -> Unit): NamedValue<T?> {
-    if (value != null) block(this as NamedValue<T>)
+inline infix fun <T> NamedValue<T?>.ifValueNotNull(action: (NamedValue<T>) -> Unit): NamedValue<T?> {
+    if (value != null) action(this as NamedValue<T>)
     return this
 }
 
