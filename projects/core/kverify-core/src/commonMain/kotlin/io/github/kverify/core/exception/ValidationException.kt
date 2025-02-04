@@ -21,7 +21,11 @@ fun ValidationException(
         if (violations.isEmpty()) {
             "Validation failed"
         } else {
-            "Validation failed: ${violations.joinToString(", ") { it.message }}"
+            "Validation failed: \n${
+                violations.joinToString("\n") {
+                    "\t- ${it.message}"
+                }
+            }"
         }
 
     return ValidationException(
