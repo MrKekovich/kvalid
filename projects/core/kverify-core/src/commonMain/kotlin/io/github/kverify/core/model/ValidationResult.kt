@@ -36,7 +36,7 @@ inline fun ValidationResult(vararg violations: Violation): ValidationResult =
         violations.asList(),
     )
 
-operator fun ValidationResult.plus(results: List<ValidationResult>): ValidationResult =
+fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult =
     ValidationResult(
         violations + results.flatMap { it.violations },
     )
