@@ -7,16 +7,16 @@ import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
 
 class AggregatingValidator : ValidationContext {
-    val violations: MutableList<Violation> = mutableListOf()
+    val violationStorage: MutableList<Violation> = mutableListOf()
 
     override fun onFailure(violation: Violation) {
-        violations.add(violation)
+        violationStorage.add(violation)
     }
 }
 
 inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult =
     ValidationResult(
-        AggregatingValidator().apply(block).violations,
+        AggregatingValidator().apply(block).violationStorage,
     )
 
 fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
@@ -28,11 +28,11 @@ inline fun <T> runValidatingAll(block: AggregatingValidator.() -> T): Result<T> 
     AggregatingValidator().run {
         val result = this.block()
 
-        if (violations.isEmpty()) {
+        if (violationStorage.isEmpty()) {
             Result.success(result)
         } else {
             Result.failure(
-                ValidationException(violations),
+                ValidationException(violationStorage),
             )
         }
     }
