@@ -6,33 +6,47 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
 
-class AggregatingValidator : ValidationContext {
-    val violationStorage: MutableList<Violation> = mutableListOf()
-
+class AggregatingValidator(
+    val violationsStorage: MutableCollection<Violation> = mutableListOf(),
+) : ValidationContext {
     override fun onFailure(violation: Violation) {
-        violationStorage.add(violation)
+        violationsStorage.add(violation)
     }
 }
 
-inline fun validateAll(block: AggregatingValidator.() -> Unit): ValidationResult =
+inline fun validateAll(
+    violationsStorage: MutableCollection<Violation> = mutableListOf(),
+    block: AggregatingValidator.() -> Unit,
+): ValidationResult =
     ValidationResult(
-        AggregatingValidator().apply(block).violationStorage,
+        AggregatingValidator(violationsStorage)
+            .apply(block)
+            .violationsStorage
+            .toList(),
     )
 
-fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
-    validateAll lambda@{
+fun <T> T.validateAll(
+    vararg rules: Rule<T>,
+    violationsStorage: MutableCollection<Violation> = mutableListOf(),
+): ValidationResult =
+    validateAll(violationsStorage) lambda@{
         this@validateAll.applyRules(*rules)
     }
 
-inline fun <T> runValidatingAll(block: AggregatingValidator.() -> T): Result<T> =
-    AggregatingValidator().run {
-        val result = this.block()
+inline fun <T> runValidatingAll(
+    violationsStorage: MutableCollection<Violation> = mutableListOf(),
+    block: AggregatingValidator.() -> T,
+): Result<T> {
+    val aggregatingValidator = AggregatingValidator(violationsStorage)
+    val result = aggregatingValidator.run(block)
 
-        if (violationStorage.isEmpty()) {
-            Result.success(result)
-        } else {
-            Result.failure(
-                ValidationException(violationStorage),
-            )
-        }
+    val violations = aggregatingValidator.violationsStorage.toList()
+
+    return if (violations.isEmpty()) {
+        Result.success(result)
+    } else {
+        Result.failure(
+            ValidationException(violations),
+        )
     }
+}
