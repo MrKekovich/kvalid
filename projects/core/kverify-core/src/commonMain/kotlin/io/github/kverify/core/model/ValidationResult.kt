@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kverify.core.model
 
 import io.github.kverify.core.exception.ValidationException
