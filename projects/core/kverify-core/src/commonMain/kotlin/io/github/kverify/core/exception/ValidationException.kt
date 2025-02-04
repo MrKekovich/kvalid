@@ -5,10 +5,13 @@ import io.github.kverify.core.violation.asViolation
 import kotlin.jvm.JvmName
 
 open class ValidationException(
-    override val message: String? = null,
+    message: String? = null,
     val violations: List<Violation> = emptyList(),
-    override val cause: Throwable? = null,
-) : Throwable()
+    cause: Throwable? = null,
+) : Throwable(
+        message = message,
+        cause = cause,
+    )
 
 fun ValidationException(
     violations: List<Violation>,
