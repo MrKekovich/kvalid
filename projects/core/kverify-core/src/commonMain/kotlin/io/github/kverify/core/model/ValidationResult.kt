@@ -14,11 +14,6 @@ value class ValidationResult(
     inline val isInvalid: Boolean
         get() = violations.isNotEmpty()
 
-    operator fun plus(other: ValidationResult): ValidationResult =
-        ValidationResult(
-            violations + other.violations,
-        )
-
     override fun toString(): String =
         if (isValid) {
             "ValidationResult(valid=true)"
@@ -41,6 +36,11 @@ value class ValidationResult(
 inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     ValidationResult(
         violations.asList(),
+    )
+
+operator fun ValidationResult.plus(other: ValidationResult): ValidationResult =
+    ValidationResult(
+        this.violations + other.violations,
     )
 
 fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult =
