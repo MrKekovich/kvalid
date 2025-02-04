@@ -24,11 +24,6 @@ inline fun <T> createRule(
         }
     }
 
-inline fun <T> Rule<T>.runValidation(
-    context: ValidationContext,
-    value: T,
-): Unit = context.runValidation(value)
-
 operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     Rule validationContext@{ value ->
         this@plus.runValidation(
@@ -41,3 +36,8 @@ operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
             value,
         )
     }
+
+inline fun <T> Rule<T>.runValidation(
+    context: ValidationContext,
+    value: T,
+): Unit = context.runValidation(value)
