@@ -55,7 +55,7 @@ fun ValidationException(
         cause,
     )
 
-@JvmName("ValidationExceptionString")
+@JvmName("ValidationExceptionFromMessages")
 fun ValidationException(
     violationMessages: List<String> = emptyList(),
     cause: Throwable? = null,
