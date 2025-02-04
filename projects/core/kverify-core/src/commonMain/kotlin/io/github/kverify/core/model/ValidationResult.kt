@@ -23,7 +23,14 @@ value class ValidationResult(
         if (isValid) {
             "ValidationResult(valid=true)"
         } else {
-            "ValidationResult(valid=false, violations=$violations)"
+            "ValidationResult(valid=false, violations=${
+                violations.joinToString(
+                    separator = ", ",
+                    prefix = "[",
+                    postfix = "]",
+                    limit = 10,
+                )
+            })"
         }
 
     companion object {
