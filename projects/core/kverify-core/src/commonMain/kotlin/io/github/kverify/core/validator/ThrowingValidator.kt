@@ -14,13 +14,13 @@ class ThrowingValidator : ValidationContext {
     @OptIn(ExperimentalContracts::class)
     inline fun validate(
         condition: Boolean,
-        lazyViolation: () -> Violation,
+        violationGenerator: () -> Violation,
     ) {
         contract {
             returns() implies condition
         }
 
-        if (!condition) onFailure(lazyViolation())
+        if (!condition) onFailure(violationGenerator())
     }
 }
 
