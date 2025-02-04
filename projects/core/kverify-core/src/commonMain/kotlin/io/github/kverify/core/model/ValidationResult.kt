@@ -43,9 +43,19 @@ operator fun ValidationResult.plus(other: ValidationResult): ValidationResult =
         this.violations + other.violations,
     )
 
-fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult =
+fun ValidationResult.add(violation: Violation): ValidationResult =
     ValidationResult(
-        violations + results.flatMap { it.violations },
+        this.violations + violation,
+    )
+
+fun <C : Collection<Violation>> ValidationResult.addAll(violations: C): ValidationResult =
+    ValidationResult(
+        this.violations + violations,
+    )
+
+fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult =
+    this.addAll(
+        results.flatMap { it.violations },
     )
 
 inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
