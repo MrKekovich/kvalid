@@ -5,6 +5,9 @@ import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * Implementation of the [ValidationContext], that
@@ -28,16 +31,22 @@ class AggregatingValidator(
  *
  * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
  */
+@OptIn(ExperimentalContracts::class)
 inline fun validateAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
     block: AggregatingValidator.() -> Unit,
-): ValidationResult =
-    ValidationResult(
+): ValidationResult {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return ValidationResult(
         AggregatingValidator(violationsStorage)
             .apply(block)
             .violationsStorage
             .toList(),
     )
+}
 
 /**
  * Applies all [rules] to this value within an [AggregatingValidator] context,
@@ -67,10 +76,15 @@ fun <T> T.validateAll(
  * otherwise returns [Result.failure] wrapping a [ValidationException]
  * with all collected [Violation]s
  */
+@OptIn(ExperimentalContracts::class)
 inline fun <T> runValidatingAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
     block: AggregatingValidator.() -> T,
 ): Result<T> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
     val aggregatingValidator = AggregatingValidator(violationsStorage)
     val result = aggregatingValidator.run(block)
 

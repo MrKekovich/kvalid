@@ -6,6 +6,7 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
@@ -39,7 +40,11 @@ class ThrowingValidator : ValidationContext {
  *
  * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
  */
+@OptIn(ExperimentalContracts::class)
 inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
     ThrowingValidator().apply(block)
 }
 
@@ -72,13 +77,19 @@ inline fun validateOrThrow(
  * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
  * or [ValidationResult.VALID] if no violations occurred.
  */
-inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
-    try {
+@OptIn(ExperimentalContracts::class)
+inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return try {
         validateOrThrow(block)
         ValidationResult.VALID
     } catch (violation: ValidationException) {
         ValidationResult(violation.violations)
     }
+}
 
 /**
  * Applies the given [rules] to this value within a [ThrowingValidator] context.
@@ -108,11 +119,17 @@ fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
  * @return [Result.success], wrapping result of running [block] if no [Violation]s were reported.
  * [Result.failure], wrapping [ValidationException] with the first reported [Violation] otherwise.
  */
-inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> =
-    try {
+@OptIn(ExperimentalContracts::class)
+inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return try {
         Result.success(
             ThrowingValidator().run(block),
         )
     } catch (e: ValidationException) {
         Result.failure(e)
     }
+}
