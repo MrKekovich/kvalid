@@ -77,19 +77,13 @@ inline fun validateOrThrow(
  * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
  * or [ValidationResult.VALID] if no violations occurred.
  */
-@OptIn(ExperimentalContracts::class)
-inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return try {
+inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
+    try {
         validateOrThrow(block)
         ValidationResult.VALID
     } catch (violation: ValidationException) {
         ValidationResult(violation.violations)
     }
-}
 
 /**
  * Applies the given [rules] to this value within a [ThrowingValidator] context.
@@ -119,17 +113,11 @@ fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
  * @return [Result.success], wrapping result of running [block] if no [Violation]s were reported.
  * [Result.failure], wrapping [ValidationException] with the first reported [Violation] otherwise.
  */
-@OptIn(ExperimentalContracts::class)
-inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return try {
+inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> =
+    try {
         Result.success(
             ThrowingValidator().run(block),
         )
     } catch (e: ValidationException) {
         Result.failure(e)
     }
-}
