@@ -44,7 +44,7 @@ inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
 }
 
 /**
- *  * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
+ * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
  *
  * @throws ValidationException with the result of calling [violationGenerator]
  * if [condition] is `false`.

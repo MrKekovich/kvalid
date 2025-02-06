@@ -24,6 +24,8 @@ class AggregatingValidator(
  * collecting [Violation]s reported via [ValidationContext.onFailure]
  * and storing them in [violationsStorage].
  *
+ * Note: A copy of [violationsStorage] will be used in the [ValidationResult].
+ *
  * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
  */
 inline fun validateAll(
@@ -42,6 +44,8 @@ inline fun validateAll(
  * collecting [Violation]s reported via [ValidationContext.onFailure]
  * and storing them in [violationsStorage].
  *
+ * Note: This function will create a copy of [violationsStorage] to use in [ValidationResult]
+ *
  * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
  */
 fun <T> T.validateAll(
@@ -56,6 +60,8 @@ fun <T> T.validateAll(
  * Runs the given [block] within an [AggregatingValidator] context,
  * collecting [Violation]s reported via [ValidationContext.onFailure]
  * and storing them in [violationsStorage].
+ *
+ * Note: This function will create a copy of [violationsStorage] to use in [ValidationResult]
  *
  * @return [Result.success] if [violationsStorage] is empty,
  * otherwise returns [Result.failure] wrapping a [ValidationException]

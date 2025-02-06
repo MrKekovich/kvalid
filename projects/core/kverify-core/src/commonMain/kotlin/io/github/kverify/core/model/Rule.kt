@@ -20,7 +20,7 @@ fun interface Rule<T> {
 }
 
 /**
- * Runs this rule within the given [context] for the specified [value].
+ * Runs this [Rule] within the given [context] for the specified [value].
  */
 inline fun <T> Rule<T>.runValidation(
     context: ValidationContext,
@@ -28,7 +28,7 @@ inline fun <T> Rule<T>.runValidation(
 ): Unit = context.runValidation(value)
 
 /**
- * Combines this rule with [other], applying both sequentially.
+ * Combines this [Rule] with [other], applying both sequentially.
  */
 operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     Rule validationContext@{ value ->

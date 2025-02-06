@@ -89,7 +89,9 @@ fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult =
 
 /**
  * Executes [block] if this result is valid.
- * Returns the original result.
+ *
+ * @return the original result.
+ * @see ValidationResult.isValid
  */
 inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
     if (isValid) block()
@@ -98,7 +100,9 @@ inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
 
 /**
  * Executes [block] if this result is invalid, passing the violations.
- * Returns the original result.
+ *
+ * @return the original result.
+ * @see ValidationResult.isInvalid
  */
 inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
     if (isInvalid) block(violations)
@@ -106,8 +110,10 @@ inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): Validat
 }
 
 /**
- * Returns the result of [onValid] if this result is valid,
+ * @return the result of [onValid] if this result is valid,
  * otherwise returns the result of [onInvalid].
+ * @see ValidationResult.isValid
+ * @see ValidationResult.isInvalid
  */
 inline fun <T> ValidationResult.fold(
     onValid: () -> T,
@@ -122,7 +128,9 @@ inline fun <T> ValidationResult.fold(
 /**
  * If this result is invalid, uses [joinToString] to generate message from [ValidationResult.violations]
  * and throws [ValidationException], containing generated message.
+ *
  * @see joinToString
+ * @see ValidationResult.isInvalid
  */
 @Suppress("LongParameterList")
 fun ValidationResult.throwOnFailure(
@@ -152,7 +160,8 @@ fun ValidationResult.throwOnFailure(
 }
 
 /**
- * Returns a [ValidationException] if this result is invalid, otherwise returns `null`.
+ * @return a [ValidationException] if this result is invalid, otherwise returns `null`.
+ * @see ValidationResult.isInvalid
  */
 inline fun ValidationResult.asExceptionOrNull(
     message: String? = null,
@@ -170,7 +179,8 @@ inline fun ValidationResult.asExceptionOrNull(
     )
 
 /**
- * Returns a [ValidationException] if this result is invalid, otherwise returns `null`.
+ * @return a [ValidationException] if this result is invalid, otherwise returns `null`.
+ * @see ValidationResult.isInvalid
  */
 inline fun ValidationResult.asExceptionOrNull(cause: Throwable? = null): ValidationException? =
     fold(
