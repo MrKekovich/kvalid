@@ -51,10 +51,10 @@ inline fun <T> Rule(
     crossinline predicate: (T) -> Boolean,
     crossinline violationGenerator: (T) -> Violation,
 ): Rule<T> =
-    Rule {
+    Rule { value ->
         validate(
-            predicate(it),
+            predicate(value),
         ) {
-            violationGenerator(it)
+            violationGenerator(value)
         }
     }
