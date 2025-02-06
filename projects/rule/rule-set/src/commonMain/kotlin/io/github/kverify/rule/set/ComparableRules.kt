@@ -4,8 +4,6 @@ import io.github.kverify.core.context.validate
 import io.github.kverify.core.model.NamedRule
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
-import io.github.kverify.core.model.createNamedRule
-import io.github.kverify.core.model.createRule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.violation.ComparableViolations
 
@@ -20,7 +18,7 @@ open class ComparableRules(
             comparableViolations.equalTo(other, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value == other,
             ) {
@@ -34,7 +32,7 @@ open class ComparableRules(
             comparableViolations.notEqualTo(other, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value != other,
             ) {
@@ -48,7 +46,7 @@ open class ComparableRules(
             comparableViolations.greaterThan(other, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value > other,
             ) {
@@ -62,7 +60,7 @@ open class ComparableRules(
             comparableViolations.greaterThanOrEqualTo(other, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value >= other,
             ) {
@@ -76,7 +74,7 @@ open class ComparableRules(
             comparableViolations.lessThan(other, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value < other,
             ) {
@@ -90,7 +88,7 @@ open class ComparableRules(
             comparableViolations.lessThanOrEqualTo(other, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value <= other,
             ) {
@@ -104,7 +102,7 @@ open class ComparableRules(
             comparableViolations.between(range, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value in range,
             ) {
@@ -130,7 +128,7 @@ open class ComparableRules(
             comparableViolations.notBetween(range, value)
         },
     ): Rule<T> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value !in range,
             ) {
@@ -240,7 +238,7 @@ open class ComparableRules(
             comparableViolations.equalTo(other, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 equalTo(other) {
                     violationGenerator(namedValue)
@@ -255,7 +253,7 @@ open class ComparableRules(
             comparableViolations.notEqualTo(other, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notEqualTo(other) {
                     violationGenerator(namedValue)
@@ -270,7 +268,7 @@ open class ComparableRules(
             comparableViolations.greaterThan(other, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 greaterThan(other) {
                     violationGenerator(namedValue)
@@ -285,7 +283,7 @@ open class ComparableRules(
             comparableViolations.greaterThanOrEqualTo(other, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 greaterThanOrEqualTo(other) {
                     violationGenerator(namedValue)
@@ -300,7 +298,7 @@ open class ComparableRules(
             comparableViolations.lessThan(other, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 lessThan(other) {
                     violationGenerator(namedValue)
@@ -315,7 +313,7 @@ open class ComparableRules(
             comparableViolations.lessThanOrEqualTo(other, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 lessThanOrEqualTo(other) {
                     violationGenerator(namedValue)
@@ -330,7 +328,7 @@ open class ComparableRules(
             comparableViolations.between(range, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 between(range) {
                     violationGenerator(namedValue)
@@ -346,7 +344,7 @@ open class ComparableRules(
             comparableViolations.between(lower..upper, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 between(lower, upper) {
                     violationGenerator(namedValue)
@@ -361,7 +359,7 @@ open class ComparableRules(
             comparableViolations.notBetween(range, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notBetween(range) {
                     violationGenerator(namedValue)
@@ -377,7 +375,7 @@ open class ComparableRules(
             comparableViolations.notBetween(lower..upper, value, name)
         },
     ): NamedRule<T> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notBetween(lower, upper) {
                     violationGenerator(namedValue)

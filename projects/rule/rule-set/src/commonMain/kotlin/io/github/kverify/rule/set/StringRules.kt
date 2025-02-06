@@ -4,8 +4,6 @@ import io.github.kverify.core.context.validate
 import io.github.kverify.core.model.NamedRule
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
-import io.github.kverify.core.model.createNamedRule
-import io.github.kverify.core.model.createRule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.violation.StringViolations
 
@@ -20,7 +18,7 @@ open class StringRules(
             stringViolations.ofLength(length, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.length == length,
             ) {
@@ -34,7 +32,7 @@ open class StringRules(
             stringViolations.notOfLength(length, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.length != length,
             ) {
@@ -48,7 +46,7 @@ open class StringRules(
             stringViolations.maxLength(max, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.length <= max,
             ) {
@@ -62,7 +60,7 @@ open class StringRules(
             stringViolations.minLength(min, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.length >= min,
             ) {
@@ -76,7 +74,7 @@ open class StringRules(
             stringViolations.lengthBetween(range, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.length in range,
             ) {
@@ -90,7 +88,7 @@ open class StringRules(
             stringViolations.lengthNotBetween(range, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.length !in range,
             ) {
@@ -129,7 +127,7 @@ open class StringRules(
             stringViolations.contains(string, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.contains(string, ignoreCase),
             ) {
@@ -143,7 +141,7 @@ open class StringRules(
             stringViolations.contains(regex, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.contains(regex),
             ) {
@@ -158,7 +156,7 @@ open class StringRules(
             stringViolations.notContains(string, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 !value.contains(string, ignoreCase),
             ) {
@@ -172,7 +170,7 @@ open class StringRules(
             stringViolations.notContains(regex, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 !value.contains(regex),
             ) {
@@ -186,7 +184,7 @@ open class StringRules(
             stringViolations.containsAll(chars, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 chars.all { it in value },
             ) {
@@ -200,7 +198,7 @@ open class StringRules(
             stringViolations.containsOnly(chars, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.all { it in chars },
             ) {
@@ -214,7 +212,7 @@ open class StringRules(
             stringViolations.containsNone(chars, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 chars.none { it in value },
             ) {
@@ -228,7 +226,7 @@ open class StringRules(
             stringViolations.matches(regex, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 regex.matches(value),
             ) {
@@ -242,7 +240,7 @@ open class StringRules(
             stringViolations.notMatches(regex, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 !regex.matches(value),
             ) {
@@ -257,7 +255,7 @@ open class StringRules(
             stringViolations.startsWith(prefix, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.startsWith(prefix, ignoreCase),
             ) {
@@ -272,7 +270,7 @@ open class StringRules(
             stringViolations.endsWith(suffix, value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.endsWith(suffix, ignoreCase),
             ) {
@@ -285,7 +283,7 @@ open class StringRules(
             stringViolations.alphabetic(value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.all { it.isLetter() },
             ) {
@@ -298,7 +296,7 @@ open class StringRules(
             stringViolations.numeric(value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.all { it.isDigit() },
             ) {
@@ -311,7 +309,7 @@ open class StringRules(
             stringViolations.alphanumeric(value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.all { it.isLetterOrDigit() },
             ) {
@@ -324,7 +322,7 @@ open class StringRules(
             stringViolations.notBlank(value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.isNotBlank(),
             ) {
@@ -337,7 +335,7 @@ open class StringRules(
             stringViolations.notEmpty(value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.isNotEmpty(),
             ) {
@@ -350,7 +348,7 @@ open class StringRules(
             stringViolations.lowerCase(value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.all { it.isLowerCase() },
             ) {
@@ -363,7 +361,7 @@ open class StringRules(
             stringViolations.upperCase(value)
         },
     ): Rule<String> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.all { it.isUpperCase() },
             ) {
@@ -572,7 +570,7 @@ open class StringRules(
             stringViolations.ofLength(length, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 ofLength(length) {
                     violationGenerator(namedValue)
@@ -587,7 +585,7 @@ open class StringRules(
             stringViolations.notOfLength(length, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notOfLength(length) {
                     violationGenerator(namedValue)
@@ -602,7 +600,7 @@ open class StringRules(
             stringViolations.maxLength(max, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 maxLength(max) {
                     violationGenerator(namedValue)
@@ -617,7 +615,7 @@ open class StringRules(
             stringViolations.minLength(min, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 minLength(min) {
                     violationGenerator(namedValue)
@@ -632,7 +630,7 @@ open class StringRules(
             stringViolations.lengthBetween(range, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 lengthBetween(range) {
                     violationGenerator(namedValue)
@@ -647,7 +645,7 @@ open class StringRules(
             stringViolations.lengthNotBetween(range, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 lengthNotBetween(range) {
                     violationGenerator(namedValue)
@@ -687,7 +685,7 @@ open class StringRules(
             stringViolations.contains(string, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 contains(string, ignoreCase) {
                     violationGenerator(namedValue)
@@ -702,7 +700,7 @@ open class StringRules(
             stringViolations.contains(regex, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 contains(regex) {
                     violationGenerator(namedValue)
@@ -718,7 +716,7 @@ open class StringRules(
             stringViolations.notContains(string, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notContains(string, ignoreCase) {
                     violationGenerator(namedValue)
@@ -733,7 +731,7 @@ open class StringRules(
             stringViolations.notContains(regex, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notContains(regex) {
                     violationGenerator(namedValue)
@@ -748,7 +746,7 @@ open class StringRules(
             stringViolations.containsAll(chars, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 containsAll(chars) {
                     violationGenerator(namedValue)
@@ -763,7 +761,7 @@ open class StringRules(
             stringViolations.containsOnly(chars, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 containsOnly(chars) {
                     violationGenerator(namedValue)
@@ -778,7 +776,7 @@ open class StringRules(
             stringViolations.containsNone(chars, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 containsNone(chars) {
                     violationGenerator(namedValue)
@@ -793,7 +791,7 @@ open class StringRules(
             stringViolations.matches(regex, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 matches(regex) {
                     violationGenerator(namedValue)
@@ -808,7 +806,7 @@ open class StringRules(
             stringViolations.notMatches(regex, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notMatches(regex) {
                     violationGenerator(namedValue)
@@ -824,7 +822,7 @@ open class StringRules(
             stringViolations.startsWith(prefix, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 startsWith(prefix, ignoreCase) {
                     violationGenerator(namedValue)
@@ -840,7 +838,7 @@ open class StringRules(
             stringViolations.endsWith(suffix, value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 endsWith(suffix, ignoreCase) {
                     violationGenerator(namedValue)
@@ -854,7 +852,7 @@ open class StringRules(
             stringViolations.alphabetic(value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 alphabetic {
                     violationGenerator(namedValue)
@@ -868,7 +866,7 @@ open class StringRules(
             stringViolations.numeric(value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 numeric {
                     violationGenerator(namedValue)
@@ -882,7 +880,7 @@ open class StringRules(
             stringViolations.alphanumeric(value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 alphanumeric {
                     violationGenerator(namedValue)
@@ -896,7 +894,7 @@ open class StringRules(
             stringViolations.notBlank(value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notBlank {
                     violationGenerator(namedValue)
@@ -910,7 +908,7 @@ open class StringRules(
             stringViolations.notEmpty(value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notEmpty {
                     violationGenerator(namedValue)
@@ -924,7 +922,7 @@ open class StringRules(
             stringViolations.lowerCase(value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 lowerCase {
                     violationGenerator(namedValue)
@@ -938,7 +936,7 @@ open class StringRules(
             stringViolations.upperCase(value, name)
         },
     ): NamedRule<String> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 upperCase {
                     violationGenerator(namedValue)

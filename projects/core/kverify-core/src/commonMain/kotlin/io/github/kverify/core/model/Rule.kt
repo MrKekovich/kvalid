@@ -5,6 +5,11 @@ import io.github.kverify.core.context.validate
 import io.github.kverify.core.violation.Violation
 
 /**
+ * A validation [Rule] for a [NamedValue].
+ */
+typealias NamedRule<T> = Rule<NamedValue<T>>
+
+/**
  * Represents a validation rule for a value of type [T].
  */
 fun interface Rule<T> {
@@ -15,30 +20,12 @@ fun interface Rule<T> {
 }
 
 /**
- * A validation [Rule] for a [NamedValue].
+ * Runs this rule within the given [context] for the specified [value].
  */
-typealias NamedRule<T> = Rule<NamedValue<T>>
-
-/**
- * Creates a [Rule] using the given [block].
- */
-fun <T> createRule(block: ValidationContext.(T) -> Unit): Rule<T> = Rule(block)
-
-/**
- * Creates a [Rule] that executes [ValidationContext.validate]
- * with the given [predicate] and [violationGenerator].
- */
-inline fun <T> createRule(
-    crossinline predicate: (T) -> Boolean,
-    crossinline violationGenerator: (T) -> Violation,
-): Rule<T> =
-    Rule {
-        validate(
-            predicate(it),
-        ) {
-            violationGenerator(it)
-        }
-    }
+inline fun <T> Rule<T>.runValidation(
+    context: ValidationContext,
+    value: T,
+): Unit = context.runValidation(value)
 
 /**
  * Combines this rule with [other], applying both sequentially.
@@ -57,9 +44,17 @@ operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     }
 
 /**
- * Runs this rule within the given [context] for the specified [value].
+ * Creates a [Rule] that executes [ValidationContext.validate]
+ * with the given [predicate] and [violationGenerator].
  */
-inline fun <T> Rule<T>.runValidation(
-    context: ValidationContext,
-    value: T,
-): Unit = context.runValidation(value)
+inline fun <T> Rule(
+    crossinline predicate: (T) -> Boolean,
+    crossinline violationGenerator: (T) -> Violation,
+): Rule<T> =
+    Rule {
+        validate(
+            predicate(it),
+        ) {
+            violationGenerator(it)
+        }
+    }

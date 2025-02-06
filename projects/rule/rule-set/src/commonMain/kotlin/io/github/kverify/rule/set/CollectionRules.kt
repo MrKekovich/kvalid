@@ -4,8 +4,6 @@ import io.github.kverify.core.context.validate
 import io.github.kverify.core.model.NamedRule
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
-import io.github.kverify.core.model.createNamedRule
-import io.github.kverify.core.model.createRule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.violation.CollectionViolations
 
@@ -20,7 +18,7 @@ open class CollectionRules(
             collectionViolations.ofSize(size, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.size == size,
             ) {
@@ -34,7 +32,7 @@ open class CollectionRules(
             collectionViolations.notOfSize(size, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.size != size,
             ) {
@@ -48,7 +46,7 @@ open class CollectionRules(
             collectionViolations.maxSize(size, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.size <= size,
             ) {
@@ -62,7 +60,7 @@ open class CollectionRules(
             collectionViolations.minSize(size, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.size >= size,
             ) {
@@ -76,7 +74,7 @@ open class CollectionRules(
             collectionViolations.sizeBetween(range, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.size in range,
             ) {
@@ -90,7 +88,7 @@ open class CollectionRules(
             collectionViolations.sizeNotBetween(range, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.size !in range,
             ) {
@@ -128,7 +126,7 @@ open class CollectionRules(
             collectionViolations.containsAll(elements, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.containsAll(elements),
             ) {
@@ -142,7 +140,7 @@ open class CollectionRules(
             collectionViolations.containsNone(elements, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 elements.none { it in value },
             ) {
@@ -156,7 +154,7 @@ open class CollectionRules(
             collectionViolations.contains(element, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.contains(element),
             ) {
@@ -170,7 +168,7 @@ open class CollectionRules(
             collectionViolations.notContains(element, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 !value.contains(element),
             ) {
@@ -184,7 +182,7 @@ open class CollectionRules(
             collectionViolations.containsOnly(elements, value)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.all { element -> element in elements },
             ) {
@@ -197,7 +195,7 @@ open class CollectionRules(
             collectionViolations.notEmpty(it)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.isNotEmpty(),
             ) {
@@ -210,7 +208,7 @@ open class CollectionRules(
             collectionViolations.distinct(it)
         },
     ): Rule<C> =
-        createRule { value ->
+        Rule { value ->
             validate(
                 value.size == value.toSet().size,
             ) {
@@ -342,7 +340,7 @@ open class CollectionRules(
             collectionViolations.ofSize(size, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 ofSize<C>(size) {
                     violationGenerator(namedValue)
@@ -357,7 +355,7 @@ open class CollectionRules(
             collectionViolations.notOfSize(size, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notOfSize<C>(size) {
                     violationGenerator(namedValue)
@@ -372,7 +370,7 @@ open class CollectionRules(
             collectionViolations.maxSize(size, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 maxSize<C>(size) {
                     violationGenerator(namedValue)
@@ -387,7 +385,7 @@ open class CollectionRules(
             collectionViolations.minSize(size, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 minSize<C>(size) {
                     violationGenerator(namedValue)
@@ -402,7 +400,7 @@ open class CollectionRules(
             collectionViolations.sizeBetween(range, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 sizeBetween<C>(range) {
                     violationGenerator(namedValue)
@@ -418,7 +416,7 @@ open class CollectionRules(
             collectionViolations.sizeBetween(min..max, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 sizeBetween<C>(min, max) {
                     violationGenerator(namedValue)
@@ -433,7 +431,7 @@ open class CollectionRules(
             collectionViolations.sizeNotBetween(range, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 sizeNotBetween<C>(range) {
                     violationGenerator(namedValue)
@@ -449,7 +447,7 @@ open class CollectionRules(
             collectionViolations.sizeNotBetween(min..max, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 sizeNotBetween<C>(min, max) {
                     violationGenerator(namedValue)
@@ -464,7 +462,7 @@ open class CollectionRules(
             collectionViolations.containsAll(elements, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 containsAll(elements) {
                     violationGenerator(namedValue)
@@ -479,7 +477,7 @@ open class CollectionRules(
             collectionViolations.containsNone(elements, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 containsNone(elements) {
                     violationGenerator(namedValue)
@@ -494,7 +492,7 @@ open class CollectionRules(
             collectionViolations.contains(element, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 contains(element) {
                     violationGenerator(namedValue)
@@ -509,7 +507,7 @@ open class CollectionRules(
             collectionViolations.notContains(element, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notContains(element) {
                     violationGenerator(namedValue)
@@ -524,7 +522,7 @@ open class CollectionRules(
             collectionViolations.containsOnly(elements, value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 containsOnly(elements) {
                     violationGenerator(namedValue)
@@ -538,7 +536,7 @@ open class CollectionRules(
             collectionViolations.notEmpty(value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 notEmpty<C> {
                     violationGenerator(namedValue)
@@ -552,7 +550,7 @@ open class CollectionRules(
             collectionViolations.distinct(value, name)
         },
     ): NamedRule<C> =
-        createNamedRule { namedValue ->
+        NamedRule { namedValue ->
             val rule =
                 distinct<C> {
                     violationGenerator(namedValue)
