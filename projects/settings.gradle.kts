@@ -21,5 +21,5 @@ dependencyResolutionManagement {
 
 include(
     ":core:kverify-core",
-    ":rule:rule-set",
+    ":core:rule-set",
 )
